@@ -8,35 +8,36 @@ class LoginTypeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return Scaffold(
-      body: Container(
-        decoration:
-            const BoxDecoration(color: Color.fromARGB(255, 86, 185, 205)),
-        child: Center(
+      backgroundColor: const Color.fromARGB(255, 86, 185, 205),
+      body: Center(
+        child: SingleChildScrollView(
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
             children: [
+              SizedBox(
+                height: size.height * .17,
+              ),
               Image.asset(
                 'assets/sign In.png',
                 fit: BoxFit.cover,
-                // height: size.height * .47,
               ),
               loginTypePoppinsText(text: 'Your health is our priority.'),
               loginTypePoppinsText(
                   text: 'Sign in to MedHeal and start your wellness journey.'),
               loginTypePoppinsText(
                   text: 'We are here to support you every step of the way'),
-              SizedBox(height: size.height * .02),
+              SizedBox(height: size.height * .05),
               loginTypeOutlinedButton(size,
                   text: 'CREATE ACCOUNT',
-                  padding: EdgeInsets.symmetric(
-                      horizontal: size.width * .17,
-                      vertical: size.height * .017)),
+                  width: size.width * 0.75,
+                  height: size.height * .063),
               SizedBox(height: size.height * .025),
               loginTypeOutlinedButton(size,
                   text: 'SIGN IN',
-                  padding: EdgeInsets.symmetric(
-                      horizontal: size.width * .27,
-                      vertical: size.height * .016)),
+                  width: size.width * 0.75,
+                  height: size.height * .063),
+              SizedBox(
+                height: size.height * .01,
+              )
             ],
           ),
         ),
