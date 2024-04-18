@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:medheal/controller/authentication_provider.dart';
 import 'package:medheal/view/create_account.dart';
+import 'package:medheal/view/fill_profile.dart';
+import 'package:medheal/view/sign_in.dart';
 import 'package:provider/provider.dart';
 
 void main() {

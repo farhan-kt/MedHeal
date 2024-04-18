@@ -4,6 +4,7 @@ import 'package:google_fonts/google_fonts.dart';
 
 class CustomTextFormField extends StatelessWidget {
   final String? hintText;
+  final String? labelText;
   final bool? obscureText;
   final Widget? suffixIcon;
   final double? height;
@@ -26,7 +27,8 @@ class CustomTextFormField extends StatelessWidget {
       this.validateMessage,
       this.keyboardType,
       this.inputFormatters,
-      this.height});
+      this.height,
+      this.labelText});
 
   @override
   Widget build(BuildContext context) {
@@ -53,6 +55,11 @@ class CustomTextFormField extends StatelessWidget {
             suffixIcon: suffixIcon,
             hintText: hintText,
             hintStyle: GoogleFonts.inter(
+                color: const Color(0xFF98A3B3),
+                fontWeight: FontWeight.w400,
+                fontSize: 14),
+            labelText: labelText,
+            labelStyle: GoogleFonts.inter(
                 color: const Color(0xFF98A3B3),
                 fontWeight: FontWeight.w400,
                 fontSize: 14),

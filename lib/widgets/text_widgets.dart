@@ -11,5 +11,5 @@ poppinsText({text, color, fontWeight, double? fontSize, textAlign}) {
 interText({text}) {
   return Text(text,
       style: GoogleFonts.inter(
-          color: Color(0xFF98A3B3), fontWeight: FontWeight.w400, fontSize: 14));
+          color: Colors.black, fontWeight: FontWeight.bold, fontSize: 20));
 }

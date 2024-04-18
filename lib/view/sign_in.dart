@@ -1,12 +1,13 @@
-import 'package:flutter/material.dart';
-import 'package:medheal/controller/authentication_provider.dart';
-import 'package:medheal/widgets/text_widgets.dart';
 import 'package:enefty_icons/enefty_icons.dart';
-import 'package:medheal/widgets/textformfield_widget.dart';
+import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:medheal/widgets/text_widgets.dart';
+import 'package:medheal/widgets/textformfield_widget.dart';
 
-class CreateAccountScreen extends StatelessWidget {
-  const CreateAccountScreen({super.key});
+import '../controller/authentication_provider.dart';
+
+class SignInScreen extends StatelessWidget {
+  const SignInScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -15,7 +16,7 @@ class CreateAccountScreen extends StatelessWidget {
         Provider.of<AuthenticationProvider>(context, listen: false);
     return Scaffold(
       body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 15),
+        padding: const EdgeInsets.symmetric(horizontal: 16),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -32,7 +33,7 @@ class CreateAccountScreen extends StatelessWidget {
                 TextButton(
                     onPressed: () {},
                     child: poppinsText(
-                        text: 'Sign In',
+                        text: 'Create Account',
                         fontSize: 19,
                         fontWeight: FontWeight.w600,
                         color: const Color(0xFF1995AD)))
@@ -40,44 +41,41 @@ class CreateAccountScreen extends StatelessWidget {
             ),
             SizedBox(height: size.height * .04),
             SizedBox(
-              width: size.width * .6,
+              width: size.width * .73,
               height: size.height * .15,
               child: poppinsText(
-                  text: 'Create Your Account',
+                  text: 'Sign In to Your Account',
                   fontSize: 34,
                   fontWeight: FontWeight.w600),
             ),
             SizedBox(height: size.height * .02),
             SizedBox(
-              height: size.height * .4,
-              width: size.width * .9,
+              height: size.height * .25,
               child: Form(
-                key: authProvider.createAccountFormkey,
+                key: authProvider.signInFormkey,
                 child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.end,
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
                     CustomTextFormField(
-                      controller: authProvider.userNameController,
-                      hintText: 'User Name',
-                      height: size.height * .075,
-                    ),
-                    CustomTextFormField(
-                      controller: authProvider.userNameController,
+                      controller: authProvider.signInEmailPasswordController,
                       hintText: 'Email',
                       height: size.height * .075,
                     ),
+                    const SizedBox(height: 5),
                     CustomTextFormField(
-                      controller: authProvider.userNameController,
+                      controller: authProvider.signInPasswordController,
                       hintText: 'Password',
                       height: size.height * .075,
                       suffixIcon: const Icon(EneftyIcons.eye_outline),
                     ),
-                    CustomTextFormField(
-                      controller: authProvider.userNameController,
-                      hintText: 'Confirm Password',
-                      height: size.height * .075,
-                      suffixIcon: const Icon(EneftyIcons.eye_outline),
-                    ),
+                    TextButton(
+                        onPressed: () {},
+                        child: poppinsText(
+                            text: 'Forgot the password?',
+                            fontSize: 14,
+                            fontWeight: FontWeight.w600,
+                            color: const Color(0xFF1995AD))),
                   ],
                 ),
               ),
@@ -91,22 +89,22 @@ class CreateAccountScreen extends StatelessWidget {
                       backgroundColor: const Color(0xFF1995AD)),
                   onPressed: () {},
                   child: poppinsText(
-                      text: 'CREATE ACCOUNT',
+                      text: 'Sign In',
                       textAlign: TextAlign.center,
-                      color: Colors.white,
                       fontSize: 16,
+                      color: Colors.white,
                       fontWeight: FontWeight.w600)),
             ),
-            SizedBox(height: size.height * .02),
+            SizedBox(height: size.height * .04),
             Row(children: [
-              const Flexible(child: Divider(thickness: 1)),
+              const Flexible(child: Divider(thickness: .8)),
               poppinsText(
-                  text: '  or create with  ',
+                  text: '  or continue with  ',
                   fontWeight: FontWeight.w400,
                   fontSize: 14),
               const Flexible(child: Divider(thickness: 1))
             ]),
-            SizedBox(height: size.height * .02),
+            SizedBox(height: size.height * .03),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
