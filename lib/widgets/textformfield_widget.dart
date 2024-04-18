@@ -31,7 +31,10 @@ class CustomTextFormField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-    return SizedBox(
+    return Container(
+      decoration: const BoxDecoration(
+        color: Color(0xFFF2F4F7),
+      ),
       height: height ?? size.height * .4,
       width: size.width * .9,
       child: TextFormField(
@@ -50,12 +53,15 @@ class CustomTextFormField extends StatelessWidget {
             suffixIcon: suffixIcon,
             hintText: hintText,
             hintStyle: GoogleFonts.inter(
-                color: Color(0xFF98A3B3),
+                color: const Color(0xFF98A3B3),
                 fontWeight: FontWeight.w400,
                 fontSize: 14),
-            fillColor: Color(0xFFF2F4F7),
+            fillColor: const Color.fromARGB(255, 225, 227, 234),
             filled: true,
-            border: InputBorder.none,
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(12.0),
+              borderSide: BorderSide.none,
+            ),
             enabledBorder: enabledBorder,
             focusedBorder: focusedBorder,
             errorBorder: const OutlineInputBorder(
