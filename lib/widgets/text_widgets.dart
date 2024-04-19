@@ -8,8 +8,8 @@ poppinsText({text, color, fontWeight, double? fontSize, textAlign}) {
           color: color, fontWeight: fontWeight, fontSize: fontSize));
 }
 
-interText({text}) {
+interText({text, color, double? fontSize, fontWeight}) {
   return Text(text,
       style: GoogleFonts.inter(
-          color: Colors.black, fontWeight: FontWeight.bold, fontSize: 20));
+          color: color, fontWeight: fontWeight, fontSize: fontSize));
 }

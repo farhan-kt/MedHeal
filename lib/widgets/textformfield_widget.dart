@@ -35,7 +35,7 @@ class CustomTextFormField extends StatelessWidget {
     Size size = MediaQuery.of(context).size;
     return Container(
       decoration: const BoxDecoration(
-        color: Color(0xFFF2F4F7),
+        color: Colors.white,
       ),
       height: height ?? size.height * .4,
       width: size.width * .9,
