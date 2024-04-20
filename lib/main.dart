@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:medheal/controller/authentication_provider.dart';
 import 'package:medheal/controller/bottom_bar_provider.dart';
-import 'package:medheal/view/create_account.dart';
-import 'package:medheal/view/fill_profile.dart';
-import 'package:medheal/view/sign_in.dart';
+import 'package:medheal/view/authentication/create_account.dart';
+import 'package:medheal/view/authentication/fill_profile.dart';
+import 'package:medheal/view/authentication/sign_in.dart';
+import 'package:medheal/view/doctor_detail_screen.dart';
 import 'package:medheal/widgets/bottom_bar.dart';
 import 'package:provider/provider.dart';
 
@@ -24,7 +25,7 @@ class MyApp extends StatelessWidget {
       child: const MaterialApp(
         debugShowCheckedModeBanner: false,
         // home: LoginTypeScreen(),
-        home: BottomBar(),
+        home: DoctorDetailScreen(),
       ),
     );
   }

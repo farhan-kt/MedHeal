@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:medheal/view/login_widgets.dart';
+import 'package:medheal/view/authentication/login_widgets.dart';
 
 class LoginTypeScreen extends StatelessWidget {
   const LoginTypeScreen({super.key});

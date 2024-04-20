@@ -8,6 +8,19 @@ poppinsText({text, color, fontWeight, double? fontSize, textAlign}) {
           color: color, fontWeight: fontWeight, fontSize: fontSize));
 }
 
+poppinsHeadText({text, textAlign}) {
+  return Text(text,
+      textAlign: textAlign,
+      style: GoogleFonts.poppins(
+          color: Color(0xFF101828), fontWeight: FontWeight.w600, fontSize: 16));
+}
+
+poppinsSubHeadText({text, color, fontWeight}) {
+  return Text(text,
+      // overflow: TextOverflow.ellipsis,
+      style: GoogleFonts.poppins(color: color, fontSize: 12));
+}
+
 interText({text, color, double? fontSize, fontWeight}) {
   return Text(text,
       style: GoogleFonts.inter(

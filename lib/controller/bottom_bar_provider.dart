@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:medheal/view/all_doctors.dart';
 import 'package:medheal/view/appointment.dart';
-import 'package:medheal/view/home_user.dart';
+import 'package:medheal/view/user/home_user.dart';
 import 'package:medheal/view/profile_user.dart';
 
 class BottomProvider extends ChangeNotifier {
