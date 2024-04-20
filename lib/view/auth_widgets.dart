@@ -67,7 +67,7 @@ Widget dropDown(AuthenticationProvider authProvider, context) {
   });
 }
 
-alertNotifier(
+dialogBox(
   context, {
   height,
   width,

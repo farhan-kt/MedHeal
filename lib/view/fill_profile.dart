@@ -171,7 +171,7 @@ class _FillProfileScreenState extends State<FillProfileScreen> {
                   style: ElevatedButton.styleFrom(
                       backgroundColor: const Color(0xFF1995AD)),
                   onPressed: () {
-                    alertNotifier(context,
+                    dialogBox(context,
                         height: size.height * .02,
                         width: size.width * .8,
                         dialogheight: size.height * .4,
