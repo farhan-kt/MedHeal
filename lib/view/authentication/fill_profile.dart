@@ -82,23 +82,19 @@ class _FillProfileScreenState extends State<FillProfileScreen> {
                       CustomTextFormField(
                         controller: authProvider.fullNameController,
                         hintText: 'Full Name',
-                        height: size.height * .075,
                       ),
                       CustomTextFormField(
                         controller: authProvider.dobController,
                         hintText: 'Date of Birth',
-                        height: size.height * .075,
                         suffixIcon: const Icon(EneftyIcons.calendar_2_outline),
                       ),
                       CustomTextFormField(
                         controller: authProvider.profileEmailController,
                         hintText: 'Email',
-                        height: size.height * .075,
                       ),
                       CustomTextFormField(
                         controller: authProvider.phoneNumberController,
                         hintText: ' Phone Number',
-                        height: size.height * .075,
                       ),
                       Consumer<AuthenticationProvider>(
                         builder: (context, authValue, child) => Container(
@@ -112,7 +108,7 @@ class _FillProfileScreenState extends State<FillProfileScreen> {
                               FocusScope.of(context).requestFocus(FocusNode());
                             },
                             child: DropdownButtonFormField<String>(
-                              icon: SizedBox.shrink(),
+                              icon: const SizedBox.shrink(),
                               validator: (value) {
                                 if (value == null) {
                                   return 'select your gender';
@@ -121,7 +117,7 @@ class _FillProfileScreenState extends State<FillProfileScreen> {
                                 }
                               },
                               value: authValue.selectedGender,
-                              items: authValue.Genders.map((String gender) {
+                              items: authValue.genders.map((String gender) {
                                 return DropdownMenuItem<String>(
                                   value: gender,
                                   child: gender == 'Male' || gender == 'Female'
@@ -140,8 +136,8 @@ class _FillProfileScreenState extends State<FillProfileScreen> {
                                 }
                               },
                               decoration: InputDecoration(
-                                  suffixIcon:
-                                      Icon(EneftyIcons.arrow_down_outline),
+                                  suffixIcon: const Icon(
+                                      EneftyIcons.arrow_down_outline),
                                   border: OutlineInputBorder(
                                     borderRadius: BorderRadius.circular(12.0),
                                     borderSide: BorderSide.none,

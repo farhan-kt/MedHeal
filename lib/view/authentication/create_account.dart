@@ -61,23 +61,19 @@ class CreateAccountScreen extends StatelessWidget {
                       CustomTextFormField(
                         controller: authProvider.userNameController,
                         hintText: 'User Name',
-                        height: size.height * .075,
                       ),
                       CustomTextFormField(
                         controller: authProvider.emailController,
                         hintText: 'Email',
-                        height: size.height * .075,
                       ),
                       CustomTextFormField(
                         controller: authProvider.passwordController,
                         hintText: 'Password',
-                        height: size.height * .075,
                         suffixIcon: const Icon(EneftyIcons.eye_outline),
                       ),
                       CustomTextFormField(
                         controller: authProvider.confirmPasswordController,
                         hintText: 'Confirm Password',
-                        height: size.height * .075,
                         suffixIcon: const Icon(EneftyIcons.eye_outline),
                       ),
                     ],

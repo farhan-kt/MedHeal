@@ -60,13 +60,11 @@ class SignInScreen extends StatelessWidget {
                     CustomTextFormField(
                       controller: authProvider.signInEmailPasswordController,
                       hintText: 'Email',
-                      height: size.height * .075,
                     ),
                     const SizedBox(height: 5),
                     CustomTextFormField(
                       controller: authProvider.signInPasswordController,
                       hintText: 'Password',
-                      height: size.height * .075,
                       suffixIcon: const Icon(EneftyIcons.eye_outline),
                     ),
                     TextButton(

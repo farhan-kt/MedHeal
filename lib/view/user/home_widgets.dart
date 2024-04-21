@@ -29,7 +29,7 @@ Widget doctorDetailsContainer({height, width, valueText, headText}) {
     decoration: BoxDecoration(
       border: Border.all(color: const Color.fromARGB(255, 245, 241, 241)),
       borderRadius: BorderRadius.circular(18),
-      color: Color.fromARGB(255, 245, 241, 241),
+      color: const Color.fromARGB(255, 245, 241, 241),
     ),
     child: Column(
       mainAxisAlignment: MainAxisAlignment.center,
@@ -37,14 +37,14 @@ Widget doctorDetailsContainer({height, width, valueText, headText}) {
         poppinsText(
             textAlign: TextAlign.center,
             text: valueText,
-            color: Color(0xFF1995AD),
+            color: const Color(0xFF1995AD),
             fontSize: 14,
             fontWeight: FontWeight.w600),
         poppinsText(
           textAlign: TextAlign.center,
           text: headText,
           fontSize: 12,
-          color: Color(0xFF778293),
+          color: const Color(0xFF778293),
         ),
       ],
     ),

@@ -67,6 +67,35 @@ Widget dropDown(AuthenticationProvider authProvider, context) {
   });
 }
 
+Widget loginTypePoppinsText({text}) {
+  return Text(text,
+      textAlign: TextAlign.center,
+      style: GoogleFonts.poppins(color: Colors.white, fontSize: 15));
+}
+
+Widget loginTypeOutlinedButton(size, {text, double? width, double? height}) {
+  return SizedBox(
+    width: width,
+    height: height,
+    child: OutlinedButton(
+      style: OutlinedButton.styleFrom(
+        side: const BorderSide(color: Colors.white, width: 1.8),
+      ),
+      onPressed: () {},
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 10),
+        child: poppinsText(
+          textAlign: TextAlign.center,
+          text: text,
+          color: Colors.white,
+          fontWeight: FontWeight.w600,
+          fontSize: 18,
+        ),
+      ),
+    ),
+  );
+}
+
 dialogBox(
   context, {
   height,
@@ -79,7 +108,7 @@ dialogBox(
       context: context,
       builder: (context) {
         return AlertDialog(
-            title: Container(
+            title: SizedBox(
           height: dialogheight,
           width: dialogWidth,
           child: SingleChildScrollView(
@@ -88,9 +117,9 @@ dialogBox(
               SizedBox(height: height),
               CircleAvatar(
                   radius: avatarRadius,
-                  backgroundColor: Color(0xFF1995AD),
+                  backgroundColor: const Color(0xFF1995AD),
                   backgroundImage:
-                      AssetImage('assets/avatar-removebg-preview.png')),
+                      const AssetImage('assets/avatar-removebg-preview.png')),
               SizedBox(height: height),
               poppinsText(
                   text: 'Successful!',
@@ -106,10 +135,10 @@ dialogBox(
                         'Your account is ready to use. You will be redirected to Home page in a few seconds...',
                     fontSize: 14,
                     fontWeight: FontWeight.w400,
-                    color: Color(0xFF101828)),
+                    color: const Color(0xFF101828)),
               ),
               SizedBox(height: height),
-              CircularProgressIndicator(
+              const CircularProgressIndicator(
                 color: Color(0xFF1995AD),
               )
             ]),

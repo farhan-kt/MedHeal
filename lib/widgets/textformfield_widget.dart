@@ -7,7 +7,6 @@ class CustomTextFormField extends StatelessWidget {
   final String? labelText;
   final bool? obscureText;
   final Widget? suffixIcon;
-  final double? height;
   final String? validateMessage;
   final TextInputType? keyboardType;
   final TextEditingController controller;
@@ -27,7 +26,6 @@ class CustomTextFormField extends StatelessWidget {
       this.validateMessage,
       this.keyboardType,
       this.inputFormatters,
-      this.height,
       this.labelText});
 
   @override
@@ -37,7 +35,7 @@ class CustomTextFormField extends StatelessWidget {
       decoration: const BoxDecoration(
         color: Colors.white,
       ),
-      height: height ?? size.height * .4,
+      height: size.height * .075,
       width: size.width * .9,
       child: TextFormField(
         obscureText: obscureText ?? false,

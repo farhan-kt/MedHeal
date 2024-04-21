@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 class AuthenticationProvider extends ChangeNotifier {
   String selectedGender = 'Male';
-  final List<String> Genders = ['Male', 'Female'];
+  final List<String> genders = ['Male', 'Female'];
   void setSelectedGender(String value) {
     selectedGender = value;
     notifyListeners();

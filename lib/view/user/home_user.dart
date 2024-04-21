@@ -245,7 +245,7 @@ class UserHomeScreen extends StatelessWidget {
                 height: size.height * .16,
                 width: size.width * .9,
                 decoration: BoxDecoration(
-                    color: Color.fromARGB(255, 193, 225, 234),
+                    color: const Color.fromARGB(255, 193, 225, 234),
                     border: Border.all(
                         color: const Color.fromARGB(255, 199, 212, 226)),
                     borderRadius: BorderRadius.circular(18)),
@@ -253,7 +253,7 @@ class UserHomeScreen extends StatelessWidget {
                   padding: EdgeInsets.symmetric(
                       horizontal: 10, vertical: size.height * .03),
                   child: Row(children: [
-                    CircleAvatar(
+                    const CircleAvatar(
                       radius: 50,
                       backgroundColor: Colors.white,
                       backgroundImage:
@@ -265,23 +265,23 @@ class UserHomeScreen extends StatelessWidget {
                         children: [
                           poppinsText(
                               text: 'Dr. Jennie Thorn',
-                              color: Color(0xFF1D1617),
+                              color: const Color(0xFF1D1617),
                               fontSize: 14,
                               fontWeight: FontWeight.w600),
                           poppinsText(
                               text: 'Dentist',
-                              color: Color(0xFF101828),
+                              color: const Color(0xFF101828),
                               fontSize: 12),
                           Row(
                             children: [
                               Icon(
                                 EneftyIcons.location_outline,
                                 size: size.width * .05,
-                                color: Color(0xFF1995AD),
+                                color: const Color(0xFF1995AD),
                               ),
                               poppinsText(
                                   text: 'Royal Hospital, kerala',
-                                  color: Color(0xFF101828),
+                                  color: const Color(0xFF101828),
                                   fontSize: 12),
                             ],
                           )

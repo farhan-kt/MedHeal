@@ -1,7 +1,11 @@
-import 'package:enefty_icons/enefty_icons.dart';
 import 'package:flutter/material.dart';
-import 'package:medheal/view/user/home_widgets.dart';
+import 'package:medheal/view/user/user_widgets.dart';
+import 'package:provider/provider.dart';
+import 'package:enefty_icons/enefty_icons.dart';
 import 'package:medheal/widgets/text_widgets.dart';
+import 'package:medheal/view/user/home_widgets.dart';
+import 'package:medheal/controller/user_provider.dart';
+import 'package:medheal/widgets/textformfield_widget.dart';
 
 class DoctorDetailScreen extends StatelessWidget {
   const DoctorDetailScreen({super.key});
@@ -9,6 +13,7 @@ class DoctorDetailScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
+    final userProvider = Provider.of<UserProvider>(context, listen: false);
     return Scaffold(
       backgroundColor: const Color(0xFFFFFFFF),
       appBar: AppBar(
@@ -16,7 +21,7 @@ class DoctorDetailScreen extends StatelessWidget {
             onPressed: () {
               Navigator.pop(context);
             },
-            icon: Icon(
+            icon: const Icon(
               Icons.arrow_back_ios,
               color: Colors.black,
             )),
@@ -44,7 +49,7 @@ class DoctorDetailScreen extends StatelessWidget {
                 height: size.height * .16,
                 width: size.width * .93,
                 decoration: BoxDecoration(
-                    color: Color.fromARGB(255, 188, 214, 219),
+                    color: const Color.fromARGB(255, 188, 214, 219),
                     border: Border.all(
                         color: const Color.fromARGB(255, 199, 212, 226)),
                     borderRadius: BorderRadius.circular(18)),
@@ -115,10 +120,77 @@ class DoctorDetailScreen extends StatelessWidget {
                 child: poppinsSubHeadText(
                     text:
                         'Dr. Jennie Thorn is the most immunologists specialist in Royal Hospital at Phnom penh. She achieved several awards for her wonderful contributing in medical field',
-                    color: Color(0xFF344154)),
+                    color: const Color(0xFF344154)),
               ),
               SizedBox(height: size.height * .03),
               poppinsHeadText(text: 'Working information'),
+              SizedBox(height: size.height * .02),
+              Row(
+                children: [
+                  const Icon(
+                    EneftyIcons.calendar_2_outline,
+                    color: Color(0xFF778293),
+                  ),
+                  SizedBox(width: size.width * .02),
+                  poppinsSubHeadText(
+                      text: 'Monday-Friday, ', color: const Color(0xFF344154)),
+                  poppinsSubHeadText(
+                      text: '08:00 AM - 21:00 PM',
+                      color: const Color(0xFF344154)),
+                ],
+              ),
+              SizedBox(height: size.height * .02),
+              poppinsHeadText(text: 'Select Date'),
+              SizedBox(height: size.height * .02),
+              CustomTextFormField(
+                controller: userProvider.userDateController,
+                hintText: 'Date of Birth',
+                suffixIcon: const Icon(EneftyIcons.calendar_2_outline),
+              ),
+              SizedBox(height: size.height * .02),
+              poppinsHeadText(
+                text: 'Select Hour',
+              ),
+              SizedBox(height: size.height * .02),
+              SizedBox(
+                height: size.height * .1,
+                child: Wrap(
+                  spacing: size.width * .04,
+                  runSpacing: size.height * .01,
+                  children: [
+                    doctorDetailsTimeButton(onPressed: () {}, time: '09:00 AM'),
+                    doctorDetailsTimeButton(onPressed: () {}, time: '10:00 AM'),
+                    doctorDetailsTimeButton(onPressed: () {}, time: '11:00 AM'),
+                    doctorDetailsTimeButton(onPressed: () {}, time: '12:00 PM'),
+                    doctorDetailsTimeButton(onPressed: () {}, time: '02:00 PM'),
+                    doctorDetailsTimeButton(onPressed: () {}, time: '03:00 PM'),
+                  ],
+                ),
+              ),
+              SizedBox(height: size.height * .04),
+              SizedBox(
+                width: size.width * .9,
+                height: size.height * .06,
+                child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: const Color(0xFF1995AD),
+                    ),
+                    onPressed: () {
+                      appointmentDialogBox(context,
+                          elevatedButtonHeight: size.height * .05,
+                          elevatedButtonWidth: size.width * .7,
+                          height: size.height * .02,
+                          width: size.width * .8,
+                          dialogheight: size.height * .45,
+                          dialogWidth: size.width * .2);
+                    },
+                    child: poppinsText(
+                        text: 'BOOK APPOINTMENT',
+                        textAlign: TextAlign.center,
+                        color: Colors.white,
+                        fontSize: 16,
+                        fontWeight: FontWeight.w600)),
+              ),
               SizedBox(height: size.height * .02),
             ],
           ),

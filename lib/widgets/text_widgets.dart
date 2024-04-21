@@ -12,7 +12,9 @@ poppinsHeadText({text, textAlign}) {
   return Text(text,
       textAlign: textAlign,
       style: GoogleFonts.poppins(
-          color: Color(0xFF101828), fontWeight: FontWeight.w600, fontSize: 16));
+          color: const Color(0xFF101828),
+          fontWeight: FontWeight.w600,
+          fontSize: 16));
 }
 
 poppinsSubHeadText({text, color, fontWeight}) {
