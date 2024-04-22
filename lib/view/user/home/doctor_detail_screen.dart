@@ -117,7 +117,7 @@ class DoctorDetailScreen extends StatelessWidget {
               poppinsHeadText(text: 'About me'),
               SizedBox(height: size.height * .02),
               SizedBox(
-                child: poppinsSubHeadText(
+                child: poppinsSmallText(
                     text:
                         'Dr. Jennie Thorn is the most immunologists specialist in Royal Hospital at Phnom penh. She achieved several awards for her wonderful contributing in medical field',
                     color: const Color(0xFF344154)),
@@ -132,9 +132,9 @@ class DoctorDetailScreen extends StatelessWidget {
                     color: Color(0xFF778293),
                   ),
                   SizedBox(width: size.width * .02),
-                  poppinsSubHeadText(
+                  poppinsSmallText(
                       text: 'Monday-Friday, ', color: const Color(0xFF344154)),
-                  poppinsSubHeadText(
+                  poppinsSmallText(
                       text: '08:00 AM - 21:00 PM',
                       color: const Color(0xFF344154)),
                 ],

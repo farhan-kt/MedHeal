@@ -16,17 +16,20 @@ class UpcomingAppointments extends StatelessWidget {
       body: Padding(
         padding: EdgeInsets.symmetric(
             horizontal: size.width * .03, vertical: size.height * .02),
-        child: Column(
-          children: [
-            appointmentBookingContainer(size,
-                circleAvatarRadius: circleAvatarRadius, isUpcoming: true),
-            SizedBox(height: size.height * .02),
-            appointmentBookingContainer(size,
-                circleAvatarRadius: circleAvatarRadius, isUpcoming: true),
-            SizedBox(height: size.height * .02),
-            appointmentBookingContainer(size,
-                circleAvatarRadius: circleAvatarRadius, isUpcoming: true),
-          ],
+        child: SingleChildScrollView(
+          scrollDirection: Axis.vertical,
+          child: Column(
+            children: [
+              appointmentBookingContainer(size,
+                  circleAvatarRadius: circleAvatarRadius, isUpcoming: true),
+              SizedBox(height: size.height * .02),
+              appointmentBookingContainer(size,
+                  circleAvatarRadius: circleAvatarRadius, isUpcoming: true),
+              SizedBox(height: size.height * .02),
+              appointmentBookingContainer(size,
+                  circleAvatarRadius: circleAvatarRadius, isUpcoming: true),
+            ],
+          ),
         ),
       ),
     );

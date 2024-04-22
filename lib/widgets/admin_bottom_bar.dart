@@ -4,8 +4,8 @@ import 'package:medheal/controller/bottom_bar_provider.dart';
 import 'package:medheal/widgets/text_widgets.dart';
 import 'package:provider/provider.dart';
 
-class BottomBar extends StatelessWidget {
-  const BottomBar({super.key});
+class AdminBottomBar extends StatelessWidget {
+  const AdminBottomBar({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -14,7 +14,7 @@ class BottomBar extends StatelessWidget {
       backgroundColor: const Color.fromARGB(255, 238, 240, 242),
       body: Consumer<BottomProvider>(
           builder: (context, value, child) =>
-              value.screens[value.currentIndex]),
+              value.adminScreens[value.adminCurrentIndex]),
       bottomNavigationBar: Padding(
         padding: const EdgeInsets.only(bottom: 15, left: 10, right: 10),
         child: Container(
@@ -28,15 +28,15 @@ class BottomBar extends StatelessWidget {
                 unselectedFontSize: 11,
                 selectedFontSize: 12,
                 type: BottomNavigationBarType.fixed,
-                onTap: value.onTap,
+                onTap: value.adminOnTap,
                 backgroundColor: const Color(0xFFFFFFFF),
-                currentIndex: value.currentIndex,
+                currentIndex: value.adminCurrentIndex,
                 selectedItemColor: const Color(0xFF1995AD),
                 unselectedItemColor: const Color(0xFF98A3B3),
                 showUnselectedLabels: true,
                 items: [
                   BottomNavigationBarItem(
-                    icon: value.currentIndex == 0
+                    icon: value.adminCurrentIndex == 0
                         ? const Icon(EneftyIcons.home_3_bold)
                         : const Icon(EneftyIcons.home_3_outline),
                     label: poppinsText(
@@ -47,29 +47,18 @@ class BottomBar extends StatelessWidget {
                     ).data,
                   ),
                   BottomNavigationBarItem(
-                    icon: value.currentIndex == 1
-                        ? const Icon(EneftyIcons.calendar_2_bold)
-                        : const Icon(EneftyIcons.calendar_2_outline),
+                    icon: value.adminCurrentIndex == 1
+                        ? const Icon(EneftyIcons.add_bold)
+                        : const Icon(EneftyIcons.add_outline),
                     label: poppinsText(
-                      text: 'Appointment',
+                      text: 'Add',
                       color: const Color(0xFF98A3B3),
                       fontSize: 10,
                       fontWeight: FontWeight.w600,
                     ).data,
                   ),
                   BottomNavigationBarItem(
-                    icon: value.currentIndex == 2
-                        ? const Icon(EneftyIcons.hospital_bold)
-                        : const Icon(EneftyIcons.hospital_outline),
-                    label: poppinsText(
-                      text: 'Doctors',
-                      color: const Color(0xFF98A3B3),
-                      fontSize: 10,
-                      fontWeight: FontWeight.w600,
-                    ).data,
-                  ),
-                  BottomNavigationBarItem(
-                    icon: value.currentIndex == 3
+                    icon: value.adminCurrentIndex == 2
                         ? const Icon(EneftyIcons.profile_bold)
                         : const Icon(EneftyIcons.profile_outline),
                     label: poppinsText(

@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:medheal/widgets/text_widgets.dart';
 import 'package:medheal/widgets/normal_widgets.dart';
-import 'package:medheal/view/user/profile/profile_widgets.dart';
+import 'package:medheal/widgets/text_widgets.dart';
 
-class UserProfileScreen extends StatelessWidget {
-  const UserProfileScreen({super.key});
+class AdminProfileScreen extends StatelessWidget {
+  const AdminProfileScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -67,11 +66,6 @@ class UserProfileScreen extends StatelessWidget {
                 ),
               ],
             ),
-            SizedBox(height: size.height * .03),
-            userProfileScreenContainer(size,
-                height: size.height * .13,
-                width: size.width * .9,
-                sizedBoxWidth: size.width * .02),
             SizedBox(height: size.height * .03),
             profileScreenContainer(context,
                 containerHeight: size.height * .25,

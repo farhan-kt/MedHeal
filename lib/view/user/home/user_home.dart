@@ -54,7 +54,7 @@ class UserHomeScreen extends StatelessWidget {
                             const Icon(EneftyIcons.notification_bing_outline)),
                     IconButton(
                         onPressed: () {},
-                        icon: const Icon(EneftyIcons.heart_tick_outline)),
+                        icon: const Icon(EneftyIcons.heart_outline)),
                   ]),
                 )
               ]),

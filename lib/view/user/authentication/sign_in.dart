@@ -4,7 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:medheal/widgets/text_widgets.dart';
 import 'package:medheal/widgets/textformfield_widget.dart';
 
-import '../../controller/authentication_provider.dart';
+import '../../../controller/authentication_provider.dart';
 
 class SignInScreen extends StatelessWidget {
   const SignInScreen({super.key});

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:medheal/view/authentication/auth_widgets.dart';
+import 'package:medheal/view/user/authentication/auth_widgets.dart';
 import 'package:provider/provider.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:enefty_icons/enefty_icons.dart';

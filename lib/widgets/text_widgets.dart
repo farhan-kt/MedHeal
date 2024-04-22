@@ -17,7 +17,7 @@ poppinsHeadText({text, textAlign}) {
           fontSize: 16));
 }
 
-poppinsSubHeadText({text, color, fontWeight}) {
+poppinsSmallText({text, color, fontWeight}) {
   return Text(text,
       // overflow: TextOverflow.ellipsis,
       style: GoogleFonts.poppins(color: color, fontSize: 12));

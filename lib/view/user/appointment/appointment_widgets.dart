@@ -22,6 +22,7 @@ Widget appointmentBookingContainer(size,
               CircleAvatar(
                 radius: circleAvatarRadius,
                 backgroundColor: Color.fromARGB(255, 226, 84, 84),
+                // backgroundColor: Color(0xFFE3E3E3),
                 backgroundImage:
                     AssetImage('assets/avatar-removebg-preview.png'),
               ),
@@ -40,13 +41,13 @@ Widget appointmentBookingContainer(size,
                       fontSize: 14,
                       fontWeight: FontWeight.w600,
                     ),
-                    poppinsSubHeadText(
+                    poppinsSmallText(
                       text: 'Dentist',
                       color: const Color(0xFF7B6F72),
                     ),
                     Row(
                       children: [
-                        poppinsSubHeadText(
+                        poppinsSmallText(
                           text: 'Aug 17, 2023 | ',
                           color: const Color(0xFF7B6F72),
                         ),
