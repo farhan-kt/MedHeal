@@ -6,6 +6,8 @@ class CustomTextFormField extends StatelessWidget {
   final String? hintText;
   final String? labelText;
   final bool? obscureText;
+  final String? suffixText;
+  final Widget? prefixIcon;
   final Widget? suffixIcon;
   final String? validateMessage;
   final TextInputType? keyboardType;
@@ -26,7 +28,9 @@ class CustomTextFormField extends StatelessWidget {
       this.validateMessage,
       this.keyboardType,
       this.inputFormatters,
-      this.labelText});
+      this.labelText,
+      this.suffixText,
+      this.prefixIcon});
 
   @override
   Widget build(BuildContext context) {
@@ -50,7 +54,9 @@ class CustomTextFormField extends StatelessWidget {
         inputFormatters: inputFormatters,
         controller: controller,
         decoration: InputDecoration(
+            suffixText: suffixText,
             suffixIcon: suffixIcon,
+            prefixIcon: prefixIcon,
             hintText: hintText,
             hintStyle: GoogleFonts.inter(
                 color: const Color(0xFF98A3B3),
@@ -61,7 +67,7 @@ class CustomTextFormField extends StatelessWidget {
                 color: const Color(0xFF98A3B3),
                 fontWeight: FontWeight.w400,
                 fontSize: 14),
-            fillColor: const Color.fromARGB(255, 225, 227, 234),
+            fillColor: Color.fromARGB(255, 225, 227, 234),
             filled: true,
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(12.0),

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
 class UserProvider extends ChangeNotifier {
-  TextEditingController userDateController = TextEditingController();
+  TextEditingController userBookingDateController = TextEditingController();
+  TextEditingController searchController = TextEditingController();
 }

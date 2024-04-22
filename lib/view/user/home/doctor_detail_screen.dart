@@ -3,7 +3,7 @@ import 'package:medheal/view/user/user_widgets.dart';
 import 'package:provider/provider.dart';
 import 'package:enefty_icons/enefty_icons.dart';
 import 'package:medheal/widgets/text_widgets.dart';
-import 'package:medheal/view/user/home_widgets.dart';
+import 'package:medheal/view/user/home/home_widgets.dart';
 import 'package:medheal/controller/user_provider.dart';
 import 'package:medheal/widgets/textformfield_widget.dart';
 
@@ -143,7 +143,7 @@ class DoctorDetailScreen extends StatelessWidget {
               poppinsHeadText(text: 'Select Date'),
               SizedBox(height: size.height * .02),
               CustomTextFormField(
-                controller: userProvider.userDateController,
+                controller: userProvider.userBookingDateController,
                 hintText: 'Date of Birth',
                 suffixIcon: const Icon(EneftyIcons.calendar_2_outline),
               ),

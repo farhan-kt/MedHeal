@@ -1,6 +1,6 @@
 import 'package:enefty_icons/enefty_icons.dart';
 import 'package:flutter/material.dart';
-import 'package:medheal/view/user/home_widgets.dart';
+import 'package:medheal/view/user/home/home_widgets.dart';
 import 'package:medheal/widgets/text_widgets.dart';
 
 class UserHomeScreen extends StatelessWidget {

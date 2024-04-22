@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:medheal/view/appointment.dart';
+import 'package:medheal/view/all_doctors.dart';
+import 'package:medheal/view/user/profile/profile_user.dart';
+import 'package:medheal/view/user/appointment/appointment_tab.dart';
 import 'package:provider/provider.dart';
 import 'package:medheal/controller/user_provider.dart';
 import 'package:medheal/controller/bottom_bar_provider.dart';
@@ -23,7 +25,7 @@ class MyApp extends StatelessWidget {
       child: const MaterialApp(
         debugShowCheckedModeBanner: false,
         // home: LoginTypeScreen(),
-        home: AppointmentScreen(),
+        home: UserProfileScreen(),
       ),
     );
   }

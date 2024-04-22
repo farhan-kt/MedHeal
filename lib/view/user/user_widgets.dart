@@ -1,3 +1,4 @@
+import 'package:enefty_icons/enefty_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:medheal/widgets/text_widgets.dart';
 
@@ -76,4 +77,40 @@ appointmentDialogBox(
           ),
         ));
       });
+}
+
+Widget profileScreenContainer(size,
+    {required height, required width, sizedBoxWidth}) {
+  return Container(
+    height: height,
+    width: width,
+    padding: EdgeInsets.all(6),
+    decoration: BoxDecoration(
+      color: Color(0xFFFFFFFF),
+      border: Border.all(color: Color(0xFFFFFFFF)),
+      borderRadius: BorderRadius.circular(18),
+    ),
+    child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: [
+          poppinsHeadText(text: 'Settings'),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Row(children: [
+                Icon(
+                  EneftyIcons.heart_outline,
+                  color: Color(0xFF1995AD),
+                ),
+                SizedBox(width: sizedBoxWidth),
+                poppinsSubHeadText(
+                  text: "'Favourite Doctor's",
+                )
+              ]),
+              Icon(Icons.arrow_forward_ios_rounded, color: Color(0xFF888888))
+            ],
+          )
+        ]),
+  );
 }
