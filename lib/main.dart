@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:medheal/controller/admin_provider.dart';
+import 'package:medheal/view/splash_screen.dart';
+import 'package:medheal/view/user/authentication/create_account.dart';
+import 'package:medheal/view/user/authentication/fill_profile.dart';
 import 'package:medheal/view/user/doctors/all_doctors.dart';
 import 'package:medheal/view/user/profile/profile_user.dart';
 import 'package:medheal/view/user/appointment/appointment_tab.dart';
@@ -29,7 +32,7 @@ class MyApp extends StatelessWidget {
       child: const MaterialApp(
         debugShowCheckedModeBanner: false,
         // home: LoginTypeScreen(),
-        home: AdminBottomBar(),
+        home: CreateAccountScreen(),
       ),
     );
   }

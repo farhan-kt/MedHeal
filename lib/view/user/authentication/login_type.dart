@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:medheal/view/user/authentication/auth_widgets.dart';
+import 'package:medheal/view/user/authentication/create_account.dart';
+import 'package:medheal/view/user/authentication/sign_in.dart';
 
 class LoginTypeScreen extends StatelessWidget {
   const LoginTypeScreen({super.key});
@@ -29,12 +31,22 @@ class LoginTypeScreen extends StatelessWidget {
               loginTypeOutlinedButton(size,
                   text: 'CREATE ACCOUNT',
                   width: size.width * 0.75,
-                  height: size.height * .063),
+                  height: size.height * .063, onPressed: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const CreateAccountScreen()));
+              }),
               SizedBox(height: size.height * .025),
               loginTypeOutlinedButton(size,
                   text: 'SIGN IN',
                   width: size.width * 0.75,
-                  height: size.height * .063),
+                  height: size.height * .063, onPressed: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const SignInScreen()));
+              }),
               SizedBox(
                 height: size.height * .01,
               )

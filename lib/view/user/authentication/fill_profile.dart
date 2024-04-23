@@ -22,11 +22,9 @@ class _FillProfileScreenState extends State<FillProfileScreen> {
         Provider.of<AuthenticationProvider>(context, listen: false);
     return Scaffold(
       appBar: AppBar(
-        title: interText(
-            text: 'Fill Profile',
-            color: Colors.black,
-            fontWeight: FontWeight.bold,
-            fontSize: 20),
+        title: interHeadText(
+          text: 'Fill Profile',
+        ),
         centerTitle: true,
         actions: [
           TextButton(
@@ -121,11 +119,8 @@ class _FillProfileScreenState extends State<FillProfileScreen> {
                                 return DropdownMenuItem<String>(
                                   value: gender,
                                   child: gender == 'Male' || gender == 'Female'
-                                      ? interText(
+                                      ? interSubText(
                                           text: gender,
-                                          color: const Color(0xFF1A1A1A),
-                                          fontWeight: FontWeight.w400,
-                                          fontSize: 14,
                                         )
                                       : null,
                                 );

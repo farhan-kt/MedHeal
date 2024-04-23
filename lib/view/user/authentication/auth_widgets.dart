@@ -41,19 +41,16 @@ Widget dropDown(AuthenticationProvider authProvider, context) {
           return DropdownMenuItem<String>(
             value: value,
             child: value != null
-                ? interText(
+                ? interSubText(
                     text: value,
                     color: const Color(0xFF1A1A1A),
                     fontWeight: value == 'Male' || value == 'Female'
                         ? FontWeight.w400
                         : FontWeight.normal,
-                    fontSize: 14,
                   )
-                : interText(
+                : interSubText(
                     text: 'Gender',
                     color: const Color(0xFF98A3B3),
-                    fontWeight: FontWeight.w400,
-                    fontSize: 14,
                   ),
           );
         }).toList(),
@@ -73,7 +70,8 @@ Widget loginTypePoppinsText({text}) {
       style: GoogleFonts.poppins(color: Colors.white, fontSize: 15));
 }
 
-Widget loginTypeOutlinedButton(size, {text, double? width, double? height}) {
+Widget loginTypeOutlinedButton(size,
+    {text, double? width, double? height, onPressed}) {
   return SizedBox(
     width: width,
     height: height,
@@ -81,7 +79,7 @@ Widget loginTypeOutlinedButton(size, {text, double? width, double? height}) {
       style: OutlinedButton.styleFrom(
         side: const BorderSide(color: Colors.white, width: 1.8),
       ),
-      onPressed: () {},
+      onPressed: onPressed,
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 10),
         child: poppinsText(

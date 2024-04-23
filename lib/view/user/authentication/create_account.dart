@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:medheal/controller/authentication_provider.dart';
-import 'package:medheal/widgets/text_widgets.dart';
-import 'package:enefty_icons/enefty_icons.dart';
-import 'package:medheal/widgets/textformfield_widget.dart';
 import 'package:provider/provider.dart';
+import 'package:enefty_icons/enefty_icons.dart';
+import 'package:medheal/widgets/text_widgets.dart';
+import 'package:medheal/widgets/textformfield_widget.dart';
+import 'package:medheal/view/user/authentication/sign_in.dart';
+import 'package:medheal/controller/authentication_provider.dart';
 
 class CreateAccountScreen extends StatelessWidget {
   const CreateAccountScreen({super.key});
@@ -26,13 +27,20 @@ class CreateAccountScreen extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   IconButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
                       icon: const Icon(
                         Icons.arrow_back_ios,
                         size: 25,
                       )),
                   TextButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => const SignInScreen()));
+                      },
                       child: poppinsText(
                           text: 'Sign In',
                           fontSize: 19,
@@ -61,20 +69,24 @@ class CreateAccountScreen extends StatelessWidget {
                       CustomTextFormField(
                         controller: authProvider.userNameController,
                         hintText: 'User Name',
+                        validateMessage: 'Enter User Name',
                       ),
                       CustomTextFormField(
                         controller: authProvider.emailController,
                         hintText: 'Email',
+                        validateMessage: 'Enter Email',
                       ),
                       CustomTextFormField(
                         controller: authProvider.passwordController,
                         hintText: 'Password',
                         suffixIcon: const Icon(EneftyIcons.eye_outline),
+                        validateMessage: 'Enter password',
                       ),
                       CustomTextFormField(
                         controller: authProvider.confirmPasswordController,
                         hintText: 'Confirm Password',
                         suffixIcon: const Icon(EneftyIcons.eye_outline),
+                        validateMessage: 'Renter Password',
                       ),
                     ],
                   ),

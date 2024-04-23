@@ -114,14 +114,10 @@ Widget dropDownTextFormField(
       },
       value: selectedValue,
       items: items.map((String gender) {
-        // Change variable name
         return DropdownMenuItem<String>(
           value: gender,
-          child: interText(
+          child: interSubText(
             text: gender,
-            color: const Color(0xFF1A1A1A),
-            fontWeight: FontWeight.w400,
-            fontSize: 14,
           ),
         );
       }).toList(),

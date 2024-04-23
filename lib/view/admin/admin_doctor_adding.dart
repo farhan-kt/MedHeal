@@ -14,11 +14,9 @@ class DoctorAddingScreen extends StatelessWidget {
     final adminProvider = Provider.of<AdminProvider>(context, listen: false);
     return Scaffold(
       appBar: AppBar(
-        title: interText(
-            text: 'Add Doctors',
-            color: const Color(0xFF1A1A1A),
-            fontWeight: FontWeight.bold,
-            fontSize: 20),
+        title: interHeadText(
+          text: 'Add Doctors',
+        ),
         centerTitle: true,
       ),
       body: Padding(
@@ -26,7 +24,7 @@ class DoctorAddingScreen extends StatelessWidget {
         child: SingleChildScrollView(
           scrollDirection: Axis.vertical,
           child: Column(children: [
-            SizedBox(height: size.height * .04),
+            SizedBox(height: size.height * .02),
             Stack(
               children: [
                 CircleAvatar(
@@ -61,9 +59,15 @@ class DoctorAddingScreen extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  CustomTextFormField(
-                    controller: adminProvider.doctorNameController,
-                    hintText: 'Full Name',
+                  Row(
+                    children: [
+                      Expanded(
+                        child: CustomTextFormField(
+                          controller: adminProvider.doctorNameController,
+                          hintText: 'Full Name',
+                        ),
+                      ),
+                    ],
                   ),
                   Row(
                     children: [
@@ -106,11 +110,17 @@ class DoctorAddingScreen extends StatelessWidget {
                       adminProvider.setSelectedPosition(newValue);
                     }
                   }),
-                  CustomTextFormField(
-                    controller: adminProvider.aboutDoctorController,
-                    maxLines: 4,
-                    labelText: 'About Doctor',
-                    validateMessage: 'type some thing about doctor',
+                  Row(
+                    children: [
+                      Expanded(
+                        child: CustomTextFormField(
+                          controller: adminProvider.aboutDoctorController,
+                          maxLines: 4,
+                          labelText: 'About Doctor',
+                          validateMessage: 'type some thing about doctor',
+                        ),
+                      ),
+                    ],
                   ),
                   poppinsHeadText(text: 'Working information'),
                   dropDownTextFormField(context,
