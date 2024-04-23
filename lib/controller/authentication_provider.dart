@@ -25,4 +25,5 @@ class AuthenticationProvider extends ChangeNotifier {
   final signInFormkey = GlobalKey<FormState>();
   final doctorAddFormKey = GlobalKey<FormState>();
   final createAccountFormkey = GlobalKey<FormState>();
+  final fillAccountFormkey = GlobalKey<FormState>();
 }

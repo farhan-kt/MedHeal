@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:medheal/view/user/authentication/auth_widgets.dart';
 import 'package:provider/provider.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:enefty_icons/enefty_icons.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:medheal/widgets/text_widgets.dart';
+import 'package:medheal/widgets/user_bottom_bar.dart';
 import 'package:medheal/widgets/textformfield_widget.dart';
 import 'package:medheal/controller/authentication_provider.dart';
 
@@ -28,7 +28,12 @@ class _FillProfileScreenState extends State<FillProfileScreen> {
         centerTitle: true,
         actions: [
           TextButton(
-              onPressed: () {},
+              onPressed: () {
+                Navigator.pushAndRemoveUntil(
+                    context,
+                    MaterialPageRoute(builder: (context) => UserBottomBar()),
+                    (route) => false);
+              },
               child: poppinsText(
                   text: 'Skip',
                   fontSize: 16,
@@ -46,7 +51,7 @@ class _FillProfileScreenState extends State<FillProfileScreen> {
             Stack(
               children: [
                 CircleAvatar(
-                  radius: 90,
+                  radius: 80,
                   backgroundColor: Colors.orange[400],
                   backgroundImage:
                       const AssetImage('assets/avatar-removebg-preview.png'),
@@ -72,8 +77,9 @@ class _FillProfileScreenState extends State<FillProfileScreen> {
             ),
             SizedBox(height: size.height * .02),
             SizedBox(
-              height: size.height * .45,
+              height: size.height * .5,
               child: Form(
+                key: authProvider.fillAccountFormkey,
                 child: Column(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
@@ -162,11 +168,14 @@ class _FillProfileScreenState extends State<FillProfileScreen> {
                   style: ElevatedButton.styleFrom(
                       backgroundColor: const Color(0xFF1995AD)),
                   onPressed: () {
-                    dialogBox(context,
-                        height: size.height * .02,
-                        width: size.width * .8,
-                        dialogheight: size.height * .4,
-                        dialogWidth: size.width * .2);
+                    if (authProvider.fillAccountFormkey.currentState!
+                        .validate()) {
+                      Navigator.pushAndRemoveUntil(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => UserBottomBar()),
+                          (route) => false);
+                    }
                   },
                   child: poppinsText(
                       text: 'CONTINUE',

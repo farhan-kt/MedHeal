@@ -1,26 +1,28 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-poppinsText({text, color, fontWeight, double? fontSize, textAlign}) {
+poppinsText({text, color, fontWeight, double? fontSize, textAlign, overflow}) {
   return Text(text,
+      overflow: overflow,
       textAlign: textAlign,
       style: GoogleFonts.poppins(
           color: color, fontWeight: fontWeight, fontSize: fontSize));
 }
 
-poppinsHeadText({text, textAlign}) {
+poppinsHeadText({text, textAlign, double? fontSize, color}) {
   return Text(text,
       textAlign: textAlign,
       style: GoogleFonts.poppins(
-          color: const Color(0xFF101828),
+          color: color ?? const Color(0xFF101828),
           fontWeight: FontWeight.w600,
-          fontSize: 16));
+          fontSize: fontSize ?? 16));
 }
 
 poppinsSmallText({text, color, fontWeight}) {
   return Text(text,
       // overflow: TextOverflow.ellipsis,
-      style: GoogleFonts.poppins(color: color, fontSize: 12));
+      style:
+          GoogleFonts.poppins(color: color ?? Color(0xFF101828), fontSize: 12));
 }
 
 interHeadText({text}) {

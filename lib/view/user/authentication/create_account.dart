@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:medheal/view/user/authentication/fill_profile.dart';
 import 'package:provider/provider.dart';
 import 'package:enefty_icons/enefty_icons.dart';
 import 'package:medheal/widgets/text_widgets.dart';
@@ -59,7 +60,7 @@ class CreateAccountScreen extends StatelessWidget {
               ),
               SizedBox(height: size.height * .02),
               SizedBox(
-                height: size.height * .4,
+                height: size.height * .42,
                 width: size.width * .9,
                 child: Form(
                   key: authProvider.createAccountFormkey,
@@ -100,7 +101,15 @@ class CreateAccountScreen extends StatelessWidget {
                     style: ElevatedButton.styleFrom(
                       backgroundColor: const Color(0xFF1995AD),
                     ),
-                    onPressed: () {},
+                    onPressed: () {
+                      if (authProvider.createAccountFormkey.currentState!
+                          .validate()) {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => FillProfileScreen()));
+                      }
+                    },
                     child: poppinsText(
                         text: 'CREATE ACCOUNT',
                         textAlign: TextAlign.center,

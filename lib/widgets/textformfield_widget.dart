@@ -1,6 +1,6 @@
-import 'package:enefty_icons/enefty_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:enefty_icons/enefty_icons.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:medheal/widgets/text_widgets.dart';
 
@@ -9,7 +9,7 @@ class CustomTextFormField extends StatelessWidget {
   final String? labelText;
   final bool? obscureText;
   final int? maxLines;
-  final width;
+  final double? width;
   final String? suffixText;
   final Widget? prefixIcon;
   final Widget? suffixIcon;
@@ -20,73 +20,68 @@ class CustomTextFormField extends StatelessWidget {
   final OutlineInputBorder? focusedBorder;
   final OutlineInputBorder? focusErrorBorder;
   final List<TextInputFormatter>? inputFormatters;
-  const CustomTextFormField(
-      {super.key,
-      this.hintText,
-      this.obscureText,
-      required this.controller,
-      this.enabledBorder,
-      this.focusedBorder,
-      this.focusErrorBorder,
-      this.suffixIcon,
-      this.validateMessage,
-      this.keyboardType,
-      this.inputFormatters,
-      this.labelText,
-      this.suffixText,
-      this.prefixIcon,
-      this.width,
-      this.maxLines});
+
+  const CustomTextFormField({
+    Key? key,
+    this.hintText,
+    this.labelText,
+    this.obscureText,
+    this.maxLines,
+    this.width,
+    this.suffixText,
+    this.prefixIcon,
+    this.suffixIcon,
+    this.validateMessage,
+    this.keyboardType,
+    required this.controller,
+    this.enabledBorder,
+    this.focusedBorder,
+    this.focusErrorBorder,
+    this.inputFormatters,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    Size size = MediaQuery.of(context).size;
-    return Container(
-      decoration: const BoxDecoration(
-        color: Colors.white,
+    return TextFormField(
+      obscureText: obscureText ?? false,
+      maxLines: maxLines,
+      validator: (value) {
+        if (value == null || value.isEmpty) {
+          return validateMessage ?? 'Enter value';
+        } else {
+          return null;
+        }
+      },
+      keyboardType: keyboardType,
+      inputFormatters: inputFormatters,
+      controller: controller,
+      decoration: InputDecoration(
+        suffixText: suffixText,
+        suffixIcon: suffixIcon,
+        prefixIcon: prefixIcon,
+        hintText: hintText,
+        hintStyle: GoogleFonts.inter(
+          color: const Color(0xFF98A3B3),
+          fontWeight: FontWeight.w400,
+          fontSize: 14,
+        ),
+        labelText: labelText,
+        labelStyle: GoogleFonts.inter(
+          color: const Color(0xFF98A3B3),
+          fontWeight: FontWeight.w400,
+          fontSize: 14,
+        ),
+        fillColor: const Color.fromARGB(255, 225, 227, 234),
+        filled: true,
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(12.0),
+          borderSide: BorderSide.none,
+        ),
+        enabledBorder: enabledBorder,
+        focusedBorder: focusedBorder,
+        focusedErrorBorder: focusErrorBorder,
       ),
-      height: maxLines != null ? size.height * 0.15 : size.height * 0.075,
-      width: width ?? size.width * .9,
-      child: TextFormField(
-        obscureText: obscureText ?? false,
-        maxLines: maxLines,
-        validator: (value) {
-          if (value == null || value.isEmpty) {
-            return validateMessage ?? 'Enter value';
-          } else {
-            return null;
-          }
-        },
-        keyboardType: keyboardType,
-        inputFormatters: inputFormatters,
-        controller: controller,
-        decoration: InputDecoration(
-            suffixText: suffixText,
-            suffixIcon: suffixIcon,
-            prefixIcon: prefixIcon,
-            hintText: hintText,
-            hintStyle: GoogleFonts.inter(
-                color: const Color(0xFF98A3B3),
-                fontWeight: FontWeight.w400,
-                fontSize: 14),
-            labelText: labelText,
-            labelStyle: GoogleFonts.inter(
-                color: const Color(0xFF98A3B3),
-                fontWeight: FontWeight.w400,
-                fontSize: 14),
-            fillColor: Color.fromARGB(255, 225, 227, 234),
-            filled: true,
-            border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(12.0),
-              borderSide: BorderSide.none,
-            ),
-            enabledBorder: enabledBorder,
-            focusedBorder: focusedBorder,
-            errorBorder: const OutlineInputBorder(
-              borderSide: BorderSide(color: Colors.red),
-            ),
-            focusedErrorBorder: focusErrorBorder),
-      ),
+      // autovalidateMode: AutovalidateMode.onUserInteraction,
     );
   }
 }
