@@ -8,6 +8,8 @@ class CustomTextFormField extends StatelessWidget {
   final String? hintText;
   final String? labelText;
   final bool? obscureText;
+  final int? maxLines;
+  final width;
   final String? suffixText;
   final Widget? prefixIcon;
   final Widget? suffixIcon;
@@ -32,7 +34,9 @@ class CustomTextFormField extends StatelessWidget {
       this.inputFormatters,
       this.labelText,
       this.suffixText,
-      this.prefixIcon});
+      this.prefixIcon,
+      this.width,
+      this.maxLines});
 
   @override
   Widget build(BuildContext context) {
@@ -41,13 +45,14 @@ class CustomTextFormField extends StatelessWidget {
       decoration: const BoxDecoration(
         color: Colors.white,
       ),
-      height: size.height * .075,
-      width: size.width * .9,
+      height: maxLines != null ? size.height * 0.15 : size.height * 0.075,
+      width: width ?? size.width * .9,
       child: TextFormField(
         obscureText: obscureText ?? false,
+        maxLines: maxLines,
         validator: (value) {
           if (value == null || value.isEmpty) {
-            return validateMessage ?? 'value is empty';
+            return validateMessage ?? 'Enter value';
           } else {
             return null;
           }
@@ -86,8 +91,14 @@ class CustomTextFormField extends StatelessWidget {
   }
 }
 
-Widget dropDownTextFormField(context,
-    {value, items, itemStyle, setSelectedItem}) {
+Widget dropDownTextFormField(
+  context, {
+  required String? selectedValue,
+  required List<String> items,
+  required String validatorMessage,
+  required String hintText,
+  required void Function(String?)? onChanged,
+}) {
   return GestureDetector(
     onTap: () {
       FocusScope.of(context).requestFocus(FocusNode());
@@ -96,45 +107,41 @@ Widget dropDownTextFormField(context,
       icon: const SizedBox.shrink(),
       validator: (value) {
         if (value == null) {
-          return 'select your gender';
+          return validatorMessage;
         } else {
           return null;
         }
       },
-      value: value,
+      value: selectedValue,
       items: items.map((String gender) {
+        // Change variable name
         return DropdownMenuItem<String>(
           value: gender,
-          child: itemStyle
-              ? interText(
-                  text: gender,
-                  color: const Color(0xFF1A1A1A),
-                  fontWeight: FontWeight.w400,
-                  fontSize: 14,
-                )
-              : null,
-        );
-      }).toList(),
-      onChanged: (String? newValue) {
-        if (newValue != null) {
-          setSelectedItem(newValue);
-        }
-      },
-      decoration: InputDecoration(
-          suffixIcon: const Icon(EneftyIcons.arrow_down_outline),
-          border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(12.0),
-            borderSide: BorderSide.none,
-          ),
-          filled: true,
-          fillColor: const Color.fromARGB(255, 225, 227, 234),
-          hintText: 'Gender',
-          hintStyle: GoogleFonts.inter(
-            color: const Color(0xFF98A3B3),
+          child: interText(
+            text: gender,
+            color: const Color(0xFF1A1A1A),
             fontWeight: FontWeight.w400,
             fontSize: 14,
           ),
-          icon: null),
+        );
+      }).toList(),
+      onChanged: onChanged,
+      decoration: InputDecoration(
+        suffixIcon: const Icon(EneftyIcons.arrow_down_outline),
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(12.0),
+          borderSide: BorderSide.none,
+        ),
+        filled: true,
+        fillColor: const Color.fromARGB(255, 225, 227, 234),
+        hintText: hintText,
+        hintStyle: GoogleFonts.inter(
+          color: const Color(0xFF98A3B3),
+          fontWeight: FontWeight.w400,
+          fontSize: 14,
+        ),
+        icon: null,
+      ),
     ),
   );
 }

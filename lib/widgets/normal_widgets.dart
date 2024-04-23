@@ -2,7 +2,7 @@ import 'package:enefty_icons/enefty_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:medheal/widgets/text_widgets.dart';
 
-Widget allDoctorsContainer(size, {bool? isAdmin}) {
+Widget allDoctorsContainer(size, {bool? isAdmin, circleAvatarRadius}) {
   return Container(
     height: size.height * .16,
     width: size.width * .93,
@@ -16,8 +16,8 @@ Widget allDoctorsContainer(size, {bool? isAdmin}) {
       padding:
           EdgeInsets.symmetric(horizontal: 10, vertical: size.height * .03),
       child: Row(mainAxisAlignment: MainAxisAlignment.spaceAround, children: [
-        const CircleAvatar(
-          radius: 50,
+        CircleAvatar(
+          radius: circleAvatarRadius,
           backgroundColor: Colors.white,
           backgroundImage: AssetImage('assets/avatar-removebg-preview.png'),
         ),
@@ -69,7 +69,7 @@ Widget profileContainerListTile(BuildContext context,
     required IconData icon,
     Color? iconColor}) {
   Size size = MediaQuery.of(context).size;
-  return GestureDetector(
+  return InkWell(
     onTap: onTap,
     child: Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,

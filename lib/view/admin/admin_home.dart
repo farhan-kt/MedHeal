@@ -5,12 +5,15 @@ import 'package:medheal/widgets/normal_widgets.dart';
 import 'package:medheal/controller/user_provider.dart';
 import 'package:medheal/widgets/textformfield_widget.dart';
 
+const double circleAvatarRadiusFraction = 0.1;
+
 class AdminHomeScreen extends StatelessWidget {
   const AdminHomeScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
+    double circleAvatarRadius = size.shortestSide * circleAvatarRadiusFraction;
     final userProvider = Provider.of<UserProvider>(context, listen: false);
     return Scaffold(
       backgroundColor: const Color(0xFFF5F5F5),
@@ -37,13 +40,17 @@ class AdminHomeScreen extends StatelessWidget {
           child: SingleChildScrollView(
             scrollDirection: Axis.vertical,
             child: Column(children: [
-              allDoctorsContainer(size, isAdmin: true),
+              allDoctorsContainer(size,
+                  isAdmin: true, circleAvatarRadius: circleAvatarRadius),
               SizedBox(height: size.height * .02),
-              allDoctorsContainer(size, isAdmin: true),
+              allDoctorsContainer(size,
+                  isAdmin: true, circleAvatarRadius: circleAvatarRadius),
               SizedBox(height: size.height * .02),
-              allDoctorsContainer(size, isAdmin: true),
+              allDoctorsContainer(size,
+                  isAdmin: true, circleAvatarRadius: circleAvatarRadius),
               SizedBox(height: size.height * .02),
-              allDoctorsContainer(size, isAdmin: true),
+              allDoctorsContainer(size,
+                  isAdmin: true, circleAvatarRadius: circleAvatarRadius),
             ]),
           )),
     );

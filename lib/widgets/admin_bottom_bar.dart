@@ -48,8 +48,8 @@ class AdminBottomBar extends StatelessWidget {
                   ),
                   BottomNavigationBarItem(
                     icon: value.adminCurrentIndex == 1
-                        ? const Icon(EneftyIcons.add_bold)
-                        : const Icon(EneftyIcons.add_outline),
+                        ? const Icon(EneftyIcons.user_add_bold)
+                        : const Icon(EneftyIcons.user_add_outline),
                     label: poppinsText(
                       text: 'Add',
                       color: const Color(0xFF98A3B3),
