@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:enefty_icons/enefty_icons.dart';
-import 'package:flutter/widgets.dart';
-import 'package:medheal/view/user/home/doctor_detail_screen.dart';
 import 'package:medheal/widgets/text_widgets.dart';
+import 'package:medheal/widgets/normal_widgets.dart';
 import 'package:medheal/view/user/home/home_widgets.dart';
 
 const double circleAvatarRadiusFraction = 0.091;
@@ -45,9 +43,11 @@ class UserHomeScreen extends StatelessWidget {
                         color: const Color(0xFF1995AD)))
               ]),
               SizedBox(height: size.height * .01),
-              homeTopDoctors(context, size),
+              doctorDetailsShowingContainer(context, size,
+                  width: size.width * .9),
               SizedBox(height: size.height * .02),
-              homeTopDoctors(context, size)
+              doctorDetailsShowingContainer(context, size,
+                  width: size.width * .9)
             ]),
           ),
         ),

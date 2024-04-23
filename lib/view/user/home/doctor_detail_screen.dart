@@ -47,9 +47,9 @@ class DoctorDetailScreen extends StatelessWidget {
             children: [
               Container(
                 height: size.height * .16,
-                width: size.width * .93,
+                width: size.width * .915,
                 decoration: BoxDecoration(
-                    color: const Color.fromARGB(255, 188, 214, 219),
+                    color: const Color.fromARGB(255, 193, 225, 234),
                     border: Border.all(
                         color: const Color.fromARGB(255, 199, 212, 226)),
                     borderRadius: BorderRadius.circular(18)),

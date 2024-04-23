@@ -1,5 +1,6 @@
 import 'package:enefty_icons/enefty_icons.dart';
 import 'package:flutter/material.dart';
+import 'package:medheal/view/user/home/doctor_detail_screen.dart';
 import 'package:medheal/widgets/text_widgets.dart';
 
 Widget allDoctorsContainer(size, {bool? isAdmin, circleAvatarRadius}) {
@@ -129,6 +130,61 @@ Widget profileScreenContainer(context,
             icon: EneftyIcons.logout_outline,
             iconColor: Colors.red),
       ],
+    ),
+  );
+}
+
+Widget doctorDetailsShowingContainer(context, size, {width}) {
+  return GestureDetector(
+    onTap: () {
+      Navigator.push(context,
+          MaterialPageRoute(builder: (context) => const DoctorDetailScreen()));
+    },
+    child: Container(
+      height: size.height * .16,
+      width: width,
+      decoration: BoxDecoration(
+          color: const Color.fromARGB(255, 193, 225, 234),
+          border: Border.all(color: const Color.fromARGB(255, 199, 212, 226)),
+          borderRadius: BorderRadius.circular(18)),
+      child: Padding(
+        padding:
+            EdgeInsets.symmetric(horizontal: 10, vertical: size.height * .03),
+        child: Row(children: [
+          const CircleAvatar(
+            radius: 50,
+            backgroundColor: Colors.white,
+            backgroundImage: AssetImage('assets/avatar-removebg-preview.png'),
+          ),
+          Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                poppinsHeadText(
+                  text: 'Dr. Jennie Thorn',
+                  color: const Color(0xFF1D1617),
+                  fontSize: 14,
+                ),
+                poppinsText(
+                    text: 'Dentist',
+                    color: const Color(0xFF101828),
+                    fontSize: 12),
+                Row(
+                  children: [
+                    Icon(
+                      EneftyIcons.location_outline,
+                      size: size.width * .048,
+                      color: const Color(0xFF1995AD),
+                    ),
+                    poppinsText(
+                        text: 'Royal Hospital, kerala',
+                        color: const Color(0xFF101828),
+                        fontSize: 12),
+                  ],
+                )
+              ])
+        ]),
+      ),
     ),
   );
 }

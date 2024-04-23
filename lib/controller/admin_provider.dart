@@ -12,6 +12,8 @@ class AdminProvider extends ChangeNotifier {
   TextEditingController doctorExperienceController = TextEditingController();
   TextEditingController doctorRatingController = TextEditingController();
 
+  final doctorAddFormkey = GlobalKey<FormState>();
+
   String selectedGender = 'Male';
   final List<String> genders = ['Male', 'Female'];
   void setSelectedGender(String value) {

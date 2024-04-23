@@ -1,6 +1,5 @@
-import 'package:enefty_icons/enefty_icons.dart';
 import 'package:flutter/material.dart';
-import 'package:medheal/view/user/home/doctor_detail_screen.dart';
+import 'package:enefty_icons/enefty_icons.dart';
 import 'package:medheal/widgets/text_widgets.dart';
 
 Widget categoryCircle(context, imagePath, {category, circleRadius}) {
@@ -32,12 +31,12 @@ Widget doctorDetailsContainer({height, width, valueText, headText}) {
     child: Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        poppinsText(
-            textAlign: TextAlign.center,
-            text: valueText,
-            color: const Color(0xFF1995AD),
-            fontSize: 14,
-            fontWeight: FontWeight.w600),
+        poppinsHeadText(
+          textAlign: TextAlign.center,
+          text: valueText,
+          color: const Color(0xFF1995AD),
+          fontSize: 14,
+        ),
         poppinsText(
           textAlign: TextAlign.center,
           text: headText,
@@ -100,16 +99,15 @@ Widget homeAppBar(size) {
                   AssetImage('assets/avatar-removebg-preview.png')),
           SizedBox(width: size.width * .02),
           Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-            poppinsText(
+            poppinsSmallText(
               text: 'Welcome',
               color: const Color.fromARGB(255, 155, 141, 143),
-              fontSize: 12,
             ),
-            poppinsText(
-                text: 'Farhan',
-                color: const Color(0xFF1D1617),
-                fontSize: 14,
-                fontWeight: FontWeight.w600),
+            poppinsHeadText(
+              text: 'Farhan',
+              color: const Color(0xFF1D1617),
+              fontSize: 14,
+            ),
           ]),
         ],
       ),
@@ -148,20 +146,18 @@ Widget homeUpcomingSchedule(size) {
                 backgroundColor: Color(0xFFFFFFFF),
                 backgroundImage:
                     AssetImage('assets/avatar-removebg-preview.png')),
-            title: poppinsText(
-                text: 'DR Farhan',
-                color: const Color(0xFFFFFFFF),
-                fontSize: 14,
-                fontWeight: FontWeight.w600),
+            title: poppinsHeadText(
+              text: 'DR Farhan',
+              color: const Color(0xFFFFFFFF),
+              fontSize: 14,
+            ),
             subtitle: Row(children: [
-              poppinsText(
+              poppinsSmallText(
                 text: 'Dentist | ',
-                fontSize: 12,
                 color: const Color(0xFFFFFFFF),
               ),
-              poppinsText(
+              poppinsSmallText(
                 text: 'BDS',
-                fontSize: 12,
                 color: const Color(0xFFFFFFFF),
               ),
             ]),
@@ -170,7 +166,7 @@ Widget homeUpcomingSchedule(size) {
                   Icons.more_vert_outlined,
                   color: Colors.white,
                 ),
-                color: Colors.grey,
+                color: const Color(0xFFA1D6E2),
                 onSelected: (value) {
                   if (value == 'reshedule') {
                   } else if (value == 'cancel') {}
@@ -178,13 +174,12 @@ Widget homeUpcomingSchedule(size) {
                 itemBuilder: (context) {
                   return [
                     PopupMenuItem(
-                        child: poppinsText(
-                            text: 'Reshedule', color: const Color(0xFFFFFFFF)),
+                        child:
+                            poppinsText(text: 'Reshedule', color: Colors.black),
                         value: 'reshedule'),
                     PopupMenuItem(
                         child: poppinsText(
-                            text: 'Cancel Booking',
-                            color: const Color(0xFFFFFFFF)),
+                            text: 'Cancel Booking', color: Colors.black),
                         value: 'cancel'),
                   ];
                 }),
@@ -239,60 +234,5 @@ Widget homeUpcomingSchedule(size) {
             ),
           ])
         ])),
-  );
-}
-
-Widget homeTopDoctors(context, size) {
-  return GestureDetector(
-    onTap: () {
-      Navigator.push(context,
-          MaterialPageRoute(builder: (context) => const DoctorDetailScreen()));
-    },
-    child: Container(
-      height: size.height * .16,
-      width: size.width * .9,
-      decoration: BoxDecoration(
-          color: const Color.fromARGB(255, 193, 225, 234),
-          border: Border.all(color: const Color.fromARGB(255, 199, 212, 226)),
-          borderRadius: BorderRadius.circular(18)),
-      child: Padding(
-        padding:
-            EdgeInsets.symmetric(horizontal: 10, vertical: size.height * .03),
-        child: Row(children: [
-          const CircleAvatar(
-            radius: 50,
-            backgroundColor: Colors.white,
-            backgroundImage: AssetImage('assets/avatar-removebg-preview.png'),
-          ),
-          Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                poppinsText(
-                    text: 'Dr. Jennie Thorn',
-                    color: const Color(0xFF1D1617),
-                    fontSize: 14,
-                    fontWeight: FontWeight.w600),
-                poppinsText(
-                    text: 'Dentist',
-                    color: const Color(0xFF101828),
-                    fontSize: 12),
-                Row(
-                  children: [
-                    Icon(
-                      EneftyIcons.location_outline,
-                      size: size.width * .05,
-                      color: const Color(0xFF1995AD),
-                    ),
-                    poppinsText(
-                        text: 'Royal Hospital, kerala',
-                        color: const Color(0xFF101828),
-                        fontSize: 12),
-                  ],
-                )
-              ])
-        ]),
-      ),
-    ),
   );
 }

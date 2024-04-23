@@ -55,130 +55,134 @@ class DoctorAddingScreen extends StatelessWidget {
             SizedBox(
               height: size.height * 1,
               child: Form(
+                  key: adminProvider.doctorAddFormkey,
                   child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
-                      Expanded(
-                        child: CustomTextFormField(
-                          controller: adminProvider.doctorNameController,
-                          hintText: 'Full Name',
-                        ),
+                      Row(
+                        children: [
+                          Expanded(
+                            child: CustomTextFormField(
+                              controller: adminProvider.doctorNameController,
+                              hintText: 'Full Name',
+                            ),
+                          ),
+                        ],
+                      ),
+                      Row(
+                        children: [
+                          Expanded(
+                            child: CustomTextFormField(
+                              controller: adminProvider.doctorNameController,
+                              hintText: 'Age',
+                              width: size.width * .2,
+                            ),
+                          ),
+                          const SizedBox(width: 20),
+                          Expanded(
+                            child: dropDownTextFormField(context,
+                                selectedValue: adminProvider.selectedGender,
+                                items: adminProvider.genders,
+                                validatorMessage: 'dsdsfc',
+                                hintText: 'dssfsd',
+                                onChanged: (String? newValue) {
+                              if (newValue != null) {
+                                adminProvider.setSelectedGender(newValue);
+                              }
+                            }),
+                          )
+                        ],
+                      ),
+                      dropDownTextFormField(context,
+                          selectedValue: adminProvider.selectedCategory,
+                          items: adminProvider.category,
+                          validatorMessage: 'Select a category',
+                          hintText: 'Category', onChanged: (String? newValue) {
+                        if (newValue != null) {
+                          adminProvider.setSelectedCategory(newValue);
+                        }
+                      }),
+                      dropDownTextFormField(context,
+                          selectedValue: adminProvider.selectedPosition,
+                          items: adminProvider.position,
+                          validatorMessage: 'Select a position',
+                          hintText: 'Position', onChanged: (String? newValue) {
+                        if (newValue != null) {
+                          adminProvider.setSelectedPosition(newValue);
+                        }
+                      }),
+                      Row(
+                        children: [
+                          Expanded(
+                            child: CustomTextFormField(
+                              controller: adminProvider.aboutDoctorController,
+                              maxLines: 4,
+                              labelText: 'About Doctor',
+                              validateMessage: 'type some thing about doctor',
+                            ),
+                          ),
+                        ],
+                      ),
+                      poppinsHeadText(text: 'Working information'),
+                      dropDownTextFormField(context,
+                          selectedValue: adminProvider.selectedWorkingDays,
+                          items: adminProvider.workingDays,
+                          validatorMessage: 'Select working days',
+                          hintText: 'working days',
+                          onChanged: (String? newValue) {
+                        if (newValue != null) {
+                          adminProvider.setSelectedWorkingDays(newValue);
+                        }
+                      }),
+                      Row(
+                        children: [
+                          Expanded(
+                            child: CustomTextFormField(
+                              controller: adminProvider.aboutDoctorController,
+                              labelText: "inspection start time",
+                              validateMessage: 'pick inspection time',
+                            ),
+                          ),
+                          SizedBox(width: size.width * .08),
+                          Expanded(
+                            child: CustomTextFormField(
+                              controller: adminProvider.aboutDoctorController,
+                              labelText: 'inspection end time',
+                              validateMessage: 'pick inspection end time',
+                            ),
+                          ),
+                        ],
+                      ),
+                      Row(
+                        children: [
+                          Expanded(
+                            child: CustomTextFormField(
+                              controller: adminProvider.patientsController,
+                              labelText: 'Patients',
+                            ),
+                          ),
+                          SizedBox(width: size.width * .08),
+                          Expanded(
+                            child: CustomTextFormField(
+                              controller:
+                                  adminProvider.doctorExperienceController,
+                              labelText: 'Enter Experience',
+                              validateMessage: '',
+                            ),
+                          ),
+                          SizedBox(width: size.width * .08),
+                          Expanded(
+                            child: CustomTextFormField(
+                              controller: adminProvider.doctorRatingController,
+                              labelText: 'Rating',
+                              validateMessage: 'Enter Rating',
+                            ),
+                          ),
+                        ],
                       ),
                     ],
-                  ),
-                  Row(
-                    children: [
-                      Expanded(
-                        child: CustomTextFormField(
-                          controller: adminProvider.doctorNameController,
-                          hintText: 'Age',
-                          width: size.width * .2,
-                        ),
-                      ),
-                      const SizedBox(width: 20),
-                      Expanded(
-                        child: dropDownTextFormField(context,
-                            selectedValue: adminProvider.selectedGender,
-                            items: adminProvider.genders,
-                            validatorMessage: 'dsdsfc',
-                            hintText: 'dssfsd', onChanged: (String? newValue) {
-                          if (newValue != null) {
-                            adminProvider.setSelectedGender(newValue);
-                          }
-                        }),
-                      )
-                    ],
-                  ),
-                  dropDownTextFormField(context,
-                      selectedValue: adminProvider.selectedCategory,
-                      items: adminProvider.category,
-                      validatorMessage: 'Select a category',
-                      hintText: 'Category', onChanged: (String? newValue) {
-                    if (newValue != null) {
-                      adminProvider.setSelectedCategory(newValue);
-                    }
-                  }),
-                  dropDownTextFormField(context,
-                      selectedValue: adminProvider.selectedPosition,
-                      items: adminProvider.position,
-                      validatorMessage: 'Select a position',
-                      hintText: 'Position', onChanged: (String? newValue) {
-                    if (newValue != null) {
-                      adminProvider.setSelectedPosition(newValue);
-                    }
-                  }),
-                  Row(
-                    children: [
-                      Expanded(
-                        child: CustomTextFormField(
-                          controller: adminProvider.aboutDoctorController,
-                          maxLines: 4,
-                          labelText: 'About Doctor',
-                          validateMessage: 'type some thing about doctor',
-                        ),
-                      ),
-                    ],
-                  ),
-                  poppinsHeadText(text: 'Working information'),
-                  dropDownTextFormField(context,
-                      selectedValue: adminProvider.selectedWorkingDays,
-                      items: adminProvider.workingDays,
-                      validatorMessage: 'Select working days',
-                      hintText: 'working days', onChanged: (String? newValue) {
-                    if (newValue != null) {
-                      adminProvider.setSelectedWorkingDays(newValue);
-                    }
-                  }),
-                  Row(
-                    children: [
-                      Expanded(
-                        child: CustomTextFormField(
-                          controller: adminProvider.aboutDoctorController,
-                          labelText: "inspection start time",
-                          validateMessage: 'pick inspection time',
-                        ),
-                      ),
-                      SizedBox(width: size.width * .08),
-                      Expanded(
-                        child: CustomTextFormField(
-                          controller: adminProvider.aboutDoctorController,
-                          labelText: 'inspection end time',
-                          validateMessage: 'pick inspection end time',
-                        ),
-                      ),
-                    ],
-                  ),
-                  Row(
-                    children: [
-                      Expanded(
-                        child: CustomTextFormField(
-                          controller: adminProvider.patientsController,
-                          labelText: 'Patients',
-                        ),
-                      ),
-                      SizedBox(width: size.width * .08),
-                      Expanded(
-                        child: CustomTextFormField(
-                          controller: adminProvider.doctorExperienceController,
-                          labelText: 'Enter Experience',
-                          validateMessage: '',
-                        ),
-                      ),
-                      SizedBox(width: size.width * .08),
-                      Expanded(
-                        child: CustomTextFormField(
-                          controller: adminProvider.doctorRatingController,
-                          labelText: 'Rating',
-                          validateMessage: 'Enter Rating',
-                        ),
-                      ),
-                    ],
-                  ),
-                ],
-              )),
+                  )),
             ),
             SizedBox(
               width: size.width * .9,
@@ -186,7 +190,10 @@ class DoctorAddingScreen extends StatelessWidget {
               child: ElevatedButton(
                   style: ElevatedButton.styleFrom(
                       backgroundColor: const Color(0xFF1995AD)),
-                  onPressed: () {},
+                  onPressed: () {
+                    if (adminProvider.doctorAddFormkey.currentState!
+                        .validate()) {}
+                  },
                   child: poppinsText(
                       text: 'Add Doctor',
                       textAlign: TextAlign.center,
