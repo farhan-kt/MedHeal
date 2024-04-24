@@ -59,8 +59,8 @@ class UserBottomBar extends StatelessWidget {
                   ),
                   BottomNavigationBarItem(
                     icon: value.userCurrentIndex == 2
-                        ? const Icon(EneftyIcons.hospital_bold)
-                        : const Icon(EneftyIcons.hospital_outline),
+                        ? const Icon(EneftyIcons.people_bold)
+                        : const Icon(EneftyIcons.people_outline),
                     label: poppinsText(
                       text: 'Doctors',
                       color: const Color(0xFF98A3B3),

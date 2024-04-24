@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:enefty_icons/enefty_icons.dart';
+import 'package:medheal/widgets/normal_widgets.dart';
 import 'package:medheal/widgets/text_widgets.dart';
 
 Widget categoryCircle(context, imagePath, {category, circleRadius}) {
@@ -19,7 +20,7 @@ Widget categoryCircle(context, imagePath, {category, circleRadius}) {
   );
 }
 
-Widget doctorDetailsContainer({height, width, valueText, headText}) {
+Widget doctorExperienceContainer({height, width, valueText, headText}) {
   return Container(
     height: height,
     width: width,
@@ -174,10 +175,21 @@ Widget homeUpcomingSchedule(size) {
                 itemBuilder: (context) {
                   return [
                     PopupMenuItem(
+                        onTap: () {},
                         child:
                             poppinsText(text: 'Reshedule', color: Colors.black),
                         value: 'reshedule'),
                     PopupMenuItem(
+                        onTap: () {
+                          confirmationDialog(
+                            context,
+                            size,
+                            dialogWidth: size.width * .6,
+                            dialogheight: size.height * .12,
+                            height: size.height * .02,
+                            headMessage: 'Are You Sure To Cancel Booking ?',
+                          );
+                        },
                         child: poppinsText(
                             text: 'Cancel Booking', color: Colors.black),
                         value: 'cancel'),
@@ -235,4 +247,15 @@ Widget homeUpcomingSchedule(size) {
           ])
         ])),
   );
+}
+
+Widget doctorDetailsTimeButton({onPressed, time}) {
+  return OutlinedButton(
+      onPressed: onPressed,
+      child: poppinsText(
+          textAlign: TextAlign.center,
+          text: time,
+          color: const Color(0xFF1995AD),
+          fontSize: 14,
+          fontWeight: FontWeight.w600));
 }

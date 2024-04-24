@@ -1,3 +1,5 @@
+// ignore_for_file: use_full_hex_values_for_flutter_colors
+
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:medheal/view/user/appointment/cancelled_appointment.dart';
@@ -21,14 +23,14 @@ class AppointmentScreen extends StatelessWidget {
               fontSize: 20,
               fontWeight: FontWeight.w600),
           bottom: TabBar(
-              labelColor: Color(0xFF1995AD),
-              unselectedLabelColor: Color(0xFF778293),
-              labelStyle:
-                  GoogleFonts.poppins(fontSize: 14, color: Color(0xFFC778293)),
-              indicatorColor: Color(0xFF1995AD),
+              labelColor: const Color(0xFF1995AD),
+              unselectedLabelColor: const Color(0xFF778293),
+              labelStyle: GoogleFonts.poppins(
+                  fontSize: 14, color: const Color(0xffc778293)),
+              indicatorColor: const Color(0xFF1995AD),
               indicatorWeight: 3,
               indicatorSize: TabBarIndicatorSize.tab,
-              tabs: [
+              tabs: const [
                 Tab(
                   text: 'Upcoming',
                 ),
@@ -40,7 +42,7 @@ class AppointmentScreen extends StatelessWidget {
                 ),
               ]),
         ),
-        body: TabBarView(children: [
+        body: const TabBarView(children: [
           UpcomingAppointments(),
           CompletedAppointments(),
           CancelledAppointments()

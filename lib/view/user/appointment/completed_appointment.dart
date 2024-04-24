@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:medheal/view/user/appointment/appointment_widgets.dart';
+import 'package:medheal/view/user/appointment/widgets_appointment.dart';
 
 const double circleAvatarRadiusFraction = 0.1;
 
@@ -12,24 +12,21 @@ class CompletedAppointments extends StatelessWidget {
     double circleAvatarRadius = size.shortestSide * circleAvatarRadiusFraction;
 
     return Scaffold(
-      backgroundColor: Color(0xFFF5F5F5),
+      backgroundColor: const Color(0xFFF5F5F5),
       body: Padding(
         padding: EdgeInsets.symmetric(
             horizontal: size.width * .03, vertical: size.height * .02),
-        child: SingleChildScrollView(
-          scrollDirection: Axis.vertical,
-          child: Column(
-            children: [
-              appointmentBookingContainer(size,
-                  circleAvatarRadius: circleAvatarRadius, isUpcoming: false),
-              SizedBox(height: size.height * .02),
-              appointmentBookingContainer(size,
-                  circleAvatarRadius: circleAvatarRadius, isUpcoming: false),
-              SizedBox(height: size.height * .02),
-              appointmentBookingContainer(size,
-                  circleAvatarRadius: circleAvatarRadius, isUpcoming: false),
-            ],
-          ),
+        child: ListView.builder(
+          itemCount: 3,
+          itemBuilder: (context, index) {
+            return Column(
+              children: [
+                appointmentBookingContainer(size,
+                    circleAvatarRadius: circleAvatarRadius, isUpcoming: false),
+                SizedBox(height: size.height * .02),
+              ],
+            );
+          },
         ),
       ),
     );

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:medheal/view/admin/admin_doctor_adding.dart';
+import 'package:medheal/view/admin/admin_add_doctor.dart';
 import 'package:medheal/view/admin/admin_home.dart';
 import 'package:medheal/view/admin/admin_profile.dart';
 import 'package:medheal/view/user/doctors/all_doctors.dart';

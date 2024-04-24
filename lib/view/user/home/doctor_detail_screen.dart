@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:medheal/view/user/user_widgets.dart';
 import 'package:provider/provider.dart';
 import 'package:enefty_icons/enefty_icons.dart';
 import 'package:medheal/widgets/text_widgets.dart';
-import 'package:medheal/view/user/home/home_widgets.dart';
+import 'package:medheal/view/user/user_widgets.dart';
+import 'package:medheal/widgets/normal_widgets.dart';
 import 'package:medheal/controller/user_provider.dart';
+import 'package:medheal/view/user/home/home_widgets.dart';
 import 'package:medheal/widgets/textformfield_widget.dart';
 
 class DoctorDetailScreen extends StatelessWidget {
@@ -34,7 +35,7 @@ class DoctorDetailScreen extends StatelessWidget {
         centerTitle: true,
         actions: [
           IconButton(
-              onPressed: () {}, icon: const Icon(EneftyIcons.heart_add_outline))
+              onPressed: () {}, icon: const Icon(EneftyIcons.heart_outline))
         ],
       ),
       body: Padding(
@@ -45,69 +46,23 @@ class DoctorDetailScreen extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Container(
-                height: size.height * .16,
-                width: size.width * .915,
-                decoration: BoxDecoration(
-                    color: const Color.fromARGB(255, 193, 225, 234),
-                    border: Border.all(
-                        color: const Color.fromARGB(255, 199, 212, 226)),
-                    borderRadius: BorderRadius.circular(18)),
-                child: Padding(
-                  padding: EdgeInsets.symmetric(
-                      horizontal: 10, vertical: size.height * .03),
-                  child: Row(children: [
-                    const CircleAvatar(
-                      radius: 50,
-                      backgroundColor: Colors.white,
-                      backgroundImage:
-                          AssetImage('assets/avatar-removebg-preview.png'),
-                    ),
-                    Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          poppinsText(
-                              text: 'Dr. Jennie Thorn',
-                              color: const Color(0xFF1D1617),
-                              fontSize: 14,
-                              fontWeight: FontWeight.w600),
-                          poppinsText(
-                              text: 'Dentist',
-                              color: const Color(0xFF101828),
-                              fontSize: 12),
-                          Row(
-                            children: [
-                              Icon(
-                                EneftyIcons.location_outline,
-                                size: size.width * .05,
-                                color: const Color(0xFF1995AD),
-                              ),
-                              poppinsText(
-                                  text: 'Royal Hospital, kerala',
-                                  color: const Color(0xFF101828),
-                                  fontSize: 12),
-                            ],
-                          )
-                        ])
-                  ]),
-                ),
-              ),
+              doctorDetailsShowingContainer(context, size,
+                  width: size.width * .915),
               SizedBox(height: size.height * .03),
               Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
-                doctorDetailsContainer(
+                doctorExperienceContainer(
                     height: size.height * .07,
                     width: size.width * .27,
                     valueText: '180Cm',
                     headText: 'Patient'),
                 SizedBox(width: size.width * .04),
-                doctorDetailsContainer(
+                doctorExperienceContainer(
                     height: size.height * .07,
                     width: size.width * .27,
                     valueText: '10Y +',
                     headText: 'Experience'),
                 SizedBox(width: size.width * .04),
-                doctorDetailsContainer(
+                doctorExperienceContainer(
                     height: size.height * .07,
                     width: size.width * .27,
                     valueText: '180Cm',
@@ -176,13 +131,17 @@ class DoctorDetailScreen extends StatelessWidget {
                       backgroundColor: const Color(0xFF1995AD),
                     ),
                     onPressed: () {
-                      appointmentDialogBox(context,
+                      successDialogBox(context, size,
+                          isAppointment: true,
+                          headMessage: 'Your Appointment Has Been Confirmed',
                           elevatedButtonHeight: size.height * .05,
                           elevatedButtonWidth: size.width * .7,
                           height: size.height * .02,
                           width: size.width * .8,
                           dialogheight: size.height * .45,
-                          dialogWidth: size.width * .2);
+                          dialogWidth: size.width * .2,
+                          subText:
+                              'Your appointment with Dr. Jennie Thorn on Wednesday, August 17, 2023 at 11:00 AM  ');
                     },
                     child: poppinsText(
                         text: 'BOOK APPOINTMENT',

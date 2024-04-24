@@ -181,10 +181,56 @@ Widget doctorDetailsShowingContainer(context, size, {width}) {
                         color: const Color(0xFF101828),
                         fontSize: 12),
                   ],
-                )
+                ),
               ])
         ]),
       ),
     ),
   );
+}
+
+confirmationDialog(
+  context,
+  size, {
+  elevatedButtonHeight,
+  elevatedButtonWidth,
+  height,
+  width,
+  dialogheight,
+  dialogWidth,
+  headMessage,
+  subText,
+}) {
+  return showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+            title: SizedBox(
+          height: dialogheight,
+          width: dialogWidth,
+          child: Column(children: [
+            SizedBox(height: height),
+            poppinsHeadText(
+                textAlign: TextAlign.center,
+                fontSize: 14,
+                text: headMessage,
+                color: Colors.black),
+            SizedBox(height: height),
+            Row(mainAxisAlignment: MainAxisAlignment.end, children: [
+              TextButton(
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                  child:
+                      poppinsHeadText(text: 'Back', color: Color(0xFF1995AD))),
+              TextButton(
+                  onPressed: () {},
+                  child: poppinsHeadText(
+                    text: 'Cancel',
+                    color: Colors.red,
+                  )),
+            ])
+          ]),
+        ));
+      });
 }

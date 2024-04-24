@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:medheal/view/user/user_widgets.dart';
 import 'package:provider/provider.dart';
 import 'package:enefty_icons/enefty_icons.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -26,20 +27,21 @@ class _FillProfileScreenState extends State<FillProfileScreen> {
           text: 'Fill Profile',
         ),
         centerTitle: true,
-        actions: [
-          TextButton(
-              onPressed: () {
-                Navigator.pushAndRemoveUntil(
-                    context,
-                    MaterialPageRoute(builder: (context) => UserBottomBar()),
-                    (route) => false);
-              },
-              child: poppinsText(
-                  text: 'Skip',
-                  fontSize: 16,
-                  fontWeight: FontWeight.w600,
-                  color: const Color(0xFF1995AD)))
-        ],
+        // actions: [
+        //   TextButton(
+        //       onPressed: () {
+        //         Navigator.pushAndRemoveUntil(
+        //             context,
+        //             MaterialPageRoute(
+        //                 builder: (context) => const UserBottomBar()),
+        //             (route) => false);
+        //       },
+        //       child: poppinsText(
+        //           text: 'Skip',
+        //           fontSize: 16,
+        //           fontWeight: FontWeight.w600,
+        //           color: const Color(0xFF1995AD)))
+        // ],
       ),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 15),
@@ -173,9 +175,18 @@ class _FillProfileScreenState extends State<FillProfileScreen> {
                       Navigator.pushAndRemoveUntil(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => UserBottomBar()),
+                              builder: (context) => const UserBottomBar()),
                           (route) => false);
                     }
+                    //  successDialogBox(context, size,
+                    //     isAppointment: false,
+                    //     headMessage: 'Congratulations!',
+                    //     height: size.height * .02,
+                    //     width: size.width * .8,
+                    //     dialogheight: size.height * .4,
+                    //     dialogWidth: size.width * .2,
+                    //     subText:
+                    //         'Your account is ready to use. You will be redirected to the home Page in a few seconds...');
                   },
                   child: poppinsText(
                       text: 'CONTINUE',

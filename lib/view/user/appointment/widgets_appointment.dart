@@ -7,8 +7,8 @@ Widget appointmentBookingContainer(size,
     // height: size.height * .248,
     // width: size.width * .93,
     decoration: BoxDecoration(
-      color: Color(0xFFFFFFFF),
-      border: Border.all(color: Color(0xFFFFFFFF)),
+      color: const Color(0xFFFFFFFF),
+      border: Border.all(color: const Color(0xFFFFFFFF)),
       borderRadius: BorderRadius.circular(18),
     ),
     child: Padding(
@@ -21,10 +21,10 @@ Widget appointmentBookingContainer(size,
             children: [
               CircleAvatar(
                 radius: circleAvatarRadius,
-                backgroundColor: Color.fromARGB(255, 226, 84, 84),
+                backgroundColor: const Color.fromARGB(255, 226, 84, 84),
                 // backgroundColor: Color(0xFFE3E3E3),
                 backgroundImage:
-                    AssetImage('assets/avatar-removebg-preview.png'),
+                    const AssetImage('assets/avatar-removebg-preview.png'),
               ),
               SizedBox(
                 width: size.width * .035,
@@ -63,7 +63,7 @@ Widget appointmentBookingContainer(size,
               ),
             ],
           ),
-          Divider(
+          const Divider(
             color: Color.fromARGB(255, 240, 236, 236),
           ),
           Row(
@@ -73,12 +73,12 @@ Widget appointmentBookingContainer(size,
                 OutlinedButton(
                   style: ButtonStyle(
                     side: MaterialStateProperty.all(
-                        BorderSide(color: Color(0xFFED3443))),
+                        const BorderSide(color: Color(0xFFED3443), width: 1.2)),
                   ),
                   onPressed: () {},
                   child: poppinsText(
                     text: 'Cancel Booking',
-                    color: Color(0xFFED3443),
+                    color: const Color(0xFFED3443),
                     fontWeight: FontWeight.w600,
                     fontSize: 13,
                   ),
