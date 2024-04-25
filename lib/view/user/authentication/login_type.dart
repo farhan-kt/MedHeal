@@ -1,11 +1,17 @@
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:medheal/view/user/authentication/auth_widgets.dart';
 import 'package:medheal/view/user/authentication/create_account.dart';
 import 'package:medheal/view/user/authentication/sign_in.dart';
 
-class LoginTypeScreen extends StatelessWidget {
-  const LoginTypeScreen({super.key});
+class LoginTypeScreen extends StatefulWidget {
+  LoginTypeScreen({super.key});
 
+  @override
+  State<LoginTypeScreen> createState() => _LoginTypeScreenState();
+}
+
+class _LoginTypeScreenState extends State<LoginTypeScreen> {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:medheal/view/user/authentication/login_type.dart';
 import 'package:medheal/widgets/text_widgets.dart';
 import 'package:medheal/widgets/normal_widgets.dart';
 import 'package:medheal/view/user/profile/profile_widgets.dart';
@@ -59,7 +60,13 @@ class UserProfileScreen extends StatelessWidget {
             profileScreenContainer(context,
                 containerHeight: size.height * .26,
                 containerWidth: size.width * .9,
-                isAdmin: false)
+                isAdmin: false, onTap: () {
+              confirmationDialog(context, size,
+                  dialogWidth: size.width * .4,
+                  height: size.height * .015,
+                  alertMessage: 'Are you sure to log out ?',
+                  isLogOut: true);
+            })
           ])),
     );
   }

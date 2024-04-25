@@ -9,7 +9,7 @@ class UserProvider extends ChangeNotifier {
     await Future.delayed(const Duration(seconds: 2));
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => const LoginTypeScreen()),
+      MaterialPageRoute(builder: (context) => LoginTypeScreen()),
     );
   }
 }

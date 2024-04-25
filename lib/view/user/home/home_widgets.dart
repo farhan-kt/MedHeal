@@ -181,14 +181,13 @@ Widget homeUpcomingSchedule(size) {
                         value: 'reshedule'),
                     PopupMenuItem(
                         onTap: () {
-                          confirmationDialog(
-                            context,
-                            size,
-                            dialogWidth: size.width * .6,
-                            dialogheight: size.height * .12,
-                            height: size.height * .02,
-                            headMessage: 'Are You Sure To Cancel Booking ?',
-                          );
+                          confirmationDialog(context, size,
+                              dialogWidth: size.width * .6,
+                              dialogheight: size.height * .16,
+                              height: size.height * .02,
+                              alertMessage:
+                                  'Are You Sure to cancel your Appointment ?',
+                              isLogOut: false);
                         },
                         child: poppinsText(
                             text: 'Cancel Booking', color: Colors.black),

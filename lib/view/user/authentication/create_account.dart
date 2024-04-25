@@ -1,5 +1,8 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:medheal/view/user/authentication/fill_profile.dart';
+import 'package:medheal/widgets/snackbar_widget.dart';
 import 'package:provider/provider.dart';
 import 'package:enefty_icons/enefty_icons.dart';
 import 'package:medheal/widgets/text_widgets.dart';
@@ -104,10 +107,29 @@ class CreateAccountScreen extends StatelessWidget {
                     onPressed: () {
                       if (authProvider.createAccountFormkey.currentState!
                           .validate()) {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => FillProfileScreen()));
+                        try {
+                          if (authProvider.emailController.text == 'medHeal') {
+                            SnackBarWidget()
+                                .showErrorSnackbar(context, 'adminKey');
+                          } else if (authProvider.passwordController.text ==
+                              authProvider.confirmPasswordController.text) {
+                            Navigator.pushAndRemoveUntil(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        const FillProfileScreen()),
+                                (route) => false);
+                            authProvider.clearAccountCreateControllers();
+                            SnackBarWidget().showSuccessSnackbar(
+                                context, 'Account created successfully');
+                          } else {
+                            SnackBarWidget().showErrorSnackbar(
+                                context, 'Passwords do not match');
+                          }
+                        } catch (error) {
+                          SnackBarWidget().showErrorSnackbar(context,
+                              'Email address already exists or is invalid');
+                        }
                       }
                     },
                     child: poppinsText(

@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:medheal/view/user/authentication/fill_profile.dart';
+import 'package:medheal/widgets/admin_bottom_bar.dart';
+import 'package:medheal/widgets/snackbar_widget.dart';
+import 'package:medheal/widgets/user_bottom_bar.dart';
 
 class AuthenticationProvider extends ChangeNotifier {
   String selectedGender = 'Male';
@@ -13,7 +17,7 @@ class AuthenticationProvider extends ChangeNotifier {
   TextEditingController passwordController = TextEditingController();
   TextEditingController confirmPasswordController = TextEditingController();
 
-  TextEditingController signInEmailPasswordController = TextEditingController();
+  TextEditingController signInEmailController = TextEditingController();
   TextEditingController signInPasswordController = TextEditingController();
 
   TextEditingController fullNameController = TextEditingController();
@@ -26,4 +30,35 @@ class AuthenticationProvider extends ChangeNotifier {
   final doctorAddFormKey = GlobalKey<FormState>();
   final createAccountFormkey = GlobalKey<FormState>();
   final fillAccountFormkey = GlobalKey<FormState>();
+
+  void adminKey(context) {
+    if (signInEmailController.text == 'medHeal' &&
+        signInPasswordController.text == '12345') {
+      Navigator.pushAndRemoveUntil(
+          context,
+          MaterialPageRoute(builder: (context) => const AdminBottomBar()),
+          (route) => false);
+    } else {
+      Navigator.pushAndRemoveUntil(
+          context,
+          MaterialPageRoute(builder: (context) => const UserBottomBar()),
+          (route) => false);
+    }
+  }
+
+  void deniedAdminKey() {
+    emailController.text == 'medheal';
+  }
+
+  void clearSignInControllers() {
+    signInEmailController.clear();
+    signInPasswordController.clear();
+  }
+
+  void clearAccountCreateControllers() {
+    userNameController.clear();
+    emailController.clear();
+    passwordController.clear();
+    confirmPasswordController.clear();
+  }
 }

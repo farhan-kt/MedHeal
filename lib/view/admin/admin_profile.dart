@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:medheal/widgets/normal_widgets.dart';
+import 'package:medheal/view/user/authentication/login_type.dart';
 import 'package:medheal/widgets/text_widgets.dart';
+import 'package:medheal/widgets/normal_widgets.dart';
+
+const double circleAvatarRadiusFraction = 0.18;
 
 class AdminProfileScreen extends StatelessWidget {
   const AdminProfileScreen({super.key});
@@ -8,6 +11,7 @@ class AdminProfileScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
+    double circleAvatarRadius = size.shortestSide * circleAvatarRadiusFraction;
     return Scaffold(
       backgroundColor: const Color(0xFFF5F5F5),
       appBar: AppBar(
@@ -20,57 +24,32 @@ class AdminProfileScreen extends StatelessWidget {
       ),
       body: Padding(
           padding: const EdgeInsets.all(10),
-          child: Column(children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Row(
-                  children: [
-                    const CircleAvatar(
-                        radius: 25,
-                        backgroundColor: Color.fromARGB(255, 143, 189, 198),
-                        backgroundImage:
-                            AssetImage('assets/avatar-removebg-preview.png')),
-                    SizedBox(width: size.width * .02),
-                    Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          poppinsText(
-                              text: 'Farhan',
-                              color: const Color(0xFF1D1617),
-                              fontSize: 14,
-                              fontWeight: FontWeight.w600),
-                          poppinsSmallText(
-                            text: '12',
-                            color: Color(0xFF888888),
-                          ),
-                        ]),
-                  ],
-                ),
-                SizedBox(
-                  height: size.height * .041,
-                  width: size.width * .2,
-                  child: ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: const Color(0xFF1995AD),
-                    ),
-                    onPressed: () {},
-                    child: poppinsText(
-                      text: 'Edit',
-                      textAlign: TextAlign.center,
-                      color: Colors.white,
-                      fontSize: 14,
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),
-                ),
-              ],
-            ),
+          child:
+              Column(crossAxisAlignment: CrossAxisAlignment.center, children: [
+            CircleAvatar(
+                radius: circleAvatarRadius,
+                backgroundColor: Color(0xFFA1D6E2),
+                backgroundImage:
+                    const AssetImage('assets/avatar-removebg-preview.png')),
+            SizedBox(height: size.height * .001),
+            poppinsHeadText(
+                text: 'MedHeal', color: const Color(0xFF1995AD), fontSize: 20),
+            poppinsHeadText(
+                textAlign: TextAlign.center,
+                text: 'Kochi',
+                color: const Color(0xFF888888),
+                fontSize: 14),
             SizedBox(height: size.height * .03),
             profileScreenContainer(context,
                 containerHeight: size.height * .25,
-                containerWidth: size.width * .9,
-                isAdmin: false)
+                containerWidth: size.width * .95,
+                isAdmin: false, onTap: () {
+              confirmationDialog(context, size,
+                  dialogWidth: size.width * .4,
+                  height: size.height * .015,
+                  alertMessage: 'Are you sure to log out ?',
+                  isLogOut: true);
+            })
           ])),
     );
   }

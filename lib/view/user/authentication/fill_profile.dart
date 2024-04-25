@@ -27,6 +27,7 @@ class _FillProfileScreenState extends State<FillProfileScreen> {
           text: 'Fill Profile',
         ),
         centerTitle: true,
+        automaticallyImplyLeading: false,
         // actions: [
         //   TextButton(
         //       onPressed: () {

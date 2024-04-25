@@ -1,7 +1,10 @@
 import 'package:enefty_icons/enefty_icons.dart';
 import 'package:flutter/material.dart';
+import 'package:medheal/controller/bottom_bar_provider.dart';
+import 'package:medheal/view/user/authentication/login_type.dart';
 import 'package:medheal/view/user/home/doctor_detail_screen.dart';
 import 'package:medheal/widgets/text_widgets.dart';
+import 'package:provider/provider.dart';
 
 Widget allDoctorsContainer(size, {bool? isAdmin, circleAvatarRadius}) {
   return Container(
@@ -97,7 +100,8 @@ Widget profileContainerListTile(BuildContext context,
 Widget profileScreenContainer(context,
     {required containerHeight,
     required containerWidth,
-    required bool? isAdmin}) {
+    required bool? isAdmin,
+    required onTap}) {
   return Container(
     height: containerHeight,
     width: containerWidth,
@@ -128,7 +132,8 @@ Widget profileScreenContainer(context,
             title: 'Log Out',
             suffixIcon: false,
             icon: EneftyIcons.logout_outline,
-            iconColor: Colors.red),
+            iconColor: Colors.red,
+            onTap: onTap),
       ],
     ),
   );
@@ -189,18 +194,17 @@ Widget doctorDetailsShowingContainer(context, size, {width}) {
   );
 }
 
-confirmationDialog(
-  context,
-  size, {
-  elevatedButtonHeight,
-  elevatedButtonWidth,
-  height,
-  width,
-  dialogheight,
-  dialogWidth,
-  headMessage,
-  subText,
-}) {
+confirmationDialog(context, size,
+    {elevatedButtonHeight,
+    elevatedButtonWidth,
+    height,
+    width,
+    dialogheight,
+    dialogWidth,
+    alertMessage,
+    subText,
+    required bool? isLogOut}) {
+  final bottomProvider = Provider.of<BottomProvider>(context, listen: false);
   return showDialog(
       context: context,
       builder: (context) {
@@ -208,13 +212,16 @@ confirmationDialog(
             title: SizedBox(
           height: dialogheight,
           width: dialogWidth,
-          child: Column(children: [
+          child:
+              Column(crossAxisAlignment: CrossAxisAlignment.center, children: [
             SizedBox(height: height),
-            poppinsHeadText(
-                textAlign: TextAlign.center,
-                fontSize: 14,
-                text: headMessage,
-                color: Colors.black),
+            poppinsText(
+              textAlign: TextAlign.center,
+              fontSize: 17,
+              fontWeight: FontWeight.w500,
+              text: alertMessage,
+              color: Colors.black,
+            ),
             SizedBox(height: height),
             Row(mainAxisAlignment: MainAxisAlignment.end, children: [
               TextButton(
@@ -223,12 +230,27 @@ confirmationDialog(
                   },
                   child:
                       poppinsHeadText(text: 'Back', color: Color(0xFF1995AD))),
-              TextButton(
-                  onPressed: () {},
-                  child: poppinsHeadText(
-                    text: 'Cancel',
-                    color: Colors.red,
-                  )),
+              isLogOut!
+                  ? TextButton(
+                      onPressed: () {
+                        Navigator.pushAndRemoveUntil(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => LoginTypeScreen()),
+                            (route) => false);
+                        bottomProvider.adminOnTap(0);
+                        bottomProvider.userOnTap(0);
+                      },
+                      child: poppinsHeadText(
+                        text: 'Log Out',
+                        color: Colors.red,
+                      ))
+                  : TextButton(
+                      onPressed: () {},
+                      child: poppinsHeadText(
+                        text: 'Confirm',
+                        color: Colors.red,
+                      ))
             ])
           ]),
         ));
