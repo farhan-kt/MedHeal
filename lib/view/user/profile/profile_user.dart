@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:medheal/view/user/authentication/login_type.dart';
 import 'package:medheal/widgets/text_widgets.dart';
 import 'package:medheal/widgets/normal_widgets.dart';
 import 'package:medheal/view/user/profile/profile_widgets.dart';

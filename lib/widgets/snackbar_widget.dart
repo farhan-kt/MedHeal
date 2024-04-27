@@ -10,7 +10,7 @@ class SnackBarWidget {
           fontWeight: FontWeight.w500,
           color: Colors.white),
       duration: const Duration(seconds: 3),
-      backgroundColor: Color.fromARGB(255, 13, 77, 90),
+      backgroundColor: const Color.fromARGB(255, 13, 77, 90),
       behavior: SnackBarBehavior.floating,
     );
     ScaffoldMessenger.of(context).showSnackBar(snackbar);

@@ -23,7 +23,8 @@ Widget allDoctorsContainer(size, {bool? isAdmin, circleAvatarRadius}) {
         CircleAvatar(
           radius: circleAvatarRadius,
           backgroundColor: Colors.white,
-          backgroundImage: AssetImage('assets/avatar-removebg-preview.png'),
+          backgroundImage:
+              const AssetImage('assets/avatar-removebg-preview.png'),
         ),
         Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -228,15 +229,15 @@ confirmationDialog(context, size,
                   onPressed: () {
                     Navigator.pop(context);
                   },
-                  child:
-                      poppinsHeadText(text: 'Back', color: Color(0xFF1995AD))),
+                  child: poppinsHeadText(
+                      text: 'Back', color: const Color(0xFF1995AD))),
               isLogOut!
                   ? TextButton(
                       onPressed: () {
                         Navigator.pushAndRemoveUntil(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => LoginTypeScreen()),
+                                builder: (context) => const LoginTypeScreen()),
                             (route) => false);
                         bottomProvider.adminOnTap(0);
                         bottomProvider.userOnTap(0);

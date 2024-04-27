@@ -27,7 +27,14 @@ class UserHomeScreen extends StatelessWidget {
                 Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
               homeAppBar(size),
               SizedBox(height: size.height * .02),
-              homeUpcomingSchedule(size),
+              ListView.builder(
+                shrinkWrap: true,
+                itemCount: 1,
+                physics: const NeverScrollableScrollPhysics(),
+                itemBuilder: (context, index) {
+                  return homeUpcomingSchedule(size);
+                },
+              ),
               SizedBox(height: size.height * .02),
               poppinsHeadText(
                 text: 'Doctor Speciality',

@@ -22,8 +22,8 @@ poppinsSmallText({text, color, fontWeight, textAlign}) {
   return Text(text,
       // overflow: TextOverflow.ellipsis,
       textAlign: textAlign,
-      style:
-          GoogleFonts.poppins(color: color ?? Color(0xFF101828), fontSize: 12));
+      style: GoogleFonts.poppins(
+          color: color ?? const Color(0xFF101828), fontSize: 12));
 }
 
 interHeadText({text}) {
@@ -37,7 +37,7 @@ interHeadText({text}) {
 interSubText({text, color, fontWeight}) {
   return Text(text,
       style: GoogleFonts.inter(
-          color: color ?? Color(0xFF1A1A1A),
+          color: color ?? const Color(0xFF1A1A1A),
           fontWeight: fontWeight ?? FontWeight.w400,
           fontSize: 14));
 }

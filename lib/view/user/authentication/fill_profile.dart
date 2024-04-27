@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:medheal/view/user/user_widgets.dart';
 import 'package:provider/provider.dart';
 import 'package:enefty_icons/enefty_icons.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -28,21 +27,6 @@ class _FillProfileScreenState extends State<FillProfileScreen> {
         ),
         centerTitle: true,
         automaticallyImplyLeading: false,
-        // actions: [
-        //   TextButton(
-        //       onPressed: () {
-        //         Navigator.pushAndRemoveUntil(
-        //             context,
-        //             MaterialPageRoute(
-        //                 builder: (context) => const UserBottomBar()),
-        //             (route) => false);
-        //       },
-        //       child: poppinsText(
-        //           text: 'Skip',
-        //           fontSize: 16,
-        //           fontWeight: FontWeight.w600,
-        //           color: const Color(0xFF1995AD)))
-        // ],
       ),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 15),

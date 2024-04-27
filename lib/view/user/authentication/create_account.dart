@@ -1,14 +1,12 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
-import 'package:medheal/view/user/authentication/fill_profile.dart';
-import 'package:medheal/widgets/snackbar_widget.dart';
 import 'package:provider/provider.dart';
 import 'package:enefty_icons/enefty_icons.dart';
 import 'package:medheal/widgets/text_widgets.dart';
+import 'package:medheal/widgets/snackbar_widget.dart';
 import 'package:medheal/widgets/textformfield_widget.dart';
 import 'package:medheal/view/user/authentication/sign_in.dart';
 import 'package:medheal/controller/authentication_provider.dart';
+import 'package:medheal/view/user/authentication/fill_profile.dart';
 
 class CreateAccountScreen extends StatelessWidget {
   const CreateAccountScreen({super.key});

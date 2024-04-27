@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:medheal/view/user/authentication/fill_profile.dart';
-import 'package:medheal/widgets/admin_bottom_bar.dart';
-import 'package:medheal/widgets/snackbar_widget.dart';
 import 'package:medheal/widgets/user_bottom_bar.dart';
+import 'package:medheal/widgets/admin_bottom_bar.dart';
 
 class AuthenticationProvider extends ChangeNotifier {
   String selectedGender = 'Male';

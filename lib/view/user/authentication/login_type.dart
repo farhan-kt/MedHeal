@@ -1,11 +1,10 @@
-import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
+import 'package:medheal/view/user/authentication/sign_in.dart';
 import 'package:medheal/view/user/authentication/auth_widgets.dart';
 import 'package:medheal/view/user/authentication/create_account.dart';
-import 'package:medheal/view/user/authentication/sign_in.dart';
 
 class LoginTypeScreen extends StatefulWidget {
-  LoginTypeScreen({super.key});
+  const LoginTypeScreen({super.key});
 
   @override
   State<LoginTypeScreen> createState() => _LoginTypeScreenState();

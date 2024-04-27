@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:medheal/view/user/authentication/login_type.dart';
 import 'package:medheal/widgets/text_widgets.dart';
 import 'package:medheal/widgets/normal_widgets.dart';
 
@@ -28,7 +27,7 @@ class AdminProfileScreen extends StatelessWidget {
               Column(crossAxisAlignment: CrossAxisAlignment.center, children: [
             CircleAvatar(
                 radius: circleAvatarRadius,
-                backgroundColor: Color(0xFFA1D6E2),
+                backgroundColor: const Color(0xFFA1D6E2),
                 backgroundImage:
                     const AssetImage('assets/avatar-removebg-preview.png')),
             SizedBox(height: size.height * .001),
