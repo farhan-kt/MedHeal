@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:enefty_icons/enefty_icons.dart';
 import 'package:medheal/widgets/text_widgets.dart';
+import 'package:medheal/widgets/snackbar_widget.dart';
 import 'package:medheal/controller/admin_provider.dart';
 import 'package:medheal/widgets/textformfield_widget.dart';
+import 'package:medheal/controller/authentication_provider.dart';
 
 class DoctorAddingScreen extends StatelessWidget {
   const DoctorAddingScreen({super.key});
@@ -12,6 +15,8 @@ class DoctorAddingScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     final adminProvider = Provider.of<AdminProvider>(context, listen: false);
+    final authProvider =
+        Provider.of<AuthenticationProvider>(context, listen: false);
     return Scaffold(
       appBar: AppBar(
         title: interHeadText(
@@ -55,7 +60,7 @@ class DoctorAddingScreen extends StatelessWidget {
             SizedBox(
               height: size.height * 1,
               child: Form(
-                  key: adminProvider.doctorAddFormkey,
+                  key: authProvider.doctorAddFormKey,
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -66,6 +71,7 @@ class DoctorAddingScreen extends StatelessWidget {
                             child: CustomTextFormField(
                               controller: adminProvider.doctorNameController,
                               hintText: 'Full Name',
+                              validateMessage: 'Enter Name',
                             ),
                           ),
                         ],
@@ -74,9 +80,14 @@ class DoctorAddingScreen extends StatelessWidget {
                         children: [
                           Expanded(
                             child: CustomTextFormField(
-                              controller: adminProvider.doctorNameController,
+                              controller: adminProvider.doctorAgeController,
                               hintText: 'Age',
                               width: size.width * .2,
+                              validateMessage: 'Enter Age',
+                              inputFormatters: [
+                                FilteringTextInputFormatter.digitsOnly
+                              ],
+                              keyboardType: TextInputType.number,
                             ),
                           ),
                           const SizedBox(width: 20),
@@ -84,8 +95,8 @@ class DoctorAddingScreen extends StatelessWidget {
                             child: dropDownTextFormField(context,
                                 selectedValue: adminProvider.selectedGender,
                                 items: adminProvider.genders,
-                                validatorMessage: 'dsdsfc',
-                                hintText: 'dssfsd',
+                                hintText: 'Gender',
+                                validatorMessage: 'Select a Gender',
                                 onChanged: (String? newValue) {
                               if (newValue != null) {
                                 adminProvider.setSelectedGender(newValue);
@@ -116,10 +127,10 @@ class DoctorAddingScreen extends StatelessWidget {
                         children: [
                           Expanded(
                             child: CustomTextFormField(
-                              controller: adminProvider.aboutDoctorController,
-                              maxLines: 4,
+                              controller: adminProvider.doctorAboutController,
+                              // maxLines: 4,
                               labelText: 'About Doctor',
-                              validateMessage: 'type some thing about doctor',
+                              validateMessage: 'tPlease fill out this field',
                             ),
                           ),
                         ],
@@ -139,7 +150,8 @@ class DoctorAddingScreen extends StatelessWidget {
                         children: [
                           Expanded(
                             child: CustomTextFormField(
-                              controller: adminProvider.aboutDoctorController,
+                              controller:
+                                  adminProvider.doctorAppointmentTimeController,
                               labelText: "inspection start time",
                               validateMessage: 'pick inspection time',
                             ),
@@ -147,7 +159,8 @@ class DoctorAddingScreen extends StatelessWidget {
                           SizedBox(width: size.width * .08),
                           Expanded(
                             child: CustomTextFormField(
-                              controller: adminProvider.aboutDoctorController,
+                              controller: adminProvider
+                                  .doctorAppointmentEndTimeController,
                               labelText: 'inspection end time',
                               validateMessage: 'pick inspection end time',
                             ),
@@ -158,8 +171,13 @@ class DoctorAddingScreen extends StatelessWidget {
                         children: [
                           Expanded(
                             child: CustomTextFormField(
-                              controller: adminProvider.patientsController,
+                              controller:
+                                  adminProvider.doctorPatientsController,
                               labelText: 'Patients',
+                              inputFormatters: [
+                                FilteringTextInputFormatter.digitsOnly
+                              ],
+                              keyboardType: TextInputType.number,
                             ),
                           ),
                           SizedBox(width: size.width * .08),
@@ -167,8 +185,11 @@ class DoctorAddingScreen extends StatelessWidget {
                             child: CustomTextFormField(
                               controller:
                                   adminProvider.doctorExperienceController,
-                              labelText: 'Enter Experience',
-                              validateMessage: '',
+                              labelText: 'Experience',
+                              inputFormatters: [
+                                FilteringTextInputFormatter.digitsOnly
+                              ],
+                              keyboardType: TextInputType.number,
                             ),
                           ),
                           SizedBox(width: size.width * .08),
@@ -177,6 +198,10 @@ class DoctorAddingScreen extends StatelessWidget {
                               controller: adminProvider.doctorRatingController,
                               labelText: 'Rating',
                               validateMessage: 'Enter Rating',
+                              inputFormatters: [
+                                FilteringTextInputFormatter.digitsOnly
+                              ],
+                              keyboardType: TextInputType.number,
                             ),
                           ),
                         ],
@@ -191,8 +216,17 @@ class DoctorAddingScreen extends StatelessWidget {
                   style: ElevatedButton.styleFrom(
                       backgroundColor: const Color(0xFF1995AD)),
                   onPressed: () {
-                    if (adminProvider.doctorAddFormkey.currentState!
-                        .validate()) {}
+                    if (authProvider.doctorAddFormKey.currentState!
+                        .validate()) {
+                      int rating =
+                          int.parse(adminProvider.doctorRatingController.text);
+                      if (rating > 5) {
+                        SnackBarWidget().showErrorSnackbar(
+                            context, 'Rating should be 5 or less');
+                      } else {
+                        adminProvider.clearDoctorAddingControllers();
+                      }
+                    }
                   },
                   child: poppinsText(
                       text: 'Add Doctor',

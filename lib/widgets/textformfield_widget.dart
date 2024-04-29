@@ -8,7 +8,7 @@ class CustomTextFormField extends StatelessWidget {
   final String? hintText;
   final String? labelText;
   final bool? obscureText;
-  final int? maxLines;
+  // final int? maxLines;
   final double? width;
   final String? suffixText;
   final Widget? prefixIcon;
@@ -26,7 +26,7 @@ class CustomTextFormField extends StatelessWidget {
     this.hintText,
     this.labelText,
     this.obscureText,
-    this.maxLines,
+    // this.maxLines,
     this.width,
     this.suffixText,
     this.prefixIcon,
@@ -40,14 +40,22 @@ class CustomTextFormField extends StatelessWidget {
     this.inputFormatters,
   });
 
+  static final RegExp emailRegex = RegExp(
+    r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$',
+  );
   @override
   Widget build(BuildContext context) {
     return TextFormField(
       obscureText: obscureText ?? false,
-      maxLines: maxLines,
       validator: (value) {
         if (value == null || value.isEmpty) {
           return validateMessage ?? 'Enter value';
+        } else if (keyboardType == TextInputType.emailAddress &&
+            !emailRegex.hasMatch(value)) {
+          return 'Enter a valid email address';
+        } else if (keyboardType == TextInputType.datetime &&
+            !emailRegex.hasMatch(value)) {
+          return 'Enter a valid datetime';
         } else {
           return null;
         }
@@ -81,7 +89,6 @@ class CustomTextFormField extends StatelessWidget {
         focusedBorder: focusedBorder,
         focusedErrorBorder: focusErrorBorder,
       ),
-      // autovalidateMode: AutovalidateMode.onUserInteraction,
     );
   }
 }
@@ -90,7 +97,7 @@ Widget dropDownTextFormField(
   context, {
   required String? selectedValue,
   required List<String> items,
-  required String validatorMessage,
+  String? validatorMessage,
   required String hintText,
   required void Function(String?)? onChanged,
 }) {

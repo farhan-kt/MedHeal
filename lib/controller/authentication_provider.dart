@@ -1,15 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:medheal/widgets/snackbar_widget.dart';
 import 'package:medheal/widgets/user_bottom_bar.dart';
 import 'package:medheal/widgets/admin_bottom_bar.dart';
 
 class AuthenticationProvider extends ChangeNotifier {
-  String selectedGender = 'Male';
-  final List<String> genders = ['Male', 'Female'];
-  void setSelectedGender(String value) {
-    selectedGender = value;
-    notifyListeners();
-  }
-
   TextEditingController userNameController = TextEditingController();
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
@@ -26,21 +20,50 @@ class AuthenticationProvider extends ChangeNotifier {
 
   final signInFormkey = GlobalKey<FormState>();
   final doctorAddFormKey = GlobalKey<FormState>();
-  final createAccountFormkey = GlobalKey<FormState>();
   final fillAccountFormkey = GlobalKey<FormState>();
+  final createAccountFormkey = GlobalKey<FormState>();
 
-  void adminKey(context) {
-    if (signInEmailController.text == 'medHeal' &&
-        signInPasswordController.text == '12345') {
-      Navigator.pushAndRemoveUntil(
-          context,
-          MaterialPageRoute(builder: (context) => const AdminBottomBar()),
-          (route) => false);
-    } else {
-      Navigator.pushAndRemoveUntil(
-          context,
-          MaterialPageRoute(builder: (context) => const UserBottomBar()),
-          (route) => false);
+  String selectedGender = 'Male';
+  final List<String> genders = ['Male', 'Female'];
+  void setSelectedGender(String value) {
+    selectedGender = value;
+    notifyListeners();
+  }
+
+  bool signInObscureText = true;
+  void signInObscureChange() {
+    signInObscureText = !signInObscureText;
+    notifyListeners();
+  }
+
+  bool createAccountObscureText = true;
+  void createAccountObscureChange() {
+    createAccountObscureText = !createAccountObscureText;
+    notifyListeners();
+  }
+
+  bool createAccountConfirmObscureText = true;
+  void createAccountConfirmObscureChange() {
+    createAccountConfirmObscureText = !createAccountConfirmObscureText;
+    notifyListeners();
+  }
+
+  adminKey(context, SnackBarWidget snackBarWidget, {String? message}) {
+    try {
+      if (signInEmailController.text == 'medHeal@gmail.com' &&
+          signInPasswordController.text == '12345') {
+        Navigator.pushAndRemoveUntil(
+            context,
+            MaterialPageRoute(builder: (context) => const AdminBottomBar()),
+            (route) => false);
+      } else {
+        Navigator.pushAndRemoveUntil(
+            context,
+            MaterialPageRoute(builder: (context) => const UserBottomBar()),
+            (route) => false);
+      }
+    } catch (error) {
+      snackBarWidget.showErrorSnackbar(context, message!);
     }
   }
 
@@ -53,7 +76,7 @@ class AuthenticationProvider extends ChangeNotifier {
     signInPasswordController.clear();
   }
 
-  void clearAccountCreateControllers() {
+  void clearCreateAccountControllers() {
     userNameController.clear();
     emailController.clear();
     passwordController.clear();

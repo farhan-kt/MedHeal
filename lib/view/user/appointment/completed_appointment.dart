@@ -21,7 +21,7 @@ class CompletedAppointments extends StatelessWidget {
           itemBuilder: (context, index) {
             return Column(
               children: [
-                appointmentBookingContainer(size,
+                appointmentBookingContainer(size, context,
                     circleAvatarRadius: circleAvatarRadius, isUpcoming: false),
                 SizedBox(height: size.height * .02),
               ],

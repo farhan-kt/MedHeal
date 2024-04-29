@@ -67,6 +67,26 @@ Widget allDoctorsContainer(size, {bool? isAdmin, circleAvatarRadius}) {
   );
 }
 
+Widget elevatedButtonWidget(
+    {onPressed,
+    double? buttonHeight,
+    double? buttonWidth,
+    String? buttonText}) {
+  return SizedBox(
+    height: buttonHeight,
+    width: buttonWidth,
+    child: ElevatedButton(
+        style:
+            ElevatedButton.styleFrom(backgroundColor: const Color(0xFF1995AD)),
+        onPressed: onPressed,
+        child: poppinsHeadText(
+          text: buttonText ?? 'Button',
+          textAlign: TextAlign.center,
+          color: Colors.white,
+        )),
+  );
+}
+
 Widget profileContainerListTile(BuildContext context,
     {required String title,
     bool? suffixIcon,

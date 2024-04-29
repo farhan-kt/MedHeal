@@ -1,8 +1,9 @@
 import 'package:enefty_icons/enefty_icons.dart';
 import 'package:flutter/material.dart';
+import 'package:medheal/view/user/profile/favourite_doctors.dart';
 import 'package:medheal/widgets/text_widgets.dart';
 
-Widget userProfileScreenContainer(size,
+Widget userProfileScreenContainer(size, context,
     {required height, required width, sizedBoxWidth}) {
   return Container(
     height: height,
@@ -19,7 +20,12 @@ Widget userProfileScreenContainer(size,
         children: [
           poppinsHeadText(text: 'Settings'),
           GestureDetector(
-            onTap: () {},
+            onTap: () {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => const FavouriteDoctorsScreen()));
+            },
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [

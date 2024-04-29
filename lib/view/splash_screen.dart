@@ -1,14 +1,24 @@
 import 'package:flutter/material.dart';
-import 'package:medheal/controller/user_provider.dart';
 import 'package:provider/provider.dart';
+import 'package:medheal/controller/user_provider.dart';
 
-class SplashScreen extends StatelessWidget {
+class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
+
+  @override
+  State<SplashScreen> createState() => _SplashScreenState();
+}
+
+class _SplashScreenState extends State<SplashScreen> {
+  @override
+  void initState() {
+    super.initState();
+    Provider.of<UserProvider>(context, listen: false).goToLoginType(context);
+  }
 
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-    Provider.of<UserProvider>(context, listen: false).goToLoginType(context);
     return Scaffold(
       body: Center(
         child: Column(

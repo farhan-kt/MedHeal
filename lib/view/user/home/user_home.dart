@@ -25,14 +25,14 @@ class UserHomeScreen extends StatelessWidget {
             scrollDirection: Axis.vertical,
             child:
                 Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-              homeAppBar(size),
+              homeAppBar(size, context),
               SizedBox(height: size.height * .02),
               ListView.builder(
                 shrinkWrap: true,
                 itemCount: 1,
                 physics: const NeverScrollableScrollPhysics(),
                 itemBuilder: (context, index) {
-                  return homeUpcomingSchedule(size);
+                  return homeUpcomingSchedule(size, context);
                 },
               ),
               SizedBox(height: size.height * .02),

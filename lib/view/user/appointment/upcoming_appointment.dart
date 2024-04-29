@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:medheal/view/user/user_widgets.dart';
 import 'package:medheal/view/user/appointment/widgets_appointment.dart';
 
 const double circleAvatarRadiusFraction = 0.1;
@@ -21,8 +22,16 @@ class UpcomingAppointments extends StatelessWidget {
           itemBuilder: (context, index) {
             return Column(
               children: [
-                appointmentBookingContainer(size,
-                    circleAvatarRadius: circleAvatarRadius, isUpcoming: true),
+                appointmentBookingContainer(size, context,
+                    circleAvatarRadius: circleAvatarRadius,
+                    isUpcoming: true, onPressed: () {
+                  showBottomSheet(
+                    context: context,
+                    builder: (context) {
+                      return showBottom(size, context);
+                    },
+                  );
+                }),
                 SizedBox(height: size.height * .02),
               ],
             );

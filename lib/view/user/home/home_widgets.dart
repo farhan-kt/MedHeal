@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:enefty_icons/enefty_icons.dart';
-import 'package:medheal/widgets/normal_widgets.dart';
 import 'package:medheal/widgets/text_widgets.dart';
+import 'package:medheal/view/user/user_widgets.dart';
+import 'package:medheal/widgets/normal_widgets.dart';
+import 'package:medheal/view/user/profile/favourite_doctors.dart';
 
 Widget categoryCircle(context, imagePath, {category, circleRadius}) {
   return GestureDetector(
@@ -88,7 +90,7 @@ Widget homeCategory(context, size, {circleAvatarRadius}) {
   );
 }
 
-Widget homeAppBar(size) {
+Widget homeAppBar(size, context) {
   return Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
     SizedBox(
       child: Row(
@@ -119,13 +121,19 @@ Widget homeAppBar(size) {
             onPressed: () {},
             icon: const Icon(EneftyIcons.notification_bing_outline)),
         IconButton(
-            onPressed: () {}, icon: const Icon(EneftyIcons.heart_outline)),
+            onPressed: () {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => const FavouriteDoctorsScreen()));
+            },
+            icon: const Icon(EneftyIcons.heart_outline)),
       ]),
     )
   ]);
 }
 
-Widget homeUpcomingSchedule(size) {
+Widget homeUpcomingSchedule(size, context) {
   return Container(
     height: size.height * .19,
     width: size.width * .88,
@@ -175,7 +183,14 @@ Widget homeUpcomingSchedule(size) {
                 itemBuilder: (context) {
                   return [
                     PopupMenuItem(
-                        onTap: () {},
+                        onTap: () {
+                          showBottomSheet(
+                            context: context,
+                            builder: (context) {
+                              return showBottom(size, context);
+                            },
+                          );
+                        },
                         child:
                             poppinsText(text: 'Reshedule', color: Colors.black),
                         value: 'reshedule'),

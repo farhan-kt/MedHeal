@@ -22,9 +22,10 @@ class AdminProfileScreen extends StatelessWidget {
             fontWeight: FontWeight.w600),
       ),
       body: Padding(
-          padding: const EdgeInsets.all(10),
-          child:
-              Column(crossAxisAlignment: CrossAxisAlignment.center, children: [
+        padding: const EdgeInsets.all(10),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
             CircleAvatar(
                 radius: circleAvatarRadius,
                 backgroundColor: const Color(0xFFA1D6E2),
@@ -49,7 +50,9 @@ class AdminProfileScreen extends StatelessWidget {
                   alertMessage: 'Are you sure to log out ?',
                   isLogOut: true);
             })
-          ])),
+          ],
+        ),
+      ),
     );
   }
 }

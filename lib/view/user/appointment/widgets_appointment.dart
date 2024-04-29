@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:medheal/widgets/normal_widgets.dart';
 import 'package:medheal/widgets/text_widgets.dart';
 
-Widget appointmentBookingContainer(size,
-    {circleAvatarRadius, bool? isUpcoming}) {
+Widget appointmentBookingContainer(size, context,
+    {circleAvatarRadius, bool? isUpcoming, onPressed}) {
   return Container(
     // height: size.height * .248,
     // width: size.width * .93,
@@ -75,7 +76,15 @@ Widget appointmentBookingContainer(size,
                     side: MaterialStateProperty.all(
                         const BorderSide(color: Color(0xFFED3443), width: 1.2)),
                   ),
-                  onPressed: () {},
+                  onPressed: () {
+                    confirmationDialog(context, size,
+                        dialogWidth: size.width * .6,
+                        dialogheight: size.height * .16,
+                        height: size.height * .02,
+                        alertMessage:
+                            'Are You Sure to cancel your Appointment ?',
+                        isLogOut: false);
+                  },
                   child: poppinsText(
                     text: 'Cancel Booking',
                     color: const Color(0xFFED3443),
@@ -89,7 +98,7 @@ Widget appointmentBookingContainer(size,
                   style: ElevatedButton.styleFrom(
                     backgroundColor: const Color(0xFF1995AD),
                   ),
-                  onPressed: () {},
+                  onPressed: onPressed,
                   child: poppinsText(
                     text: isUpcoming ? 'Reschedule' : 'Book Again',
                     textAlign: TextAlign.center,

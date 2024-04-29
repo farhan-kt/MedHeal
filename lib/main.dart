@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:medheal/view/splash_screen.dart';
+import 'package:provider/provider.dart';
 import 'package:medheal/controller/user_provider.dart';
 import 'package:medheal/controller/admin_provider.dart';
 import 'package:medheal/controller/bottom_bar_provider.dart';
 import 'package:medheal/controller/authentication_provider.dart';
-import 'package:medheal/view/user/authentication/login_type.dart';
 
 void main() {
   runApp(const MyApp());
@@ -25,8 +24,7 @@ class MyApp extends StatelessWidget {
       ],
       child: const MaterialApp(
         debugShowCheckedModeBanner: false,
-        // home: SplashScreen(),
-        home: LoginTypeScreen(),
+        home: SplashScreen(),
       ),
     );
   }

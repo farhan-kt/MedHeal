@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:medheal/view/user/authentication/auth_widgets.dart';
+import 'package:medheal/widgets/normal_widgets.dart';
 import 'package:provider/provider.dart';
 import 'package:enefty_icons/enefty_icons.dart';
 import 'package:medheal/widgets/text_widgets.dart';
 import 'package:medheal/widgets/snackbar_widget.dart';
 import '../../../controller/authentication_provider.dart';
 import 'package:medheal/widgets/textformfield_widget.dart';
+import 'package:medheal/view/user/authentication/create_account.dart';
 
 class SignInScreen extends StatelessWidget {
   const SignInScreen({super.key});
@@ -28,6 +31,7 @@ class SignInScreen extends StatelessWidget {
                 children: [
                   IconButton(
                       onPressed: () {
+                        authProvider.clearSignInControllers();
                         Navigator.pop(context);
                       },
                       icon: const Icon(
@@ -35,7 +39,14 @@ class SignInScreen extends StatelessWidget {
                         size: 25,
                       )),
                   TextButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        authProvider.clearSignInControllers();
+                        Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) =>
+                                    const CreateAccountScreen()));
+                      },
                       child: poppinsText(
                           text: 'Create Account',
                           fontSize: 19,
@@ -64,12 +75,23 @@ class SignInScreen extends StatelessWidget {
                       CustomTextFormField(
                         controller: authProvider.signInEmailController,
                         hintText: 'Email',
+                        keyboardType: TextInputType.emailAddress,
                       ),
                       const SizedBox(height: 5),
-                      CustomTextFormField(
-                        controller: authProvider.signInPasswordController,
-                        hintText: 'Password',
-                        suffixIcon: const Icon(EneftyIcons.eye_outline),
+                      Consumer<AuthenticationProvider>(
+                        builder: (context, value, child) => CustomTextFormField(
+                          controller: value.signInPasswordController,
+                          hintText: 'Password',
+                          obscureText: value.signInObscureText,
+                          suffixIcon: IconButton(
+                            onPressed: () {
+                              value.signInObscureChange();
+                            },
+                            icon: Icon(value.signInObscureText
+                                ? EneftyIcons.eye_slash_outline
+                                : EneftyIcons.eye_outline),
+                          ),
+                        ),
                       ),
                       TextButton(
                           onPressed: () {},
@@ -83,32 +105,17 @@ class SignInScreen extends StatelessWidget {
                 ),
               ),
               SizedBox(height: size.height * .02),
-              SizedBox(
-                width: size.width * .9,
-                height: size.height * .058,
-                child: ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                        backgroundColor: const Color(0xFF1995AD)),
-                    onPressed: () {
-                      if (authProvider.signInFormkey.currentState!.validate()) {
-                        try {
-                          authProvider.adminKey(context);
-                          SnackBarWidget().showSuccessSnackbar(
-                              context, 'Sign in successfully');
-                          authProvider.clearSignInControllers();
-                        } catch (error) {
-                          SnackBarWidget().showErrorSnackbar(
-                              context, 'Incorrect email or password');
-                        }
-                      }
-                    },
-                    child: poppinsText(
-                        text: 'Sign In',
-                        textAlign: TextAlign.center,
-                        fontSize: 16,
-                        color: Colors.white,
-                        fontWeight: FontWeight.w600)),
-              ),
+              elevatedButtonWidget(
+                  buttonHeight: size.height * .058,
+                  buttonWidth: size.width * .9,
+                  buttonText: 'Sign In',
+                  onPressed: () {
+                    if (authProvider.signInFormkey.currentState!.validate()) {
+                      authProvider.adminKey(context, SnackBarWidget(),
+                          message: 'Incorrect email or password');
+                      authProvider.clearSignInControllers();
+                    }
+                  }),
               SizedBox(height: size.height * .04),
               Row(children: [
                 const Flexible(child: Divider(thickness: .8)),
@@ -119,42 +126,7 @@ class SignInScreen extends StatelessWidget {
                 const Flexible(child: Divider(thickness: 1))
               ]),
               SizedBox(height: size.height * .03),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Container(
-                    height: size.height * .065,
-                    width: size.width * .2,
-                    decoration: BoxDecoration(
-                        border: Border.all(
-                            color: const Color.fromARGB(255, 199, 212, 226)),
-                        borderRadius: BorderRadius.circular(18)),
-                    child: Transform.scale(
-                      scale: 0.5,
-                      child: Image.network(
-                        'https://cdn.iconscout.com/icon/free/png-256/free-google-1772223-1507807.png',
-                        fit: BoxFit.contain,
-                      ),
-                    ),
-                  ),
-                  SizedBox(width: size.width * .1),
-                  Container(
-                    height: size.height * .065,
-                    width: size.width * .2,
-                    decoration: BoxDecoration(
-                        border: Border.all(
-                            color: const Color.fromARGB(255, 199, 212, 226)),
-                        borderRadius: BorderRadius.circular(18)),
-                    child: Transform.scale(
-                      scale: 0.55,
-                      child: Image.network(
-                        'https://cdn-icons-png.freepik.com/256/100/100313.png',
-                        fit: BoxFit.contain,
-                      ),
-                    ),
-                  ),
-                ],
-              )
+              authenticationBoxRow(size),
             ],
           ),
         ),
