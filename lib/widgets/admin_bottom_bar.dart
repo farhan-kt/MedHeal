@@ -1,8 +1,8 @@
-import 'package:enefty_icons/enefty_icons.dart';
 import 'package:flutter/material.dart';
-import 'package:medheal/controller/bottom_bar_provider.dart';
-import 'package:medheal/widgets/text_widgets.dart';
 import 'package:provider/provider.dart';
+import 'package:enefty_icons/enefty_icons.dart';
+import 'package:medheal/widgets/text_widgets.dart';
+import 'package:medheal/controller/bottom_bar_provider.dart';
 
 class AdminBottomBar extends StatelessWidget {
   const AdminBottomBar({super.key});
@@ -18,8 +18,9 @@ class AdminBottomBar extends StatelessWidget {
       bottomNavigationBar: Padding(
         padding: const EdgeInsets.only(bottom: 15, left: 10, right: 10),
         child: Container(
-          decoration:
-              const BoxDecoration(color: Color.fromARGB(255, 238, 240, 242)),
+          decoration: const BoxDecoration(
+            color: Color.fromARGB(255, 238, 240, 242),
+          ),
           height: size.height * .09,
           child: ClipRRect(
             borderRadius: BorderRadius.circular(20),

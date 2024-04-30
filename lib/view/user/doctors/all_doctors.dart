@@ -36,17 +36,20 @@ class AllDoctorsScreen extends StatelessWidget {
             ),
           )),
       body: Padding(
-          padding: const EdgeInsets.all(10),
-          child: ListView.builder(
-            itemCount: 5,
-            itemBuilder: (context, index) {
-              return Column(children: [
-                allDoctorsContainer(size,
+        padding: const EdgeInsets.all(10),
+        child: ListView.builder(
+          itemCount: 5,
+          itemBuilder: (context, index) {
+            return Column(
+              children: [
+                allDoctorsContainer(size, context,
                     isAdmin: false, circleAvatarRadius: circleAvatarRadius),
                 SizedBox(height: size.height * .02),
-              ]);
-            },
-          )),
+              ],
+            );
+          },
+        ),
+      ),
     );
   }
 }

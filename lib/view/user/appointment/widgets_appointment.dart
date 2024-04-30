@@ -2,11 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:medheal/widgets/normal_widgets.dart';
 import 'package:medheal/widgets/text_widgets.dart';
 
-Widget appointmentBookingContainer(size, context,
+Widget appointmentScheduledContainer(Size size, context,
     {circleAvatarRadius, bool? isUpcoming, onPressed}) {
   return Container(
-    // height: size.height * .248,
-    // width: size.width * .93,
     decoration: BoxDecoration(
       color: const Color(0xFFFFFFFF),
       border: Border.all(color: const Color(0xFFFFFFFF)),
@@ -36,11 +34,10 @@ Widget appointmentBookingContainer(size, context,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    poppinsText(
+                    poppinsHeadText(
                       text: 'Dr. Jennie Thorn',
                       color: const Color(0xFF1D1617),
                       fontSize: 14,
-                      fontWeight: FontWeight.w600,
                     ),
                     poppinsSmallText(
                       text: 'Dentist',
@@ -74,7 +71,8 @@ Widget appointmentBookingContainer(size, context,
                 OutlinedButton(
                   style: ButtonStyle(
                     side: MaterialStateProperty.all(
-                        const BorderSide(color: Color(0xFFED3443), width: 1.2)),
+                      const BorderSide(color: Color(0xFFED3443), width: 1.2),
+                    ),
                   ),
                   onPressed: () {
                     confirmationDialog(context, size,
@@ -83,31 +81,19 @@ Widget appointmentBookingContainer(size, context,
                         height: size.height * .02,
                         alertMessage:
                             'Are You Sure to cancel your Appointment ?',
-                        isLogOut: false);
+                        confirmText: 'Confirm',
+                        onPressedConfirm: () {});
                   },
-                  child: poppinsText(
+                  child: poppinsHeadText(
                     text: 'Cancel Booking',
                     color: const Color(0xFFED3443),
-                    fontWeight: FontWeight.w600,
                     fontSize: 13,
                   ),
                 ),
-              SizedBox(
-                width: size.width * (isUpcoming ? .4 : .8),
-                child: ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color(0xFF1995AD),
-                  ),
-                  onPressed: onPressed,
-                  child: poppinsText(
-                    text: isUpcoming ? 'Reschedule' : 'Book Again',
-                    textAlign: TextAlign.center,
-                    color: Colors.white,
-                    fontSize: 14,
-                    fontWeight: FontWeight.w600,
-                  ),
-                ),
-              ),
+              elevatedButtonWidget(
+                  buttonWidth: size.width * (isUpcoming ? .4 : .8),
+                  buttonText: isUpcoming ? 'Reschedule' : 'Book Again',
+                  onPressed: onPressed)
             ],
           ),
         ],

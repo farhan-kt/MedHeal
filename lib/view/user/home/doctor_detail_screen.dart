@@ -15,17 +15,29 @@ class DoctorDetailScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     final userProvider = Provider.of<UserProvider>(context, listen: false);
+
+    List<String> times = [
+      '09:00 AM',
+      '10:00 AM',
+      '11:00 AM',
+      '12:00 PM',
+      '02:00 PM',
+      '03:00 PM',
+      '04:00 PM',
+      '05:00 PM',
+    ];
     return Scaffold(
       backgroundColor: const Color(0xFFFFFFFF),
       appBar: AppBar(
         leading: IconButton(
-            onPressed: () {
-              Navigator.pop(context);
-            },
-            icon: const Icon(
-              Icons.arrow_back_ios,
-              color: Colors.black,
-            )),
+          onPressed: () {
+            Navigator.pop(context);
+          },
+          icon: const Icon(
+            Icons.arrow_back_ios,
+            color: Colors.black,
+          ),
+        ),
         backgroundColor: const Color(0xFFFFFFFF),
         title: poppinsText(
             text: 'Dr. Jennie Thorn',
@@ -35,7 +47,9 @@ class DoctorDetailScreen extends StatelessWidget {
         centerTitle: true,
         actions: [
           IconButton(
-              onPressed: () {}, icon: const Icon(EneftyIcons.heart_outline))
+            onPressed: () {},
+            icon: const Icon(EneftyIcons.heart_outline),
+          )
         ],
       ),
       body: Padding(
@@ -49,25 +63,7 @@ class DoctorDetailScreen extends StatelessWidget {
               doctorDetailsShowingContainer(context, size,
                   width: size.width * .915),
               SizedBox(height: size.height * .03),
-              Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
-                doctorExperienceContainer(
-                    height: size.height * .07,
-                    width: size.width * .27,
-                    valueText: '180Cm',
-                    headText: 'Patient'),
-                SizedBox(width: size.width * .04),
-                doctorExperienceContainer(
-                    height: size.height * .07,
-                    width: size.width * .27,
-                    valueText: '10Y +',
-                    headText: 'Experience'),
-                SizedBox(width: size.width * .04),
-                doctorExperienceContainer(
-                    height: size.height * .07,
-                    width: size.width * .27,
-                    valueText: '180Cm',
-                    headText: 'Rating'),
-              ]),
+              doctorDetailsExperienceRow(size),
               SizedBox(height: size.height * .03),
               poppinsHeadText(text: 'About me'),
               SizedBox(height: size.height * .02),
@@ -88,10 +84,13 @@ class DoctorDetailScreen extends StatelessWidget {
                   ),
                   SizedBox(width: size.width * .02),
                   poppinsSmallText(
-                      text: 'Monday-Friday, ', color: const Color(0xFF344154)),
+                    text: 'Monday-Friday, ',
+                    color: const Color(0xFF344154),
+                  ),
                   poppinsSmallText(
-                      text: '08:00 AM - 21:00 PM',
-                      color: const Color(0xFF344154)),
+                    text: '08:00 AM - 21:00 PM',
+                    color: const Color(0xFF344154),
+                  ),
                 ],
               ),
               SizedBox(height: size.height * .02),
@@ -99,7 +98,7 @@ class DoctorDetailScreen extends StatelessWidget {
               SizedBox(height: size.height * .02),
               CustomTextFormField(
                 controller: userProvider.userBookingDateController,
-                hintText: 'Date of Birth',
+                hintText: 'Appointment Date',
                 suffixIcon: const Icon(EneftyIcons.calendar_2_outline),
               ),
               SizedBox(height: size.height * .02),
@@ -109,47 +108,45 @@ class DoctorDetailScreen extends StatelessWidget {
               SizedBox(height: size.height * .02),
               SizedBox(
                 height: size.height * .1,
-                child: Wrap(
-                  spacing: size.width * .04,
-                  runSpacing: size.height * .01,
-                  children: [
-                    doctorDetailsTimeButton(onPressed: () {}, time: '09:00 AM'),
-                    doctorDetailsTimeButton(onPressed: () {}, time: '10:00 AM'),
-                    doctorDetailsTimeButton(onPressed: () {}, time: '11:00 AM'),
-                    doctorDetailsTimeButton(onPressed: () {}, time: '12:00 PM'),
-                    doctorDetailsTimeButton(onPressed: () {}, time: '02:00 PM'),
-                    doctorDetailsTimeButton(onPressed: () {}, time: '03:00 PM'),
-                  ],
+                child: GridView.builder(
+                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                    childAspectRatio: 1 / .4,
+                    crossAxisCount: 3,
+                    crossAxisSpacing: size.width * 0.02,
+                    mainAxisSpacing: size.height * 0.01,
+                  ),
+                  itemCount: 8,
+                  itemBuilder: (BuildContext context, int index) {
+                    String time = times[index];
+                    return SizedBox(
+                      height: size.height * .0007,
+                      width: size.width * .5,
+                      child: doctorDetailsTimeButton(
+                        onPressed: () {},
+                        time: time,
+                      ),
+                    );
+                  },
                 ),
               ),
               SizedBox(height: size.height * .04),
-              SizedBox(
-                width: size.width * .9,
-                height: size.height * .06,
-                child: ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: const Color(0xFF1995AD),
-                    ),
-                    onPressed: () {
-                      successDialogBox(context, size,
-                          isAppointment: true,
-                          headMessage: 'Your Appointment Has Been Confirmed',
-                          elevatedButtonHeight: size.height * .05,
-                          elevatedButtonWidth: size.width * .7,
-                          height: size.height * .02,
-                          width: size.width * .8,
-                          dialogheight: size.height * .45,
-                          dialogWidth: size.width * .2,
-                          subText:
-                              'Your appointment with Dr. Jennie Thorn on Wednesday, August 17, 2023 at 11:00 AM  ');
-                    },
-                    child: poppinsText(
-                        text: 'BOOK APPOINTMENT',
-                        textAlign: TextAlign.center,
-                        color: Colors.white,
-                        fontSize: 16,
-                        fontWeight: FontWeight.w600)),
-              ),
+              elevatedButtonWidget(
+                  buttonHeight: size.height * .06,
+                  buttonWidth: size.width * .9,
+                  buttonText: 'BOOK APPOINTMENT',
+                  onPressed: () {
+                    successDialogBox(context, size,
+                        isAppointment: true,
+                        headMessage: 'Your Appointment Has Been Confirmed',
+                        elevatedButtonHeight: size.height * .05,
+                        elevatedButtonWidth: size.width * .7,
+                        height: size.height * .02,
+                        width: size.width * .8,
+                        dialogheight: size.height * .45,
+                        dialogWidth: size.width * .2,
+                        subText:
+                            'Your appointment with Dr. Jennie Thorn on Wednesday, August 17, 2023 at 11:00 AM  ');
+                  }),
               SizedBox(height: size.height * .02),
             ],
           ),

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:medheal/view/splash_screen.dart';
 import 'package:provider/provider.dart';
+import 'package:medheal/view/splash_screen.dart';
 import 'package:medheal/controller/user_provider.dart';
 import 'package:medheal/controller/admin_provider.dart';
 import 'package:medheal/controller/bottom_bar_provider.dart';

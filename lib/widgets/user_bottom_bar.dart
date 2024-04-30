@@ -1,8 +1,8 @@
-import 'package:enefty_icons/enefty_icons.dart';
 import 'package:flutter/material.dart';
-import 'package:medheal/controller/bottom_bar_provider.dart';
-import 'package:medheal/widgets/text_widgets.dart';
 import 'package:provider/provider.dart';
+import 'package:enefty_icons/enefty_icons.dart';
+import 'package:medheal/widgets/text_widgets.dart';
+import 'package:medheal/controller/bottom_bar_provider.dart';
 
 class UserBottomBar extends StatelessWidget {
   const UserBottomBar({super.key});

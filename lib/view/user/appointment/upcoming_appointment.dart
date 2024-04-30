@@ -22,7 +22,7 @@ class UpcomingAppointments extends StatelessWidget {
           itemBuilder: (context, index) {
             return Column(
               children: [
-                appointmentBookingContainer(size, context,
+                appointmentScheduledContainer(size, context,
                     circleAvatarRadius: circleAvatarRadius,
                     isUpcoming: true, onPressed: () {
                   showBottomSheet(

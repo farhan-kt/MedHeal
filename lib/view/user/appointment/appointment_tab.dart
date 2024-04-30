@@ -2,10 +2,10 @@
 
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:medheal/view/user/appointment/cancelled_appointment.dart';
-import 'package:medheal/view/user/appointment/completed_appointment.dart';
-import 'package:medheal/view/user/appointment/upcoming_appointment.dart';
 import 'package:medheal/widgets/text_widgets.dart';
+import 'package:medheal/view/user/appointment/upcoming_appointment.dart';
+import 'package:medheal/view/user/appointment/completed_appointment.dart';
+import 'package:medheal/view/user/appointment/cancelled_appointment.dart';
 
 class AppointmentScreen extends StatelessWidget {
   const AppointmentScreen({super.key});
@@ -17,16 +17,17 @@ class AppointmentScreen extends StatelessWidget {
       child: Scaffold(
         appBar: AppBar(
           backgroundColor: const Color(0xFFFFFFFF),
-          title: poppinsText(
-              text: 'My Appointment',
-              color: const Color(0xFF101828),
-              fontSize: 20,
-              fontWeight: FontWeight.w600),
+          title: poppinsHeadText(
+            text: 'My Appointment',
+            fontSize: 20,
+          ),
           bottom: TabBar(
               labelColor: const Color(0xFF1995AD),
               unselectedLabelColor: const Color(0xFF778293),
               labelStyle: GoogleFonts.poppins(
-                  fontSize: 14, color: const Color(0xffc778293)),
+                fontSize: 14,
+                color: const Color(0xffc778293),
+              ),
               indicatorColor: const Color(0xFF1995AD),
               indicatorWeight: 3,
               indicatorSize: TabBarIndicatorSize.tab,
@@ -42,11 +43,13 @@ class AppointmentScreen extends StatelessWidget {
                 ),
               ]),
         ),
-        body: const TabBarView(children: [
-          UpcomingAppointments(),
-          CompletedAppointments(),
-          CancelledAppointments()
-        ]),
+        body: const TabBarView(
+          children: [
+            UpcomingAppointments(),
+            CompletedAppointments(),
+            CancelledAppointments()
+          ],
+        ),
       ),
     );
   }

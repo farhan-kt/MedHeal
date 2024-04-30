@@ -13,7 +13,7 @@ class AuthenticationProvider extends ChangeNotifier {
   TextEditingController signInPasswordController = TextEditingController();
 
   TextEditingController fullNameController = TextEditingController();
-  TextEditingController dobController = TextEditingController();
+  TextEditingController ageController = TextEditingController();
   TextEditingController profileEmailController = TextEditingController();
   TextEditingController phoneNumberController = TextEditingController();
   TextEditingController genderController = TextEditingController();
@@ -81,5 +81,13 @@ class AuthenticationProvider extends ChangeNotifier {
     emailController.clear();
     passwordController.clear();
     confirmPasswordController.clear();
+  }
+
+  void clearFillProfileControllers() {
+    fullNameController.clear();
+    ageController.clear();
+    profileEmailController.clear();
+    phoneNumberController.clear();
+    genderController.clear();
   }
 }

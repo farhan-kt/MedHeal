@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:medheal/view/user/authentication/auth_widgets.dart';
-import 'package:medheal/widgets/normal_widgets.dart';
 import 'package:provider/provider.dart';
-import 'package:enefty_icons/enefty_icons.dart';
 import 'package:medheal/widgets/text_widgets.dart';
+import 'package:medheal/widgets/normal_widgets.dart';
 import 'package:medheal/widgets/snackbar_widget.dart';
 import '../../../controller/authentication_provider.dart';
-import 'package:medheal/widgets/textformfield_widget.dart';
+import 'package:medheal/view/user/authentication/auth_widgets.dart';
 import 'package:medheal/view/user/authentication/create_account.dart';
 
 class SignInScreen extends StatelessWidget {
@@ -39,19 +37,21 @@ class SignInScreen extends StatelessWidget {
                         size: 25,
                       )),
                   TextButton(
-                      onPressed: () {
-                        authProvider.clearSignInControllers();
-                        Navigator.pushReplacement(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) =>
-                                    const CreateAccountScreen()));
-                      },
-                      child: poppinsText(
-                          text: 'Create Account',
-                          fontSize: 19,
-                          fontWeight: FontWeight.w600,
-                          color: const Color(0xFF1995AD)))
+                    onPressed: () {
+                      authProvider.clearSignInControllers();
+                      Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const CreateAccountScreen(),
+                        ),
+                      );
+                    },
+                    child: poppinsHeadText(
+                      text: 'Create Account',
+                      fontSize: 19,
+                      color: const Color(0xFF1995AD),
+                    ),
+                  )
                 ],
               ),
               SizedBox(height: size.height * .04),
@@ -68,40 +68,7 @@ class SignInScreen extends StatelessWidget {
                 height: size.height * .27,
                 child: Form(
                   key: authProvider.signInFormkey,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.end,
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      CustomTextFormField(
-                        controller: authProvider.signInEmailController,
-                        hintText: 'Email',
-                        keyboardType: TextInputType.emailAddress,
-                      ),
-                      const SizedBox(height: 5),
-                      Consumer<AuthenticationProvider>(
-                        builder: (context, value, child) => CustomTextFormField(
-                          controller: value.signInPasswordController,
-                          hintText: 'Password',
-                          obscureText: value.signInObscureText,
-                          suffixIcon: IconButton(
-                            onPressed: () {
-                              value.signInObscureChange();
-                            },
-                            icon: Icon(value.signInObscureText
-                                ? EneftyIcons.eye_slash_outline
-                                : EneftyIcons.eye_outline),
-                          ),
-                        ),
-                      ),
-                      TextButton(
-                          onPressed: () {},
-                          child: poppinsText(
-                              text: 'Forgot the password?',
-                              fontSize: 14,
-                              fontWeight: FontWeight.w600,
-                              color: const Color(0xFF1995AD))),
-                    ],
-                  ),
+                  child: signInTextFormField(authProvider),
                 ),
               ),
               SizedBox(height: size.height * .02),
@@ -118,12 +85,16 @@ class SignInScreen extends StatelessWidget {
                   }),
               SizedBox(height: size.height * .04),
               Row(children: [
-                const Flexible(child: Divider(thickness: .8)),
+                const Flexible(
+                  child: Divider(thickness: .8),
+                ),
                 poppinsText(
                     text: '  or continue with  ',
                     fontWeight: FontWeight.w400,
                     fontSize: 14),
-                const Flexible(child: Divider(thickness: 1))
+                const Flexible(
+                  child: Divider(thickness: 1),
+                )
               ]),
               SizedBox(height: size.height * .03),
               authenticationBoxRow(size),

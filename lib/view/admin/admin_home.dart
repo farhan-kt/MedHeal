@@ -37,21 +37,17 @@ class AdminHomeScreen extends StatelessWidget {
           )),
       body: Padding(
           padding: const EdgeInsets.all(10),
-          child: SingleChildScrollView(
-            scrollDirection: Axis.vertical,
-            child: Column(children: [
-              allDoctorsContainer(size,
-                  isAdmin: true, circleAvatarRadius: circleAvatarRadius),
-              SizedBox(height: size.height * .02),
-              allDoctorsContainer(size,
-                  isAdmin: true, circleAvatarRadius: circleAvatarRadius),
-              SizedBox(height: size.height * .02),
-              allDoctorsContainer(size,
-                  isAdmin: true, circleAvatarRadius: circleAvatarRadius),
-              SizedBox(height: size.height * .02),
-              allDoctorsContainer(size,
-                  isAdmin: true, circleAvatarRadius: circleAvatarRadius),
-            ]),
+          child: ListView.builder(
+            itemCount: 5,
+            itemBuilder: (context, index) {
+              return Column(
+                children: [
+                  allDoctorsContainer(size, context,
+                      isAdmin: true, circleAvatarRadius: circleAvatarRadius),
+                  SizedBox(height: size.height * .02),
+                ],
+              );
+            },
           )),
     );
   }

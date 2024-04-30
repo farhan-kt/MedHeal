@@ -66,17 +66,16 @@ Widget dropDown(AuthenticationProvider authProvider, context) {
   });
 }
 
-Widget loginTypePoppinsText({text}) {
+Widget loginTypeTexts({text}) {
   return Text(text,
       textAlign: TextAlign.center,
       style: GoogleFonts.poppins(color: Colors.white, fontSize: 15));
 }
 
-Widget loginTypeOutlinedButton(size,
-    {text, double? width, double? height, onPressed}) {
+Widget loginTypeOutlinedButton(Size size, {text, onPressed}) {
   return SizedBox(
-    width: width,
-    height: height,
+    width: size.width * 0.75,
+    height: size.height * .063,
     child: OutlinedButton(
       style: OutlinedButton.styleFrom(
         side: const BorderSide(color: Colors.white, width: 1.8),
@@ -103,7 +102,7 @@ Widget profileFillFields(size, AuthenticationProvider authProvider) {
       hintText: 'Full Name',
     ),
     CustomTextFormField(
-      controller: authProvider.dobController,
+      controller: authProvider.ageController,
       hintText: 'Age',
       suffixIcon: const Icon(EneftyIcons.calendar_2_outline),
     ),
@@ -206,6 +205,92 @@ Widget authenticationBoxRow(Size size) {
           ),
         ),
       ),
+    ],
+  );
+}
+
+Widget createAccountTextFormFields(
+  AuthenticationProvider authProvider,
+) {
+  return Column(
+    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+    children: [
+      CustomTextFormField(
+        controller: authProvider.userNameController,
+        hintText: 'User Name',
+        validateMessage: 'Enter User Name',
+      ),
+      CustomTextFormField(
+        controller: authProvider.emailController,
+        hintText: 'Email',
+        validateMessage: 'Enter Email',
+        keyboardType: TextInputType.emailAddress,
+      ),
+      CustomTextFormField(
+        controller: authProvider.passwordController,
+        hintText: 'Password',
+        obscureText: authProvider.createAccountObscureText,
+        suffixIcon: IconButton(
+          onPressed: () {
+            authProvider.createAccountObscureChange();
+          },
+          icon: Icon(authProvider.createAccountObscureText
+              ? EneftyIcons.eye_slash_outline
+              : EneftyIcons.eye_outline),
+        ),
+        validateMessage: 'Enter password',
+      ),
+      CustomTextFormField(
+        controller: authProvider.confirmPasswordController,
+        hintText: 'Confirm Password',
+        obscureText: authProvider.createAccountConfirmObscureText,
+        suffixIcon: IconButton(
+          onPressed: () {
+            authProvider.createAccountConfirmObscureChange();
+          },
+          icon: Icon(authProvider.createAccountConfirmObscureText
+              ? EneftyIcons.eye_slash_outline
+              : EneftyIcons.eye_outline),
+        ),
+        validateMessage: 'Renter Your Password',
+      ),
+    ],
+  );
+}
+
+Widget signInTextFormField(AuthenticationProvider authProvider) {
+  return Column(
+    crossAxisAlignment: CrossAxisAlignment.end,
+    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+    children: [
+      CustomTextFormField(
+        controller: authProvider.signInEmailController,
+        hintText: 'Email',
+        keyboardType: TextInputType.emailAddress,
+      ),
+      const SizedBox(height: 5),
+      Consumer<AuthenticationProvider>(
+        builder: (context, value, child) => CustomTextFormField(
+          controller: value.signInPasswordController,
+          hintText: 'Password',
+          obscureText: value.signInObscureText,
+          suffixIcon: IconButton(
+            onPressed: () {
+              value.signInObscureChange();
+            },
+            icon: Icon(value.signInObscureText
+                ? EneftyIcons.eye_slash_outline
+                : EneftyIcons.eye_outline),
+          ),
+        ),
+      ),
+      TextButton(
+          onPressed: () {},
+          child: poppinsText(
+              text: 'Forgot the password?',
+              fontSize: 14,
+              fontWeight: FontWeight.w600,
+              color: const Color(0xFF1995AD))),
     ],
   );
 }

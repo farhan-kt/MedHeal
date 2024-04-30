@@ -32,7 +32,7 @@ class UserHomeScreen extends StatelessWidget {
                 itemCount: 1,
                 physics: const NeverScrollableScrollPhysics(),
                 itemBuilder: (context, index) {
-                  return homeUpcomingSchedule(size, context);
+                  return homeUpcomingAppointment(size, context);
                 },
               ),
               SizedBox(height: size.height * .02),
@@ -46,13 +46,15 @@ class UserHomeScreen extends StatelessWidget {
               Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
                 poppinsHeadText(text: 'Top Doctors'),
                 TextButton(
-                    onPressed: () {
-                      bottomProvider.userOnTap(2);
-                    },
-                    child: poppinsHeadText(
-                        text: 'SEE ALL',
-                        fontSize: 14,
-                        color: const Color(0xFF1995AD)))
+                  onPressed: () {
+                    bottomProvider.userOnTap(2);
+                  },
+                  child: poppinsHeadText(
+                    text: 'SEE ALL',
+                    fontSize: 14,
+                    color: const Color(0xFF1995AD),
+                  ),
+                )
               ]),
               SizedBox(height: size.height * .01),
               ListView.builder(

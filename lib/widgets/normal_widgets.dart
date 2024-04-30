@@ -1,70 +1,141 @@
-import 'package:enefty_icons/enefty_icons.dart';
 import 'package:flutter/material.dart';
-import 'package:medheal/controller/bottom_bar_provider.dart';
-import 'package:medheal/view/user/authentication/login_type.dart';
-import 'package:medheal/view/user/home/doctor_detail_screen.dart';
+import 'package:enefty_icons/enefty_icons.dart';
 import 'package:medheal/widgets/text_widgets.dart';
-import 'package:provider/provider.dart';
+import 'package:medheal/view/user/home/doctor_detail_screen.dart';
 
-Widget allDoctorsContainer(size, {bool? isAdmin, circleAvatarRadius}) {
-  return Container(
-    height: size.height * .16,
-    width: size.width * .93,
-    decoration: BoxDecoration(
-        color: const Color(0xFFFFFFFF),
-        border: Border.all(
-          color: const Color(0xFFFFFFFF),
-        ),
-        borderRadius: BorderRadius.circular(18)),
-    child: Padding(
-      padding:
-          EdgeInsets.symmetric(horizontal: 10, vertical: size.height * .03),
-      child: Row(mainAxisAlignment: MainAxisAlignment.spaceAround, children: [
-        CircleAvatar(
-          radius: circleAvatarRadius,
-          backgroundColor: Colors.white,
-          backgroundImage:
-              const AssetImage('assets/avatar-removebg-preview.png'),
-        ),
-        Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-              poppinsText(
-                  text: 'Dr. Jennie Thorn',
-                  color: const Color(0xFF1D1617),
-                  fontSize: 14,
-                  fontWeight: FontWeight.w600),
-              Row(children: [
-                poppinsText(
-                    text: 'Dentist | ',
-                    color: const Color(0xFF101828),
-                    fontSize: 12),
-                poppinsText(
-                    text: 'BDS Surgeon',
-                    color: const Color(0xFF101828),
-                    fontSize: 12)
-              ]),
-              poppinsText(
-                  text: '5Y+ Experience',
-                  color: const Color(0xFF101828),
-                  fontSize: 12)
-            ]),
-        SizedBox(width: size.width * .1),
-        isAdmin!
-            ? IconButton(
-                onPressed: () {},
-                icon: const Icon(Icons.delete, color: Color(0xFFF24E1E)))
-            : IconButton(
-                onPressed: () {},
-                icon: const Icon(
-                  EneftyIcons.heart_outline,
-                  size: 28,
-                  color: Color(0xFF1995AD),
-                ))
-      ]),
-    ),
-  );
+Widget allDoctorsContainer(Size size, context,
+    {bool? isAdmin, circleAvatarRadius}) {
+  return isAdmin == true
+      ? Container(
+          height: size.height * .16,
+          width: size.width * .93,
+          decoration: BoxDecoration(
+            color: const Color(0xFFFFFFFF),
+            border: Border.all(
+              color: const Color(0xFFFFFFFF),
+            ),
+            borderRadius: BorderRadius.circular(18),
+          ),
+          child: Padding(
+            padding: EdgeInsets.symmetric(
+                horizontal: 10, vertical: size.height * .03),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                CircleAvatar(
+                  radius: circleAvatarRadius,
+                  backgroundColor: Colors.white,
+                  backgroundImage:
+                      const AssetImage('assets/avatar-removebg-preview.png'),
+                ),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    poppinsHeadText(
+                      text: 'Dr. Jennie Thorn',
+                      color: const Color(0xFF1D1617),
+                      fontSize: 14,
+                    ),
+                    Row(children: [
+                      poppinsSmallText(
+                        text: 'Dentist | ',
+                      ),
+                      poppinsSmallText(
+                        text: 'BDS Surgeon',
+                      )
+                    ]),
+                    poppinsSmallText(
+                      text: '5Y+ Experience',
+                    )
+                  ],
+                ),
+                SizedBox(width: size.width * .1),
+                IconButton(
+                  onPressed: () {
+                    confirmationDialog(
+                      context,
+                      size,
+                      dialogheight: size.height * .12,
+                      alertMessage: 'Confirm to delete the doctor',
+                      confirmText: 'Delete',
+                      onPressedConfirm: () {},
+                    );
+                  },
+                  icon: const Icon(
+                    Icons.delete,
+                    color: Color(0xFFF24E1E),
+                  ),
+                )
+              ],
+            ),
+          ),
+        )
+      : GestureDetector(
+          onTap: () {
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => const DoctorDetailScreen()));
+          },
+          child: Container(
+            height: size.height * .16,
+            width: size.width * .93,
+            decoration: BoxDecoration(
+              color: const Color(0xFFFFFFFF),
+              border: Border.all(
+                color: const Color(0xFFFFFFFF),
+              ),
+              borderRadius: BorderRadius.circular(18),
+            ),
+            child: Padding(
+              padding: EdgeInsets.symmetric(
+                  horizontal: 10, vertical: size.height * .03),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  CircleAvatar(
+                    radius: circleAvatarRadius,
+                    backgroundColor: Colors.white,
+                    backgroundImage:
+                        const AssetImage('assets/avatar-removebg-preview.png'),
+                  ),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      poppinsHeadText(
+                        text: 'Dr. Jennie Thorn',
+                        color: const Color(0xFF1D1617),
+                        fontSize: 14,
+                      ),
+                      Row(children: [
+                        poppinsSmallText(
+                          text: 'Dentist | ',
+                        ),
+                        poppinsSmallText(
+                          text: 'BDS Surgeon',
+                        )
+                      ]),
+                      poppinsSmallText(
+                        text: '5Y+ Experience',
+                      )
+                    ],
+                  ),
+                  SizedBox(width: size.width * .1),
+                  IconButton(
+                    onPressed: () {},
+                    icon: const Icon(
+                      EneftyIcons.heart_outline,
+                      size: 28,
+                      color: Color(0xFF1995AD),
+                    ),
+                  )
+                ],
+              ),
+            ),
+          ),
+        );
 }
 
 Widget elevatedButtonWidget(
@@ -76,8 +147,9 @@ Widget elevatedButtonWidget(
     height: buttonHeight,
     width: buttonWidth,
     child: ElevatedButton(
-        style:
-            ElevatedButton.styleFrom(backgroundColor: const Color(0xFF1995AD)),
+        style: ElevatedButton.styleFrom(
+            backgroundColor: const Color(0xFF1995AD),
+            disabledBackgroundColor: const Color(0xFF1995AD)),
         onPressed: onPressed,
         child: poppinsHeadText(
           text: buttonText ?? 'Button',
@@ -215,17 +287,20 @@ Widget doctorDetailsShowingContainer(context, size, {width}) {
   );
 }
 
-confirmationDialog(context, size,
-    {elevatedButtonHeight,
-    elevatedButtonWidth,
-    height,
-    width,
-    dialogheight,
-    dialogWidth,
-    alertMessage,
-    subText,
-    required bool? isLogOut}) {
-  final bottomProvider = Provider.of<BottomProvider>(context, listen: false);
+confirmationDialog(
+  context,
+  size, {
+  elevatedButtonHeight,
+  elevatedButtonWidth,
+  height,
+  width,
+  dialogheight,
+  dialogWidth,
+  alertMessage,
+  subText,
+  required confirmText,
+  onPressedConfirm,
+}) {
   return showDialog(
       context: context,
       builder: (context) {
@@ -233,47 +308,35 @@ confirmationDialog(context, size,
             title: SizedBox(
           height: dialogheight,
           width: dialogWidth,
-          child:
-              Column(crossAxisAlignment: CrossAxisAlignment.center, children: [
-            SizedBox(height: height),
-            poppinsText(
-              textAlign: TextAlign.center,
-              fontSize: 17,
-              fontWeight: FontWeight.w500,
-              text: alertMessage,
-              color: Colors.black,
-            ),
-            SizedBox(height: height),
-            Row(mainAxisAlignment: MainAxisAlignment.end, children: [
-              TextButton(
-                  onPressed: () {
-                    Navigator.pop(context);
-                  },
-                  child: poppinsHeadText(
-                      text: 'Back', color: const Color(0xFF1995AD))),
-              isLogOut!
-                  ? TextButton(
+          child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                SizedBox(height: height),
+                poppinsText(
+                  textAlign: TextAlign.center,
+                  fontSize: 17,
+                  fontWeight: FontWeight.w500,
+                  text: alertMessage,
+                  color: Colors.black,
+                ),
+                SizedBox(height: height),
+                Row(mainAxisAlignment: MainAxisAlignment.end, children: [
+                  TextButton(
                       onPressed: () {
-                        Navigator.pushAndRemoveUntil(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => const LoginTypeScreen()),
-                            (route) => false);
-                        bottomProvider.adminOnTap(0);
-                        bottomProvider.userOnTap(0);
+                        Navigator.pop(context);
                       },
                       child: poppinsHeadText(
-                        text: 'Log Out',
-                        color: Colors.red,
-                      ))
-                  : TextButton(
-                      onPressed: () {},
-                      child: poppinsHeadText(
-                        text: 'Confirm',
-                        color: Colors.red,
-                      ))
-            ])
-          ]),
+                          text: 'Back', color: const Color(0xFF1995AD))),
+                  TextButton(
+                    onPressed: onPressedConfirm,
+                    child: poppinsHeadText(
+                      text: confirmText,
+                      color: Colors.red,
+                    ),
+                  ),
+                ])
+              ]),
         ));
       });
 }

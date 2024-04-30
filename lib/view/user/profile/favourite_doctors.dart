@@ -29,7 +29,7 @@ class FavouriteDoctorsScreen extends StatelessWidget {
           itemBuilder: (context, index) {
             return Column(
               children: [
-                allDoctorsContainer(size,
+                allDoctorsContainer(size, context,
                     isAdmin: false, circleAvatarRadius: circleAvatarRadius),
                 SizedBox(height: size.height * .02)
               ],
