@@ -1,4 +1,8 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:medheal/model/doctor_model.dart';
 
 class AdminProvider extends ChangeNotifier {
   TextEditingController doctorNameController = TextEditingController();
@@ -14,15 +18,11 @@ class AdminProvider extends ChangeNotifier {
 
   final doctorAddFormkey = GlobalKey<FormState>();
 
-  String selectedGender = 'Male';
-  final List<String> genders = ['Male', 'Female'];
-  void setSelectedGender(String value) {
-    selectedGender = value;
-    notifyListeners();
-  }
+  String? selectedGender;
+  List<String> genders = ['Male', 'Female'];
 
-  String selectedCategory = 'MBBS';
-  final List<String> category = [
+  String? selectedCategory;
+  List<String> category = [
     'MD',
     'MBBS',
     'BDS',
@@ -30,36 +30,24 @@ class AdminProvider extends ChangeNotifier {
     'DDS',
     'DMD',
   ];
-  void setSelectedCategory(String value) {
-    selectedCategory = value;
-    notifyListeners();
-  }
 
-  String selectedPosition = 'Senior Surgeon';
-  final List<String> position = [
+  String? selectedPosition;
+  List<String> position = [
     'Senior Surgeon',
     'Attending Physician',
     'Junior Surgeon',
     'Consultant',
     'Medical Officer'
   ];
-  void setSelectedPosition(String value) {
-    selectedPosition = value;
-    notifyListeners();
-  }
 
-  String selectedWorkingDays = 'monday - friday';
-  final List<String> workingDays = [
+  String? selectedWorkingDays;
+  List<String> workingDays = [
     'monday - friday',
     'monday - saturday',
     'sunday',
     'weekend',
     'monday, wednesday, friday'
   ];
-  void setSelectedWorkingDays(String value) {
-    selectedPosition = value;
-    notifyListeners();
-  }
 
   void clearDoctorAddingControllers() {
     doctorNameController.clear();
@@ -71,4 +59,13 @@ class AdminProvider extends ChangeNotifier {
     doctorExperienceController.clear();
     doctorRatingController.clear();
   }
+
+  File? pickedImage;
+  String imageName = DateTime.now().microsecondsSinceEpoch.toString();
+  String? downloadUrl;
+
+  final ImagePicker imagePicker = ImagePicker();
+
+  List<DoctorModel> searchList = [];
+  List<DoctorModel> allDoctorList = [];
 }

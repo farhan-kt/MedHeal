@@ -280,6 +280,11 @@ Widget homeUpcomingAppointment(Size size, context) {
 
 Widget doctorDetailsTimeButton({onPressed, time}) {
   return OutlinedButton(
+    style: ButtonStyle(
+      side: MaterialStateProperty.all(
+        const BorderSide(color: Color(0xFF1995AD), width: 1.2),
+      ),
+    ),
     onPressed: onPressed,
     child: poppinsHeadText(
       textAlign: TextAlign.center,

@@ -17,6 +17,11 @@ class FillProfileScreen extends StatelessWidget {
         Provider.of<AuthenticationProvider>(context, listen: false);
     return Scaffold(
       appBar: AppBar(
+        leading: IconButton(
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            icon: const Icon(Icons.arrow_back_ios_new)),
         title: interHeadText(
           text: 'Fill Profile',
         ),

@@ -76,11 +76,10 @@ class SignInScreen extends StatelessWidget {
                   buttonHeight: size.height * .058,
                   buttonWidth: size.width * .9,
                   buttonText: 'Sign In',
-                  onPressed: () {
+                  onPressed: () async {
                     if (authProvider.signInFormkey.currentState!.validate()) {
                       authProvider.adminKey(context, SnackBarWidget(),
                           message: 'Incorrect email or password');
-                      authProvider.clearSignInControllers();
                     }
                   }),
               SizedBox(height: size.height * .04),
@@ -97,7 +96,8 @@ class SignInScreen extends StatelessWidget {
                 )
               ]),
               SizedBox(height: size.height * .03),
-              authenticationBoxRow(size),
+              authenticationBoxRow(size, context,
+                  authenticationProvider: authProvider),
             ],
           ),
         ),

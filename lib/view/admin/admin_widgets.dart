@@ -34,43 +34,57 @@ Widget adminDoctorAddFields(Size size, context, AdminProvider adminProvider) {
           ),
           const SizedBox(width: 20),
           Expanded(
-            child: dropDownTextFormField(context,
-                selectedValue: adminProvider.selectedGender,
-                items: adminProvider.genders,
+            child: dropDownTextFormField(
                 hintText: 'Gender',
-                validatorMessage: 'Select a Gender',
-                onChanged: (String? newValue) {
-              if (newValue != null) {
-                adminProvider.setSelectedGender(newValue);
-              }
-            }),
+                value: adminProvider.selectedGender,
+                items: adminProvider.genders.map((gender) {
+                  return DropdownMenuItem(
+                      value: gender,
+                      child: interSubText(
+                        text: gender,
+                      ));
+                }).toList(),
+                onChanged: (value) {
+                  adminProvider.selectedGender = value.toString();
+                },
+                validateMessage: 'select your gender'),
           )
         ],
       ),
-      dropDownTextFormField(context,
-          selectedValue: adminProvider.selectedCategory,
-          items: adminProvider.category,
-          validatorMessage: 'Select a category',
-          hintText: 'Category', onChanged: (String? newValue) {
-        if (newValue != null) {
-          adminProvider.setSelectedCategory(newValue);
-        }
-      }),
-      dropDownTextFormField(context,
-          selectedValue: adminProvider.selectedPosition,
-          items: adminProvider.position,
-          validatorMessage: 'Select a position',
-          hintText: 'Position', onChanged: (String? newValue) {
-        if (newValue != null) {
-          adminProvider.setSelectedPosition(newValue);
-        }
-      }),
+      dropDownTextFormField(
+          hintText: 'Category',
+          value: adminProvider.selectedCategory,
+          items: adminProvider.category.map((category) {
+            return DropdownMenuItem(
+                value: category,
+                child: interSubText(
+                  text: category,
+                ));
+          }).toList(),
+          onChanged: (value) {
+            adminProvider.selectedCategory = value.toString();
+          },
+          validateMessage: 'select category'),
+      dropDownTextFormField(
+          hintText: 'Position',
+          value: adminProvider.selectedPosition,
+          items: adminProvider.position.map((position) {
+            return DropdownMenuItem(
+                value: position,
+                child: interSubText(
+                  text: position,
+                ));
+          }).toList(),
+          onChanged: (value) {
+            adminProvider.selectedPosition = value.toString();
+          },
+          validateMessage: 'select position'),
       Row(
         children: [
           Expanded(
             child: CustomTextFormField(
               controller: adminProvider.doctorAboutController,
-              // maxLines: 4,
+              maxLines: 4,
               labelText: 'About Doctor',
               validateMessage: 'tPlease fill out this field',
             ),
@@ -78,15 +92,20 @@ Widget adminDoctorAddFields(Size size, context, AdminProvider adminProvider) {
         ],
       ),
       poppinsHeadText(text: 'Working information'),
-      dropDownTextFormField(context,
-          selectedValue: adminProvider.selectedWorkingDays,
-          items: adminProvider.workingDays,
-          validatorMessage: 'Select working days',
-          hintText: 'working days', onChanged: (String? newValue) {
-        if (newValue != null) {
-          adminProvider.setSelectedWorkingDays(newValue);
-        }
-      }),
+      dropDownTextFormField(
+          hintText: 'working days..',
+          value: adminProvider.selectedWorkingDays,
+          items: adminProvider.workingDays.map((gender) {
+            return DropdownMenuItem(
+                value: gender,
+                child: interSubText(
+                  text: gender,
+                ));
+          }).toList(),
+          onChanged: (value) {
+            adminProvider.selectedWorkingDays = value.toString();
+          },
+          validateMessage: 'select working days'),
       Row(
         children: [
           Expanded(

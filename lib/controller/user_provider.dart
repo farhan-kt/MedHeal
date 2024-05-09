@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:medheal/view/user/authentication/login_type.dart';
+import 'package:medheal/view/user/authentication/authentication_navigate.dart';
 
 class UserProvider extends ChangeNotifier {
   TextEditingController searchController = TextEditingController();
@@ -11,7 +11,7 @@ class UserProvider extends ChangeNotifier {
     await Future.delayed(const Duration(seconds: 2));
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => const LoginTypeScreen()),
+      MaterialPageRoute(builder: (context) => const AuthenticationNavigate()),
     );
   }
 }

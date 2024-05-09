@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:medheal/controller/authentication_provider.dart';
+import 'package:medheal/view/user/authentication/fill_profile.dart';
 import 'package:provider/provider.dart';
 import 'package:medheal/widgets/text_widgets.dart';
 import 'package:medheal/widgets/normal_widgets.dart';
@@ -16,20 +18,47 @@ class UserProfileScreen extends StatelessWidget {
     Size size = MediaQuery.of(context).size;
     double circleAvatarRadius = size.shortestSide * circleAvatarRadiusFraction;
     final bottomProvider = Provider.of<BottomProvider>(context, listen: false);
+    final authenticationProvider =
+        Provider.of<AuthenticationProvider>(context, listen: false);
 
     return Scaffold(
       backgroundColor: const Color(0xFFF5F5F5),
-      appBar: AppBar(
-        backgroundColor: const Color(0xFFF5F5F5),
-        title: poppinsHeadText(
-          text: 'My Profile',
-          fontSize: 20,
-        ),
-      ),
       body: Padding(
-        padding: const EdgeInsets.all(10),
+        padding: EdgeInsets.symmetric(
+            vertical: size.height * 0.1, horizontal: size.width * .03),
         child: Column(
           children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                poppinsHeadText(
+                  text: 'My Profile',
+                  fontSize: 20,
+                ),
+                SizedBox(
+                  height: size.height * .041,
+                  width: size.width * .2,
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: const Color(0xFF1995AD),
+                    ),
+                    onPressed: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const FillProfileScreen()));
+                    },
+                    child: poppinsText(
+                      text: 'Edit',
+                      textAlign: TextAlign.center,
+                      color: Colors.white,
+                      fontSize: 14,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                ),
+              ],
+            ),
             CircleAvatar(
               radius: circleAvatarRadius,
               backgroundColor: const Color.fromARGB(255, 143, 189, 198),
@@ -76,6 +105,8 @@ class UserProfileScreen extends StatelessWidget {
                       (route) => false);
                   bottomProvider.adminOnTap(0);
                   bottomProvider.userOnTap(0);
+                  authenticationProvider.logOut();
+                  authenticationProvider.googleSignOut();
                 });
               },
             )

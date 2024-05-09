@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:medheal/widgets/text_widgets.dart';
@@ -84,9 +86,16 @@ class CreateAccountScreen extends StatelessWidget {
                   buttonText: 'CREATE ACCOUNT',
                   buttonWidth: size.width * .9,
                   buttonHeight: size.height * .058,
-                  onPressed: () {
+                  onPressed: () async {
                     if (authProvider.createAccountFormkey.currentState!
                         .validate()) {
+                      if (authProvider.passwordController.text.length < 6) {
+                        SnackBarWidget().showErrorSnackbar(
+                          context,
+                          'Password must contain 6 characters',
+                        );
+                        return;
+                      }
                       try {
                         if (authProvider.emailController.text ==
                             'medHeal@gmail.com') {
@@ -94,6 +103,9 @@ class CreateAccountScreen extends StatelessWidget {
                               'Email address already exists or is invalid');
                         } else if (authProvider.passwordController.text ==
                             authProvider.confirmPasswordController.text) {
+                          await authProvider.accountCreate(
+                              authProvider.emailController.text,
+                              authProvider.passwordController.text);
                           Navigator.pushAndRemoveUntil(
                               context,
                               MaterialPageRoute(
@@ -127,7 +139,8 @@ class CreateAccountScreen extends StatelessWidget {
                 )
               ]),
               SizedBox(height: size.height * .02),
-              authenticationBoxRow(size),
+              authenticationBoxRow(size, context,
+                  authenticationProvider: authProvider),
             ],
           ),
         ),

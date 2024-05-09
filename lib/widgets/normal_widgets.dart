@@ -142,20 +142,26 @@ Widget elevatedButtonWidget(
     {onPressed,
     double? buttonHeight,
     double? buttonWidth,
-    String? buttonText}) {
+    String? buttonText,
+    bgColor,
+    shape}) {
   return SizedBox(
     height: buttonHeight,
     width: buttonWidth,
     child: ElevatedButton(
-        style: ElevatedButton.styleFrom(
-            backgroundColor: const Color(0xFF1995AD),
-            disabledBackgroundColor: const Color(0xFF1995AD)),
-        onPressed: onPressed,
-        child: poppinsHeadText(
-          text: buttonText ?? 'Button',
-          textAlign: TextAlign.center,
-          color: Colors.white,
-        )),
+      style: ButtonStyle(
+        shape: shape,
+        backgroundColor: MaterialStateProperty.all(
+          bgColor ?? const Color(0xFF1995AD),
+        ),
+      ),
+      onPressed: onPressed,
+      child: poppinsHeadText(
+        text: buttonText ?? 'Button',
+        textAlign: TextAlign.center,
+        color: Colors.white,
+      ),
+    ),
   );
 }
 

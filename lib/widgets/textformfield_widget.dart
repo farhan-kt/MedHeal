@@ -2,13 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:enefty_icons/enefty_icons.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:medheal/widgets/text_widgets.dart';
 
 class CustomTextFormField extends StatelessWidget {
   final String? hintText;
   final String? labelText;
   final bool? obscureText;
-  // final int? maxLines;
+  final int? maxLines;
   final double? width;
   final String? suffixText;
   final Widget? prefixIcon;
@@ -26,7 +25,7 @@ class CustomTextFormField extends StatelessWidget {
     this.hintText,
     this.labelText,
     this.obscureText,
-    // this.maxLines,
+    this.maxLines,
     this.width,
     this.suffixText,
     this.prefixIcon,
@@ -63,6 +62,7 @@ class CustomTextFormField extends StatelessWidget {
       keyboardType: keyboardType,
       inputFormatters: inputFormatters,
       controller: controller,
+      maxLines: maxLines ?? 1,
       decoration: InputDecoration(
         suffixText: suffixText,
         suffixIcon: suffixIcon,
@@ -94,51 +94,32 @@ class CustomTextFormField extends StatelessWidget {
 }
 
 Widget dropDownTextFormField(
-  context, {
-  required String? selectedValue,
-  required List<String> items,
-  String? validatorMessage,
-  required String hintText,
-  required void Function(String?)? onChanged,
-}) {
-  return GestureDetector(
-    onTap: () {
-      FocusScope.of(context).requestFocus(FocusNode());
+    {validateMessage, value, items, onChanged, hintText}) {
+  return DropdownButtonFormField<String>(
+    icon: const SizedBox.shrink(),
+    validator: (value) {
+      if (value == null) {
+        return validateMessage;
+      } else {
+        return null;
+      }
     },
-    child: DropdownButtonFormField<String>(
-      icon: const SizedBox.shrink(),
-      validator: (value) {
-        if (value == null) {
-          return validatorMessage;
-        } else {
-          return null;
-        }
-      },
-      value: selectedValue,
-      items: items.map((String gender) {
-        return DropdownMenuItem<String>(
-          value: gender,
-          child: interSubText(
-            text: gender,
-          ),
-        );
-      }).toList(),
-      onChanged: onChanged,
-      decoration: InputDecoration(
-        suffixIcon: const Icon(EneftyIcons.arrow_down_outline),
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12.0),
-          borderSide: BorderSide.none,
-        ),
-        filled: true,
-        fillColor: const Color.fromARGB(255, 225, 227, 234),
-        hintText: hintText,
-        hintStyle: GoogleFonts.inter(
-          color: const Color(0xFF98A3B3),
-          fontWeight: FontWeight.w400,
-          fontSize: 14,
-        ),
-        icon: null,
+    value: value,
+    items: items,
+    onChanged: onChanged,
+    decoration: InputDecoration(
+      suffixIcon: const Icon(EneftyIcons.arrow_down_outline),
+      border: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(12.0),
+        borderSide: BorderSide.none,
+      ),
+      filled: true,
+      fillColor: const Color.fromARGB(255, 225, 227, 234),
+      hintText: hintText,
+      hintStyle: GoogleFonts.inter(
+        color: const Color(0xFF98A3B3),
+        fontWeight: FontWeight.w400,
+        fontSize: 14,
       ),
     ),
   );

@@ -103,123 +103,134 @@ Widget showBottom(Size size, context) {
     '04:00 PM',
     '05:00 PM',
   ];
-  return Container(
-    height: size.height * .5,
-    width: size.width * 1,
-    decoration: const BoxDecoration(
-      color: Color.fromARGB(255, 169, 236, 235),
-      borderRadius: BorderRadius.only(
-        topLeft: Radius.circular(30),
-        topRight: Radius.circular(30),
+  return Stack(children: [
+    Container(
+      height: size.height * .6,
+      width: size.width * 1,
+      decoration: const BoxDecoration(
+        color: Color(0xFFA1D6E2),
+        borderRadius: BorderRadius.only(
+          topLeft: Radius.circular(30),
+          topRight: Radius.circular(30),
+        ),
       ),
-    ),
-    child: Padding(
-      padding: EdgeInsets.symmetric(
-          horizontal: size.width * .05, vertical: size.height * .05),
-      child: SingleChildScrollView(
-        scrollDirection: Axis.vertical,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-            Center(
-              child: poppinsHeadText(
-                text: 'Reshedule',
-                fontSize: 23,
-                color: const Color(0xFF1995AD),
+      child: Padding(
+        padding: EdgeInsets.symmetric(
+            horizontal: size.width * .05, vertical: size.height * .05),
+        child: SingleChildScrollView(
+          scrollDirection: Axis.vertical,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              Center(
+                child: poppinsHeadText(
+                  text: 'Reshedule',
+                  fontSize: 23,
+                  color: const Color(0xFF1995AD),
+                ),
               ),
-            ),
-            SizedBox(height: size.height * .02),
-            poppinsHeadText(text: 'Working information'),
-            SizedBox(height: size.height * .02),
-            Row(
-              children: [
-                const Icon(
-                  EneftyIcons.calendar_2_outline,
-                  color: Color(0xFF778293),
-                ),
-                SizedBox(width: size.width * .02),
-                poppinsSmallText(
-                  text: 'Monday-Friday, ',
-                  color: const Color(0xFF344154),
-                ),
-                poppinsSmallText(
-                  text: '08:00 AM - 21:00 PM',
-                  color: const Color(0xFF344154),
-                ),
-              ],
-            ),
-            SizedBox(height: size.height * .02),
-            poppinsHeadText(text: 'Select Date'),
-            SizedBox(height: size.height * .02),
-            CustomTextFormField(
-              controller: userProvider.userBookingResheduledController,
-              hintText: 'Date',
-              suffixIcon: const Icon(EneftyIcons.calendar_2_outline),
-            ),
-            SizedBox(height: size.height * .02),
-            poppinsHeadText(
-              text: 'Select Hour',
-            ),
-            SizedBox(height: size.height * .02),
-            SizedBox(
-              height: size.height * .2,
-              child: GridView.builder(
-                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                  childAspectRatio: 1 / .4,
-                  crossAxisCount: 3,
-                  crossAxisSpacing: size.width * 0.02,
-                  mainAxisSpacing: size.height * 0.01,
-                ),
-                itemCount: 8,
-                itemBuilder: (BuildContext context, int index) {
-                  String time = times[index];
-                  return SizedBox(
-                    height: size.height * .0007,
-                    width: size.width * .5,
-                    child: doctorDetailsTimeButton(
-                      onPressed: () {},
-                      time: time,
-                    ),
-                  );
-                },
+              SizedBox(height: size.height * .02),
+              poppinsHeadText(text: 'Working information'),
+              SizedBox(height: size.height * .02),
+              Row(
+                children: [
+                  const Icon(
+                    EneftyIcons.calendar_2_outline,
+                    color: Color(0xFF778293),
+                  ),
+                  SizedBox(width: size.width * .02),
+                  poppinsSmallText(
+                    text: 'Monday-Friday, ',
+                    color: const Color(0xFF344154),
+                  ),
+                  poppinsSmallText(
+                    text: '08:00 AM - 21:00 PM',
+                    color: const Color(0xFF344154),
+                  ),
+                ],
               ),
-            ),
-            SizedBox(height: size.height * .07),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                elevatedButtonWidget(
-                    buttonHeight: size.height * .06,
-                    buttonWidth: size.width * .22,
-                    buttonText: 'Back',
-                    onPressed: () {
-                      Navigator.pop(context);
-                    }),
-                elevatedButtonWidget(
-                  buttonHeight: size.height * .06,
-                  buttonWidth: size.width * .65,
-                  buttonText: 'Reshedule Appointment',
-                  onPressed: () {
-                    successDialogBox(context, size,
-                        isAppointment: true,
-                        headMessage: 'Your Appointment Has Been Resheduled',
-                        elevatedButtonHeight: size.height * .05,
-                        elevatedButtonWidth: size.width * .7,
-                        height: size.height * .02,
-                        width: size.width * .8,
-                        dialogheight: size.height * .45,
-                        dialogWidth: size.width * .2,
-                        subText:
-                            'Your appointment with Dr. Jennie Thorn was Resheduled on Wednesday, August 17, 2023 at 11:00 AM ');
+              SizedBox(height: size.height * .02),
+              poppinsHeadText(text: 'Select Date'),
+              SizedBox(height: size.height * .02),
+              CustomTextFormField(
+                controller: userProvider.userBookingResheduledController,
+                hintText: 'Date',
+                suffixIcon: const Icon(EneftyIcons.calendar_2_outline),
+              ),
+              SizedBox(height: size.height * .02),
+              poppinsHeadText(
+                text: 'Select Hour',
+              ),
+              SizedBox(height: size.height * .02),
+              SizedBox(
+                height: size.height * .22,
+                child: GridView.builder(
+                  physics: const NeverScrollableScrollPhysics(),
+                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                    childAspectRatio: 1 / .4,
+                    crossAxisCount: 3,
+                    crossAxisSpacing: size.width * 0.02,
+                    mainAxisSpacing: size.height * 0.01,
+                  ),
+                  itemCount: 8,
+                  itemBuilder: (BuildContext context, int index) {
+                    String time = times[index];
+                    return SizedBox(
+                      height: size.height * .01,
+                      width: size.width * .5,
+                      child: doctorDetailsTimeButton(
+                        onPressed: () {},
+                        time: time,
+                      ),
+                    );
                   },
                 ),
-              ],
-            ),
-            SizedBox(height: size.height * .02),
-          ],
+              ),
+              SizedBox(height: size.height * .07),
+              SizedBox(height: size.height * .02),
+            ],
+          ),
         ),
       ),
     ),
-  );
+    Positioned(
+      bottom: size.height * .01,
+      left: size.width * .08,
+      child: Row(
+        children: [
+          elevatedButtonWidget(
+              buttonHeight: size.height * .06,
+              buttonWidth: size.width * .22,
+              bgColor: const Color(0xFF1995AD),
+              buttonText: 'Back',
+              onPressed: () {
+                Navigator.pop(context);
+              }),
+          SizedBox(
+            width: size.width * .02,
+          ),
+          elevatedButtonWidget(
+            buttonHeight: size.height * .06,
+            buttonWidth: size.width * .65,
+            bgColor: const Color(0xFF1995AD),
+            buttonText: 'Reshedule Appointment',
+            onPressed: () {
+              successDialogBox(context, size,
+                  isAppointment: true,
+                  headMessage: 'Your Appointment Has Been Resheduled',
+                  elevatedButtonHeight: size.height * .05,
+                  elevatedButtonWidth: size.width * .7,
+                  height: size.height * .02,
+                  width: size.width * .8,
+                  dialogheight: size.height * .45,
+                  dialogWidth: size.width * .2,
+                  subText:
+                      'Your appointment with Dr. Jennie Thorn was Resheduled on Wednesday, August 17, 2023 at 11:00 AM ');
+            },
+          ),
+        ],
+      ),
+    )
+  ]);
 }
