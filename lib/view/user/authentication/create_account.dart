@@ -1,6 +1,7 @@
 // ignore_for_file: use_build_context_synchronously
 
 import 'package:flutter/material.dart';
+import 'package:medheal/widgets/user_bottom_bar.dart';
 import 'package:provider/provider.dart';
 import 'package:medheal/widgets/text_widgets.dart';
 import 'package:medheal/widgets/normal_widgets.dart';
@@ -8,7 +9,6 @@ import 'package:medheal/widgets/snackbar_widget.dart';
 import 'package:medheal/view/user/authentication/sign_in.dart';
 import 'package:medheal/controller/authentication_provider.dart';
 import 'package:medheal/view/user/authentication/auth_widgets.dart';
-import 'package:medheal/view/user/authentication/fill_profile.dart';
 
 class CreateAccountScreen extends StatelessWidget {
   const CreateAccountScreen({super.key});
@@ -109,7 +109,7 @@ class CreateAccountScreen extends StatelessWidget {
                           Navigator.pushAndRemoveUntil(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => const FillProfileScreen(),
+                                builder: (context) => const UserBottomBar(),
                               ),
                               (route) => false);
                           authProvider.clearCreateAccountControllers();

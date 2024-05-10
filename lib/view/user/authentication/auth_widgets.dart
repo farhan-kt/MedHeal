@@ -51,7 +51,7 @@ Widget profileFillFields(size, AuthenticationProvider authProvider) {
     CustomTextFormField(
       controller: authProvider.profileEmailController,
       hintText: 'Email',
-      // keyboardType: TextInputType.emailAddress,
+      keyboardType: TextInputType.emailAddress,
     ),
     CustomTextFormField(
       controller: authProvider.phoneNumberController,
@@ -144,7 +144,7 @@ Widget createAccountTextFormFields(
         controller: authProvider.emailController,
         hintText: 'Email',
         validateMessage: 'Enter Email',
-        // keyboardType: TextInputType.emailAddress,
+        keyboardType: TextInputType.emailAddress,
       ),
       CustomTextFormField(
         controller: authProvider.passwordController,
@@ -178,18 +178,18 @@ Widget createAccountTextFormFields(
   );
 }
 
-Widget signInTextFormField(AuthenticationProvider authProvider) {
+Widget signInTextFormField(Size size, AuthenticationProvider authProvider) {
   return Column(
     crossAxisAlignment: CrossAxisAlignment.end,
-    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+    // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
     children: [
       CustomTextFormField(
         controller: authProvider.signInEmailController,
         hintText: 'Email',
         validateMessage: 'Enter Your Email',
-        // keyboardType: TextInputType.emailAddress,
+        keyboardType: TextInputType.emailAddress,
       ),
-      const SizedBox(height: 5),
+      SizedBox(height: size.height * .02),
       Consumer<AuthenticationProvider>(
         builder: (context, value, child) => CustomTextFormField(
           controller: value.signInPasswordController,
@@ -206,13 +206,18 @@ Widget signInTextFormField(AuthenticationProvider authProvider) {
           ),
         ),
       ),
-      TextButton(
-          onPressed: () {},
-          child: poppinsText(
-              text: 'Forgot the password?',
-              fontSize: 14,
-              fontWeight: FontWeight.w600,
-              color: const Color(0xFF1995AD))),
+      Row(
+        mainAxisAlignment: MainAxisAlignment.end,
+        children: [
+          TextButton(
+              onPressed: () {},
+              child: poppinsText(
+                  text: 'Forgot the password?',
+                  fontSize: 14,
+                  fontWeight: FontWeight.w600,
+                  color: const Color(0xFF1995AD))),
+        ],
+      ),
     ],
   );
 }

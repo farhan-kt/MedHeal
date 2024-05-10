@@ -155,6 +155,12 @@ class AuthenticationProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  // Future<void> verifyOtp(otp, context, {success, error}) async {
+  //   await authenticationService.verifyOtp(otp, context,
+  //       snackBarError: success, snackBarSuccess: error);
+  //   notifyListeners();
+  // }
+
   Future<void> verifyOtp(otp, context) async {
     await authenticationService.verifyOtp(otp, context);
     notifyListeners();

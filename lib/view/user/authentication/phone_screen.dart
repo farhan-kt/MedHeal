@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
@@ -146,8 +148,6 @@ class PhoneScreen extends StatelessWidget {
                                     authProvider.verifyOtp(
                                         authProvider.otpController.text,
                                         context);
-                                    authProvider
-                                        .clearPhoneVerificationController();
                                   } catch (e) {
                                     SnackBarWidget().showErrorSnackbar(
                                         context, "Invalid OTP $e");

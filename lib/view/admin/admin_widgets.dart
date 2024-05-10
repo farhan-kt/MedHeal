@@ -4,7 +4,11 @@ import 'package:medheal/widgets/text_widgets.dart';
 import 'package:medheal/controller/admin_provider.dart';
 import 'package:medheal/widgets/textformfield_widget.dart';
 
-Widget adminDoctorAddFields(Size size, context, AdminProvider adminProvider) {
+Widget adminDoctorAddFields(
+  Size size,
+  context,
+  AdminProvider adminProvider,
+) {
   return Column(
     crossAxisAlignment: CrossAxisAlignment.start,
     mainAxisAlignment: MainAxisAlignment.spaceEvenly,

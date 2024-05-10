@@ -2,13 +2,12 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:medheal/widgets/snackbar_widget.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:medheal/widgets/user_bottom_bar.dart';
 
 class AuthenticationService {
   String collection = 'user';
-  String? verificationId;
+  String? verificationid;
 
   FirebaseAuth firebaseAuth = FirebaseAuth.instance;
   FirebaseFirestore fireStore = FirebaseFirestore.instance;
@@ -72,42 +71,6 @@ class AuthenticationService {
     return await GoogleSignIn().signOut();
   }
 
-  // Future<void> getOtp(context, phoneNumberCon) async {
-  //   await FirebaseAuth.instance.verifyPhoneNumber(
-  //       verificationCompleted: (PhoneAuthCredential credential) {},
-  //       verificationFailed: (FirebaseAuthException ex) {},
-  //       codeSent: (String verificationId, int? resendtoken) {
-  //         //  Navigator.push(
-  //         //         context,
-  //         //         MaterialPageRoute(
-  //         //             builder: (context) => OtpScreen(
-  //         //                   verificationId: verificationId,
-  //         //                 )));
-  //       },
-  //       codeAutoRetrievalTimeout: (String verificationId) {},
-  //       phoneNumber: phoneNumberCon);
-  // }
-
-  // Future<PhoneAuthCredential?> verifyOtp(String otp, context) async {
-  //   try {
-  //     PhoneAuthCredential credential = PhoneAuthProvider.credential(
-  //         verificationId: verificationId!, smsCode: otp);
-
-  //     await firebaseAuth.signInWithCredential(credential);
-  //     Navigator.pushAndRemoveUntil(
-  //         context,
-  //         MaterialPageRoute(
-  //           builder: (context) => const FillProfileScreen(),
-  //         ),
-  //         (route) => false);
-  //     SnackBarWidget().showSuccessSnackbar(context, "OTP validated");
-  //   } catch (e) {
-  //     log("verify otp error $e");
-  //     return null;
-  //   }
-  //   return null;
-  // }
-
   Future<void> getOtp(String phoneNumber) async {
     try {
       await firebaseAuth.verifyPhoneNumber(
@@ -123,10 +86,10 @@ class AuthenticationService {
           log("verification failed error : $error");
         },
         codeSent: (verificationId, forceResendingToken) {
-          verificationId = verificationId;
+          verificationid = verificationId;
         },
         codeAutoRetrievalTimeout: (verificationId) {
-          verificationId = verificationId;
+          verificationid = verificationId;
         },
         timeout: const Duration(seconds: 60),
       );
@@ -135,20 +98,41 @@ class AuthenticationService {
     }
   }
 
-  Future<PhoneAuthCredential?> verifyOtp(String otp, context) async {
+  // Future<PhoneAuthCredential?> verifyOtp(String otp, context,
+  //     {Function? snackBarSuccess, Function? snackBarError}) async {
+  //   try {
+  //     PhoneAuthCredential credential = PhoneAuthProvider.credential(
+  //         verificationId: verificationId!, smsCode: otp);
+  //     await firebaseAuth.signInWithCredential(credential);
+  //     Navigator.pushAndRemoveUntil(
+  //         context,
+  //         MaterialPageRoute(
+  //           builder: (context) => const UserBottomBar(),
+  //         ),
+  //         (route) => false);
+  //     snackBarSuccess;
+  //   } catch (e) {
+  //     snackBarError;
+  //     log("verify otp error $e");
+  //     return null;
+  //   }
+  //   return null;
+  // }
+
+  Future<PhoneAuthCredential?> verifyOtp(otp, context) async {
     try {
+      log('message');
       PhoneAuthCredential credential = PhoneAuthProvider.credential(
-          verificationId: verificationId!, smsCode: otp);
+          verificationId: verificationid!, smsCode: otp);
       await firebaseAuth.signInWithCredential(credential);
+      log('message');
       Navigator.pushAndRemoveUntil(
           context,
           MaterialPageRoute(
             builder: (context) => const UserBottomBar(),
           ),
           (route) => false);
-      SnackBarWidget().showSuccessSnackbar(context, 'Otp validated');
     } catch (e) {
-      SnackBarWidget().showSuccessSnackbar(context, 'Invalid Otp');
       log("verify otp error $e");
       return null;
     }

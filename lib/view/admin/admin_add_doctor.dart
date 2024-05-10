@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:enefty_icons/enefty_icons.dart';
 import 'package:medheal/widgets/text_widgets.dart';
 import 'package:medheal/widgets/normal_widgets.dart';
@@ -31,33 +32,42 @@ class DoctorAddingScreen extends StatelessWidget {
           child: Column(
             children: [
               SizedBox(height: size.height * .02),
-              Stack(
-                children: [
-                  CircleAvatar(
-                    radius: 70,
-                    backgroundColor: Colors.orange[400],
-                    backgroundImage:
-                        const AssetImage('assets/avatar-removebg-preview.png'),
-                  ),
-                  Positioned(
-                      bottom: 0,
-                      right: size.width * .05,
-                      child: Container(
-                        height: size.height * .04,
-                        width: size.width * .08,
-                        decoration: BoxDecoration(
-                          color: Colors.green,
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        child: IconButton(
-                            onPressed: () {},
-                            icon: const Icon(
-                              EneftyIcons.edit_2_bold,
-                              color: Colors.white,
-                              size: 18,
-                            )),
-                      ))
-                ],
+              Consumer<AdminProvider>(
+                builder: (context, value, child) => Stack(
+                  children: [
+                    CircleAvatar(
+                      radius: 70,
+                      backgroundColor: Colors.orange[400],
+                      backgroundImage: value.doctorImage != null
+                          ? Image.file(value.doctorImage!).image
+                          : const AssetImage(
+                              'assets/avatar-removebg-preview.png'),
+                    ),
+                    Positioned(
+                        bottom: 0,
+                        right: size.width * .05,
+                        child: GestureDetector(
+                          onTap: () {
+                            pickImage(context);
+                          },
+                          child: Container(
+                            height: size.height * .04,
+                            width: size.width * .08,
+                            decoration: BoxDecoration(
+                              color: Colors.green,
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            child: IconButton(
+                                onPressed: () {},
+                                icon: const Icon(
+                                  EneftyIcons.edit_2_bold,
+                                  color: Colors.white,
+                                  size: 18,
+                                )),
+                          ),
+                        ))
+                  ],
+                ),
               ),
               SizedBox(
                 height: size.height * 1,
@@ -88,6 +98,39 @@ class DoctorAddingScreen extends StatelessWidget {
           ),
         ),
       ),
+    );
+  }
+
+  Future<void> pickImage(BuildContext context) async {
+    final adminProvider = Provider.of<AdminProvider>(context, listen: false);
+    await showModalBottomSheet(
+      context: context,
+      builder: (BuildContext context) {
+        return SizedBox(
+          height: 150,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: <Widget>[
+              ListTile(
+                leading: const Icon(Icons.camera_alt),
+                title: const Text('Camera'),
+                onTap: () {
+                  Navigator.pop(context);
+                  adminProvider.getImage(ImageSource.camera);
+                },
+              ),
+              ListTile(
+                leading: const Icon(Icons.image),
+                title: const Text('Gallery'),
+                onTap: () {
+                  Navigator.pop(context);
+                  adminProvider.getImage(ImageSource.gallery);
+                },
+              ),
+            ],
+          ),
+        );
+      },
     );
   }
 }

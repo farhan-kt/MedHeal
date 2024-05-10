@@ -70,7 +70,7 @@ class FillProfileScreen extends StatelessWidget {
             ),
             SizedBox(height: size.height * .02),
             SizedBox(
-              height: size.height * .5,
+              height: size.height * .55,
               child: Form(
                 key: authProvider.fillAccountFormkey,
                 child: profileFillFields(size, authProvider),
