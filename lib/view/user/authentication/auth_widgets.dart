@@ -1,6 +1,7 @@
 import 'package:enefty_icons/enefty_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:medheal/view/user/authentication/forgot_password.dart';
 import 'package:medheal/view/user/authentication/phone_screen.dart';
 import 'package:medheal/widgets/text_widgets.dart';
 import 'package:medheal/widgets/textformfield_widget.dart';
@@ -178,7 +179,8 @@ Widget createAccountTextFormFields(
   );
 }
 
-Widget signInTextFormField(Size size, AuthenticationProvider authProvider) {
+Widget signInTextFormField(
+    Size size, context, AuthenticationProvider authProvider) {
   return Column(
     crossAxisAlignment: CrossAxisAlignment.end,
     // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -210,7 +212,12 @@ Widget signInTextFormField(Size size, AuthenticationProvider authProvider) {
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
           TextButton(
-              onPressed: () {},
+              onPressed: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => ForgotPasswordScreen()));
+              },
               child: poppinsText(
                   text: 'Forgot the password?',
                   fontSize: 14,

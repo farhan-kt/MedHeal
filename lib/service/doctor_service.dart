@@ -35,7 +35,7 @@ class DoctorService {
     try {
       await doctor.doc(id).delete();
     } catch (error) {
-      log('eeror during deleting doctor :$error');
+      log('error during deleting doctor :$error');
     }
   }
 
@@ -53,24 +53,6 @@ class DoctorService {
     log('Image successfully uploaded to Firebase Storage.');
     return downloadURL;
   }
-
-  //  uploadImages(file, {String? filePath}) async {
-  //   String fileName = await DateTime.now().millisecondsSinceEpoch.toString();
-  //   try {
-  //     Reference fileFolder = storage.child('Item Image').child('$fileName');
-
-  //     if (filePath != null) {
-  //       Reference deletefile = storage.child(filePath);
-  //       await deletefile.delete();
-  //       log('The current file Successfully deleted from Firebase Storage.');
-  //     }
-  //     await fileFolder.putFile(file);
-  //     log('file successfully uploaded to Firebase Storage.');
-  //     return fileFolder;
-  //   } catch (e) {
-  //     throw 'Error in Update profile pic : $e';
-  //   }
-  // }
 
   Future<File?> pickImage(ImageSource source) async {
     final pickedFile = await imagePicker.pickImage(source: source);

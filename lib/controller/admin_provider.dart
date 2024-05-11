@@ -1,6 +1,5 @@
 import 'dart:developer';
 import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:medheal/model/doctor_model.dart';
@@ -72,6 +71,24 @@ class AdminProvider extends ChangeNotifier {
 
   List<DoctorModel> searchList = [];
   List<DoctorModel> allDoctorList = [];
+
+  void addCar(DoctorModel data) async {
+    await doctorService.addDoctor(data);
+
+    notifyListeners();
+    getAllDoctors();
+  }
+
+  void deleteCar(String id) async {
+    await doctorService.deleteDoctor(id);
+    getAllDoctors();
+  }
+
+  void getAllDoctors() async {
+    allDoctorList = await doctorService.getAllDoctors();
+
+    notifyListeners();
+  }
 
   Future<String> uploadImage(image, imageName) async {
     try {

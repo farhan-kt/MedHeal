@@ -66,7 +66,7 @@ class SignInScreen extends StatelessWidget {
               SizedBox(height: size.height * .02),
               Form(
                 key: authProvider.signInFormkey,
-                child: signInTextFormField(size, authProvider),
+                child: signInTextFormField(size, context, authProvider),
               ),
               SizedBox(height: size.height * .02),
               elevatedButtonWidget(

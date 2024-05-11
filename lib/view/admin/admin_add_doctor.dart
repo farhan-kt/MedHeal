@@ -1,4 +1,8 @@
+import 'dart:developer';
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:medheal/model/doctor_model.dart';
 import 'package:provider/provider.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:enefty_icons/enefty_icons.dart';
@@ -37,35 +41,34 @@ class DoctorAddingScreen extends StatelessWidget {
                   children: [
                     CircleAvatar(
                       radius: 70,
-                      backgroundColor: Colors.orange[400],
+                      backgroundColor: Color(0xFFE3E3E3),
                       backgroundImage: value.doctorImage != null
                           ? Image.file(value.doctorImage!).image
                           : const AssetImage(
                               'assets/avatar-removebg-preview.png'),
                     ),
                     Positioned(
-                        bottom: 0,
-                        right: size.width * .05,
-                        child: GestureDetector(
-                          onTap: () {
+                      bottom: 0,
+                      right: size.width * .05,
+                      child: Container(
+                        height: size.height * .04,
+                        width: size.width * .08,
+                        decoration: BoxDecoration(
+                          color: Colors.green,
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        child: IconButton(
+                          onPressed: () {
                             pickImage(context);
                           },
-                          child: Container(
-                            height: size.height * .04,
-                            width: size.width * .08,
-                            decoration: BoxDecoration(
-                              color: Colors.green,
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                            child: IconButton(
-                                onPressed: () {},
-                                icon: const Icon(
-                                  EneftyIcons.edit_2_bold,
-                                  color: Colors.white,
-                                  size: 18,
-                                )),
+                          icon: const Icon(
+                            EneftyIcons.edit_2_bold,
+                            color: Colors.white,
+                            size: 18,
                           ),
-                        ))
+                        ),
+                      ),
+                    ),
                   ],
                 ),
               ),
@@ -84,10 +87,12 @@ class DoctorAddingScreen extends StatelessWidget {
                   if (authProvider.doctorAddFormKey.currentState!.validate()) {
                     int rating =
                         int.parse(adminProvider.doctorRatingController.text);
+
                     if (rating > 5) {
                       SnackBarWidget().showErrorSnackbar(
                           context, 'Rating should be 5 or less');
                     } else {
+                      addData(context, adminProvider);
                       adminProvider.clearDoctorAddingControllers();
                     }
                   }
@@ -102,7 +107,7 @@ class DoctorAddingScreen extends StatelessWidget {
   }
 
   Future<void> pickImage(BuildContext context) async {
-    final adminProvider = Provider.of<AdminProvider>(context, listen: false);
+    final pro = Provider.of<AdminProvider>(context, listen: false);
     await showModalBottomSheet(
       context: context,
       builder: (BuildContext context) {
@@ -116,7 +121,7 @@ class DoctorAddingScreen extends StatelessWidget {
                 title: const Text('Camera'),
                 onTap: () {
                   Navigator.pop(context);
-                  adminProvider.getImage(ImageSource.camera);
+                  pro.getImage(ImageSource.camera);
                 },
               ),
               ListTile(
@@ -124,7 +129,7 @@ class DoctorAddingScreen extends StatelessWidget {
                 title: const Text('Gallery'),
                 onTap: () {
                   Navigator.pop(context);
-                  adminProvider.getImage(ImageSource.gallery);
+                  pro.getImage(ImageSource.gallery);
                 },
               ),
             ],
@@ -132,5 +137,42 @@ class DoctorAddingScreen extends StatelessWidget {
         );
       },
     );
+  }
+
+  Future<void> addData(
+      BuildContext context, AdminProvider adminProvider) async {
+    final pickedImage = adminProvider.doctorImage;
+    if (pickedImage != null) {
+      // adminProvider.setIsAddingData(true);
+      final image = await adminProvider.uploadImage(
+          File(pickedImage.path), adminProvider.imageName);
+
+      final cars = DoctorModel(
+          image: image,
+          fullName: adminProvider.doctorNameController.text,
+          age: adminProvider.doctorAgeController.text,
+          gender: adminProvider.selectedGender,
+          category: adminProvider.selectedCategory,
+          position: adminProvider.selectedPosition,
+          aboutDoctor: adminProvider.doctorAboutController.text,
+          workingDays: adminProvider.selectedWorkingDays,
+          startTime: adminProvider.doctorAppointmentTimeController.text,
+          endTime: adminProvider.doctorAppointmentEndTimeController.text,
+          patients: adminProvider.doctorPatientsController.text,
+          experience: adminProvider.doctorExperienceController.text,
+          rating: int.parse(adminProvider.doctorRatingController.text));
+
+      adminProvider.addCar(cars);
+
+      adminProvider.clearDoctorAddingControllers();
+
+      SnackBarWidget()
+          .showSuccessSnackbar(context, 'Doctor Added Successfully');
+    } else {
+      SnackBarWidget()
+          .showSuccessSnackbar(context, 'Failed to Add try once more');
+      log('Error: pickedImage is null');
+    }
+    // carProvider.setIsAddingData(false);
   }
 }

@@ -30,6 +30,7 @@ class AuthenticationProvider extends ChangeNotifier {
   final doctorAddFormKey = GlobalKey<FormState>();
   final fillAccountFormkey = GlobalKey<FormState>();
   final createAccountFormkey = GlobalKey<FormState>();
+  final forgotPasswordFormkey = GlobalKey<FormState>();
 
   final AuthenticationService authenticationService = AuthenticationService();
 
@@ -85,6 +86,7 @@ class AuthenticationProvider extends ChangeNotifier {
             context,
             MaterialPageRoute(builder: (context) => const AdminBottomBar()),
             (route) => false);
+        clearSignInControllers();
       } else {
         await emailSignIn(
             signInEmailController.text, signInPasswordController.text);
@@ -155,14 +157,12 @@ class AuthenticationProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  // Future<void> verifyOtp(otp, context, {success, error}) async {
-  //   await authenticationService.verifyOtp(otp, context,
-  //       snackBarError: success, snackBarSuccess: error);
-  //   notifyListeners();
-  // }
-
-  Future<void> verifyOtp(otp, context) async {
-    await authenticationService.verifyOtp(otp, context);
+  Future<void> verifyOtp(otp, context, {error}) async {
+    await authenticationService.verifyOtp(otp, context, error);
     notifyListeners();
+  }
+
+  Future<void> forgotPassword(context, {email}) async {
+    authenticationService.passwordReset(email: email, context: context);
   }
 }

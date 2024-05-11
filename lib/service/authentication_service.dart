@@ -98,28 +98,8 @@ class AuthenticationService {
     }
   }
 
-  // Future<PhoneAuthCredential?> verifyOtp(String otp, context,
-  //     {Function? snackBarSuccess, Function? snackBarError}) async {
-  //   try {
-  //     PhoneAuthCredential credential = PhoneAuthProvider.credential(
-  //         verificationId: verificationId!, smsCode: otp);
-  //     await firebaseAuth.signInWithCredential(credential);
-  //     Navigator.pushAndRemoveUntil(
-  //         context,
-  //         MaterialPageRoute(
-  //           builder: (context) => const UserBottomBar(),
-  //         ),
-  //         (route) => false);
-  //     snackBarSuccess;
-  //   } catch (e) {
-  //     snackBarError;
-  //     log("verify otp error $e");
-  //     return null;
-  //   }
-  //   return null;
-  // }
-
-  Future<PhoneAuthCredential?> verifyOtp(otp, context) async {
+  Future<PhoneAuthCredential?> verifyOtp(
+      otp, context, Function? snackBarError) async {
     try {
       log('message');
       PhoneAuthCredential credential = PhoneAuthProvider.credential(
@@ -133,10 +113,33 @@ class AuthenticationService {
           ),
           (route) => false);
     } catch (e) {
+      snackBarError;
       log("verify otp error $e");
       return null;
     }
     return null;
+  }
+
+  void passwordReset({required email, context}) async {
+    try {
+      log('start');
+      await firebaseAuth.sendPasswordResetEmail(email: email);
+      log('success');
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text("Password reset email sent"),
+        ),
+      );
+    } on FirebaseAuthException catch (e) {
+      log('error occure');
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(
+            e.message.toString(),
+          ),
+        ),
+      );
+    }
   }
 
   // updateUser(userid, UserModel data) async {

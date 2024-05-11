@@ -1,5 +1,6 @@
 class DoctorModel {
   String? id;
+  String? image;
   String? fullName;
   String? age;
   String? gender;
@@ -15,6 +16,7 @@ class DoctorModel {
 
   DoctorModel(
       {this.id,
+      this.image,
       required this.fullName,
       required this.age,
       required this.gender,
@@ -31,6 +33,7 @@ class DoctorModel {
   factory DoctorModel.fromJson(String id, Map<String, dynamic> json) {
     return DoctorModel(
         id: id,
+        image: json['image'],
         fullName: json['fullName'],
         age: json['age'],
         gender: json['gender'],
@@ -47,6 +50,7 @@ class DoctorModel {
 
   Map<String, dynamic> toJson() {
     return {
+      'image': image,
       'fullName': fullName,
       'age': age,
       'gender': gender,

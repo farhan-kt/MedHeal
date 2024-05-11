@@ -113,8 +113,6 @@ class CreateAccountScreen extends StatelessWidget {
                               ),
                               (route) => false);
                           authProvider.clearCreateAccountControllers();
-                          SnackBarWidget().showSuccessSnackbar(
-                              context, 'Account created successfully');
                         } else {
                           SnackBarWidget().showErrorSnackbar(
                               context, 'Passwords do not match');
