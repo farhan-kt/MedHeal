@@ -1,5 +1,6 @@
-import 'dart:developer';
 import 'dart:io';
+import 'dart:developer';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:medheal/model/doctor_model.dart';
@@ -26,12 +27,13 @@ class AdminProvider extends ChangeNotifier {
 
   String? selectedCategory;
   List<String> category = [
-    'MD',
-    'MBBS',
-    'BDS',
-    'ENT',
-    'DDS',
-    'DMD',
+    'General',
+    'Dentist',
+    'Otology',
+    'Cardiology',
+    'Intestine',
+    'Pediatric',
+    'Herbal',
   ];
 
   String? selectedPosition;
@@ -43,15 +45,6 @@ class AdminProvider extends ChangeNotifier {
     'Medical Officer'
   ];
 
-  String? selectedWorkingDays;
-  List<String> workingDays = [
-    'monday - friday',
-    'monday - saturday',
-    'sunday',
-    'weekend',
-    'monday, wednesday, friday'
-  ];
-
   void clearDoctorAddingControllers() {
     doctorNameController.clear();
     doctorAgeController.clear();
@@ -61,6 +54,21 @@ class AdminProvider extends ChangeNotifier {
     doctorPatientsController.clear();
     doctorExperienceController.clear();
     doctorRatingController.clear();
+    clearDoctorImage();
+    clearDropdownValues();
+  }
+
+  void clearDoctorImage() {
+    doctorImage = null;
+    notifyListeners();
+  }
+
+  void clearDropdownValues() {
+    selectedGender = null;
+    selectedCategory = null;
+    selectedPosition = null;
+
+    notifyListeners();
   }
 
   File? doctorImage;
@@ -69,18 +77,26 @@ class AdminProvider extends ChangeNotifier {
 
   final ImagePicker imagePicker = ImagePicker();
 
-  List<DoctorModel> searchList = [];
   List<DoctorModel> allDoctorList = [];
 
-  void addCar(DoctorModel data) async {
-    await doctorService.addDoctor(data);
+  bool isLoading = false;
 
+  void setLoading(bool value) {
+    isLoading = value;
     notifyListeners();
-    getAllDoctors();
   }
 
-  void deleteCar(String id) async {
+  Future<void> addDoctor(DoctorModel data) async {
+    await doctorService.addDoctor(data);
+    getAllDoctors();
+
+    notifyListeners();
+  }
+
+  void deleteDoctor(String id) async {
+    log('start deleting');
     await doctorService.deleteDoctor(id);
+    log('end deleting');
     getAllDoctors();
   }
 
@@ -114,6 +130,43 @@ class AdminProvider extends ChangeNotifier {
       doctorImage = File(pickedFile.path);
       log("Image picked");
       notifyListeners();
+    }
+  }
+
+  TextEditingController searchController = TextEditingController();
+
+  List<DoctorModel> searchList = [];
+
+  void search(String value) {
+    if (value.isEmpty) {
+      searchList = [];
+    } else {
+      searchList = allDoctorList
+          .where((DoctorModel doctor) =>
+              doctor.fullName!.toLowerCase().contains(value.toLowerCase()))
+          .toList();
+    }
+    notifyListeners();
+  }
+
+  Future<void> wishlistClicked(String id, bool status) async {
+    await doctorService.wishListClicked(id, status);
+    notifyListeners();
+  }
+
+  bool wishListCheck(DoctorModel doctor) {
+    final currentUser = FirebaseAuth.instance.currentUser;
+    if (currentUser != null) {
+      final user = currentUser.email ?? currentUser.phoneNumber;
+      if (doctor.wishList.contains(user)) {
+        getAllDoctors();
+        return false;
+      } else {
+        getAllDoctors();
+        return true;
+      }
+    } else {
+      return true;
     }
   }
 }

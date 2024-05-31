@@ -1,18 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:medheal/payment.dart';
 import 'package:provider/provider.dart';
 import 'package:enefty_icons/enefty_icons.dart';
 import 'package:medheal/widgets/text_widgets.dart';
 import 'package:medheal/widgets/normal_widgets.dart';
-import 'package:medheal/widgets/user_bottom_bar.dart';
 import 'package:medheal/controller/user_provider.dart';
 import 'package:medheal/view/user/home/home_widgets.dart';
 import 'package:medheal/widgets/textformfield_widget.dart';
 
-successDialogBox(context, size,
+successDialogBox(context, Size size,
     {elevatedButtonHeight,
     elevatedButtonWidth,
     height,
     width,
+    doctorName,
+    bookingTime,
     dialogheight,
     dialogWidth,
     headMessage,
@@ -43,45 +45,105 @@ successDialogBox(context, size,
                   fontSize: 20,
                   color: const Color(0xFF1995AD),
                 ),
+                if (!isAppointment!) ...[
+                  SizedBox(height: height),
+                  SizedBox(
+                    width: width,
+                    child: poppinsText(
+                      textAlign: TextAlign.center,
+                      text: subText,
+                      fontSize: 14,
+                      fontWeight: FontWeight.w400,
+                      color: const Color(0xFF101828),
+                    ),
+                  ),
+                ],
                 SizedBox(height: height),
+                isAppointment
+                    ? Column(
+                        children: [
+                          elevatedButtonWidget(
+                              buttonHeight: elevatedButtonHeight,
+                              buttonWidth: elevatedButtonWidth,
+                              onPressed: () {
+                                appointmentDialogBox(context, size,
+                                    doctorName: doctorName,
+                                    bookingTime: bookingTime);
+                              },
+                              buttonText: 'Direct Pay'),
+                          SizedBox(
+                            height: size.height * .02,
+                          ),
+                          elevatedButtonWidget(
+                              buttonHeight: elevatedButtonHeight,
+                              buttonWidth: elevatedButtonWidth,
+                              onPressed: () {
+                                int amount = 20000;
+                                RazorPay razorPayInstance = RazorPay();
+                                razorPayInstance.razorPay(amount.toString());
+                              },
+                              buttonText: 'Payment'),
+                        ],
+                      )
+                    : const CircularProgressIndicator(
+                        color: Color(0xFF1995AD),
+                      )
+              ],
+            ),
+          ),
+        ),
+      );
+    },
+  );
+}
+
+appointmentDialogBox(routeContext, Size size, {doctorName, bookingTime}) {
+  return showDialog(
+    context: routeContext,
+    builder: (context) {
+      return AlertDialog(
+        title: SizedBox(
+          height: size.height * .43,
+          width: size.width * .2,
+          child: SingleChildScrollView(
+            scrollDirection: Axis.vertical,
+            child: Column(
+              children: [
+                SizedBox(height: size.height * .02),
+                CircleAvatar(
+                  radius: size.width * .15,
+                  backgroundColor: const Color(0xFF1995AD),
+                  backgroundImage:
+                      const AssetImage('assets/avatar-removebg-preview.png'),
+                ),
+                SizedBox(height: size.height * .02),
+                poppinsHeadText(
+                  textAlign: TextAlign.center,
+                  text: 'Your Appointment Has Been Confirmed',
+                  fontSize: 20,
+                  color: const Color(0xFF1995AD),
+                ),
+                SizedBox(height: size.height * .02),
                 SizedBox(
-                  width: width,
+                  width: size.width * .8,
                   child: poppinsText(
                     textAlign: TextAlign.center,
-                    text: subText,
+                    text:
+                        'Your appointment with Dr. ${doctorName} on Wednesday, August 17, 2023 at ${bookingTime}  ',
                     fontSize: 14,
                     fontWeight: FontWeight.w400,
                     color: const Color(0xFF101828),
                   ),
                 ),
-                SizedBox(height: height),
-                isAppointment!
-                    ? SizedBox(
-                        height: elevatedButtonHeight,
-                        width: elevatedButtonWidth,
-                        child: ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: const Color(0xFF1995AD),
-                          ),
-                          onPressed: () {
-                            Navigator.pushReplacement(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => const UserBottomBar(),
-                              ),
-                            );
-                          },
-                          child: poppinsText(
-                              text: 'OK',
-                              textAlign: TextAlign.center,
-                              color: Colors.white,
-                              fontSize: 16,
-                              fontWeight: FontWeight.w600),
-                        ),
-                      )
-                    : const CircularProgressIndicator(
-                        color: Color(0xFF1995AD),
-                      )
+                SizedBox(height: size.height * .02),
+                elevatedButtonWidget(
+                    buttonHeight: size.height * .05,
+                    buttonWidth: size.width * .7,
+                    onPressed: () {
+                      Navigator.pop(routeContext);
+                      Navigator.pop(routeContext);
+                    },
+                    buttonText: 'OK')
               ],
             ),
           ),

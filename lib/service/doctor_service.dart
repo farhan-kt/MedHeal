@@ -44,6 +44,28 @@ class DoctorService {
     return snapshot.docs.map((doc) => doc.data()).toList();
   }
 
+  Future<void> wishListClicked(String id, bool status) async {
+    try {
+      if (status == true) {
+        await doctor.doc(id).update({
+          'wishlist': FieldValue.arrayUnion([
+            firebaseAuth.currentUser!.email ??
+                firebaseAuth.currentUser!.phoneNumber
+          ])
+        });
+      } else {
+        await doctor.doc(id).update({
+          'wishlist': FieldValue.arrayRemove([
+            firebaseAuth.currentUser!.email ??
+                firebaseAuth.currentUser!.phoneNumber
+          ])
+        });
+      }
+    } catch (e) {
+      log('got a error of :$e');
+    }
+  }
+
   Future<String> uploadImage(imageName, imageFile) async {
     Reference imageFolder = storage.child('productImage');
     Reference? uploadImage = imageFolder.child('$imageName.jpg');

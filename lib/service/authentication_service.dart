@@ -1,16 +1,57 @@
 import 'dart:developer';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:medheal/model/authentication_model.dart';
 import 'package:medheal/widgets/user_bottom_bar.dart';
 
 class AuthenticationService {
   String collection = 'user';
+  late CollectionReference<UserModel> users;
   String? verificationid;
-
   FirebaseAuth firebaseAuth = FirebaseAuth.instance;
+  Reference storage = FirebaseStorage.instance.ref();
   FirebaseFirestore fireStore = FirebaseFirestore.instance;
+
+  AuthenticationService() {
+    users = FirebaseFirestore.instance
+        .collection(collection)
+        .withConverter<UserModel>(
+      fromFirestore: (snapshot, options) {
+        return UserModel.fromJson(
+          snapshot.data()!,
+        );
+      },
+      toFirestore: (value, options) {
+        return value.toJson();
+      },
+    );
+  }
+
+  Future<void> addUser(UserModel data) async {
+    try {
+      await users.doc(firebaseAuth.currentUser!.uid).set(data);
+    } catch (e) {
+      log('Error adding post :$e');
+    }
+  }
+
+  Future<UserModel?> getCurrentUser() async {
+    final snapshot = await fireStore
+        .collection(collection)
+        .doc(firebaseAuth.currentUser?.uid)
+        .get();
+
+    if (snapshot.exists && snapshot.data() != null) {
+      return UserModel.fromJson(
+        snapshot.data()!,
+      );
+    } else {
+      return null;
+    }
+  }
 
   Future<UserCredential> userEmailCreate(String email, String password) async {
     try {
@@ -149,4 +190,33 @@ class AuthenticationService {
   //     log("error in updating product : $e");
   //   }
   // }
+
+  updateUser(userid, UserModel data) async {
+    try {
+      await users.doc(userid).update(
+            data.toJson(),
+          );
+    } catch (e) {
+      log("error in updating product : $e");
+    }
+  }
+
+  Future<List<UserModel>> getAllUser() async {
+    try {
+      QuerySnapshot<Map<String, dynamic>> snapshot =
+          await fireStore.collection(collection).get();
+
+      List<UserModel> data = snapshot.docs
+          .map(
+            (e) => UserModel.fromJson(
+              e.data(),
+            ),
+          )
+          .toList();
+      return data;
+    } catch (e) {
+      log('get error: $e');
+      throw e;
+    }
+  }
 }

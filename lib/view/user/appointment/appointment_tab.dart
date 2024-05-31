@@ -16,6 +16,7 @@ class AppointmentScreen extends StatelessWidget {
       length: 3,
       child: Scaffold(
         appBar: AppBar(
+          automaticallyImplyLeading: false,
           backgroundColor: const Color(0xFFFFFFFF),
           title: poppinsHeadText(
             text: 'My Appointment',

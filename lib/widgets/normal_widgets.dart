@@ -1,142 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:enefty_icons/enefty_icons.dart';
-import 'package:medheal/widgets/text_widgets.dart';
 import 'package:medheal/view/user/home/doctor_detail_screen.dart';
-
-Widget allDoctorsContainer(Size size, context,
-    {bool? isAdmin, circleAvatarRadius}) {
-  return isAdmin == true
-      ? Container(
-          height: size.height * .16,
-          width: size.width * .93,
-          decoration: BoxDecoration(
-            color: const Color(0xFFFFFFFF),
-            border: Border.all(
-              color: const Color(0xFFFFFFFF),
-            ),
-            borderRadius: BorderRadius.circular(18),
-          ),
-          child: Padding(
-            padding: EdgeInsets.symmetric(
-                horizontal: 10, vertical: size.height * .03),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                CircleAvatar(
-                  radius: circleAvatarRadius,
-                  backgroundColor: Colors.white,
-                  backgroundImage:
-                      const AssetImage('assets/avatar-removebg-preview.png'),
-                ),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: [
-                    poppinsHeadText(
-                      text: 'Dr. Jennie Thorn',
-                      color: const Color(0xFF1D1617),
-                      fontSize: 14,
-                    ),
-                    Row(children: [
-                      poppinsSmallText(
-                        text: 'Dentist | ',
-                      ),
-                      poppinsSmallText(
-                        text: 'BDS Surgeon',
-                      )
-                    ]),
-                    poppinsSmallText(
-                      text: '5Y+ Experience',
-                    )
-                  ],
-                ),
-                SizedBox(width: size.width * .1),
-                IconButton(
-                  onPressed: () {
-                    confirmationDialog(
-                      context,
-                      size,
-                      dialogheight: size.height * .12,
-                      alertMessage: 'Confirm to delete the doctor',
-                      confirmText: 'Delete',
-                      onPressedConfirm: () {},
-                    );
-                  },
-                  icon: const Icon(
-                    Icons.delete,
-                    color: Color(0xFFF24E1E),
-                  ),
-                )
-              ],
-            ),
-          ),
-        )
-      : GestureDetector(
-          onTap: () {
-            Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => const DoctorDetailScreen()));
-          },
-          child: Container(
-            height: size.height * .16,
-            width: size.width * .93,
-            decoration: BoxDecoration(
-              color: const Color(0xFFFFFFFF),
-              border: Border.all(
-                color: const Color(0xFFFFFFFF),
-              ),
-              borderRadius: BorderRadius.circular(18),
-            ),
-            child: Padding(
-              padding: EdgeInsets.symmetric(
-                  horizontal: 10, vertical: size.height * .03),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  CircleAvatar(
-                    radius: circleAvatarRadius,
-                    backgroundColor: Colors.white,
-                    backgroundImage:
-                        const AssetImage('assets/avatar-removebg-preview.png'),
-                  ),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: [
-                      poppinsHeadText(
-                        text: 'Dr. Jennie Thorn',
-                        color: const Color(0xFF1D1617),
-                        fontSize: 14,
-                      ),
-                      Row(children: [
-                        poppinsSmallText(
-                          text: 'Dentist | ',
-                        ),
-                        poppinsSmallText(
-                          text: 'BDS Surgeon',
-                        )
-                      ]),
-                      poppinsSmallText(
-                        text: '5Y+ Experience',
-                      )
-                    ],
-                  ),
-                  SizedBox(width: size.width * .1),
-                  IconButton(
-                    onPressed: () {},
-                    icon: const Icon(
-                      EneftyIcons.heart_outline,
-                      size: 28,
-                      color: Color(0xFF1995AD),
-                    ),
-                  )
-                ],
-              ),
-            ),
-          ),
-        );
-}
+import 'package:medheal/widgets/text_widgets.dart';
 
 Widget elevatedButtonWidget(
     {onPressed,
@@ -183,9 +48,7 @@ Widget profileContainerListTile(BuildContext context,
             color: iconColor,
           ),
           SizedBox(width: size.width * .02),
-          poppinsSmallText(
-            text: title,
-          )
+          poppinsText(text: title, fontWeight: FontWeight.w500, fontSize: 13)
         ]),
         suffixIcon ?? false
             ? const Icon(Icons.arrow_forward_ios_rounded,
@@ -238,11 +101,15 @@ Widget profileScreenContainer(context,
   );
 }
 
-Widget doctorDetailsShowingContainer(context, size, {width}) {
+Widget doctorDetailsShowingContainer(context, size, {width, valueProvider}) {
   return GestureDetector(
     onTap: () {
-      Navigator.push(context,
-          MaterialPageRoute(builder: (context) => const DoctorDetailScreen()));
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) => DoctorDetailScreen(
+                    value: valueProvider,
+                  )));
     },
     child: Container(
       height: size.height * .16,
@@ -289,6 +156,67 @@ Widget doctorDetailsShowingContainer(context, size, {width}) {
               ])
         ]),
       ),
+    ),
+  );
+}
+
+Widget doctorDetailsScreenContainer(Size size,
+    {width, fullName, age, category, position, gender, image}) {
+  return Container(
+    height: size.height * .16,
+    width: width,
+    decoration: BoxDecoration(
+        color: const Color.fromARGB(255, 193, 225, 234),
+        border: Border.all(color: const Color.fromARGB(255, 199, 212, 226)),
+        borderRadius: BorderRadius.circular(18)),
+    child: Padding(
+      padding:
+          EdgeInsets.symmetric(horizontal: 10, vertical: size.height * .03),
+      child: Row(children: [
+        CircleAvatar(
+            radius: 50,
+            backgroundColor: Colors.white,
+            backgroundImage: NetworkImage(image!)),
+        Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              poppinsHeadText(
+                text: fullName,
+                color: const Color(0xFF1D1617),
+                fontSize: 14,
+              ),
+              Row(
+                children: [
+                  poppinsText(
+                    text: age,
+                    color: const Color(0xFF101828),
+                    fontSize: 12,
+                  ),
+                  const Text(
+                    '  | ',
+                    style: TextStyle(fontSize: 17),
+                  ),
+                  poppinsText(
+                      text: gender,
+                      color: const Color(0xFF101828),
+                      fontSize: 12),
+                ],
+              ),
+              Row(
+                children: [
+                  poppinsText(
+                      text: '${category} | ',
+                      color: const Color(0xFF101828),
+                      fontSize: 12),
+                  poppinsText(
+                      text: position,
+                      color: const Color(0xFF101828),
+                      fontSize: 12),
+                ],
+              ),
+            ])
+      ]),
     ),
   );
 }

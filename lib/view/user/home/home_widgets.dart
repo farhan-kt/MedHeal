@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:enefty_icons/enefty_icons.dart';
+import 'package:medheal/view/user/home/category.dart';
 import 'package:medheal/widgets/text_widgets.dart';
 import 'package:medheal/view/user/user_widgets.dart';
 import 'package:medheal/widgets/normal_widgets.dart';
@@ -7,13 +8,30 @@ import 'package:medheal/view/user/profile/favourite_doctors.dart';
 
 Widget homeCategoryAvatar(context, imagePath, {category, circleRadius}) {
   return GestureDetector(
-    onTap: () {},
+    onTap: () {
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) => CategoryScreen(category: category)));
+    },
     child: Column(
       children: [
         CircleAvatar(
           radius: circleRadius,
-          backgroundColor: const Color(0xFF1995AD).withOpacity(0.5),
-          backgroundImage: AssetImage(imagePath),
+          backgroundColor:
+              const Color.fromARGB(255, 101, 176, 191).withOpacity(0.5),
+          child: ClipOval(
+            child: Center(
+              child: SizedBox(
+                width: 40,
+                height: 47,
+                child: Image.asset(
+                  imagePath,
+                  fit: BoxFit.contain,
+                ),
+              ),
+            ),
+          ),
         ),
         poppinsText(
           text: category,
@@ -25,7 +43,8 @@ Widget homeCategoryAvatar(context, imagePath, {category, circleRadius}) {
   );
 }
 
-Widget doctorDetailsExperienceContainer({height, width, valueText, headText}) {
+Widget doctorDetailsExperienceContainer(
+    {height, width, valueText, headText, bool rating = false}) {
   return Container(
     height: height,
     width: width,
@@ -39,12 +58,21 @@ Widget doctorDetailsExperienceContainer({height, width, valueText, headText}) {
     child: Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        poppinsHeadText(
-          textAlign: TextAlign.center,
-          text: valueText,
-          color: const Color(0xFF1995AD),
-          fontSize: 14,
-        ),
+        Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+          poppinsHeadText(
+            textAlign: TextAlign.center,
+            text: valueText,
+            color: const Color(0xFF1995AD),
+            fontSize: 14,
+          ),
+          const SizedBox(width: 2),
+          if (rating)
+            const Icon(
+              Icons.star,
+              color: Colors.amber,
+              size: 18,
+            )
+        ]),
         poppinsSmallText(
           textAlign: TextAlign.center,
           text: headText,
@@ -55,7 +83,11 @@ Widget doctorDetailsExperienceContainer({height, width, valueText, headText}) {
   );
 }
 
-Widget homeCategory(context, Size size, {circleAvatarRadius}) {
+Widget homeCategory(
+  context,
+  Size size, {
+  circleAvatarRadius,
+}) {
   return SizedBox(
     height: size.height * .275,
     width: size.width * .9,
@@ -65,13 +97,17 @@ Widget homeCategory(context, Size size, {circleAvatarRadius}) {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
-            homeCategoryAvatar(context, 'assets/avatar-removebg-preview.png',
-                category: 'General', circleRadius: circleAvatarRadius),
-            homeCategoryAvatar(context, 'assets/avatar-removebg-preview.png',
+            homeCategoryAvatar(
+              context,
+              'assets/users.png',
+              category: 'General',
+              circleRadius: circleAvatarRadius,
+            ),
+            homeCategoryAvatar(context, 'assets/tooth.png',
                 category: 'Dentist', circleRadius: circleAvatarRadius),
-            homeCategoryAvatar(context, 'assets/avatar-removebg-preview.png',
+            homeCategoryAvatar(context, 'assets/ear.png',
                 category: 'Otology', circleRadius: circleAvatarRadius),
-            homeCategoryAvatar(context, 'assets/avatar-removebg-preview.png',
+            homeCategoryAvatar(context, 'assets/eye.png',
                 category: 'Cardiology', circleRadius: circleAvatarRadius),
           ],
         ),
@@ -79,13 +115,13 @@ Widget homeCategory(context, Size size, {circleAvatarRadius}) {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
-            homeCategoryAvatar(context, 'assets/avatar-removebg-preview.png',
+            homeCategoryAvatar(context, 'assets/small-intestine.png',
                 category: 'Intestine', circleRadius: circleAvatarRadius),
-            homeCategoryAvatar(context, 'assets/avatar-removebg-preview.png',
+            homeCategoryAvatar(context, 'assets/pediatrics.png',
                 category: 'Pediatric', circleRadius: circleAvatarRadius),
-            homeCategoryAvatar(context, 'assets/avatar-removebg-preview.png',
+            homeCategoryAvatar(context, 'assets/herbal-treatment.png',
                 category: 'Herbal', circleRadius: circleAvatarRadius),
-            homeCategoryAvatar(context, 'assets/avatar-removebg-preview.png',
+            homeCategoryAvatar(context, 'assets/more.png',
                 category: 'More', circleRadius: circleAvatarRadius),
           ],
         ),
@@ -295,24 +331,25 @@ Widget doctorDetailsTimeButton({onPressed, time}) {
   );
 }
 
-Widget doctorDetailsExperienceRow(Size size) {
+Widget doctorDetailsExperienceRow(Size size, {patient, experience, rating}) {
   return Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
     doctorDetailsExperienceContainer(
         height: size.height * .07,
         width: size.width * .27,
-        valueText: '180Cm',
-        headText: 'Patient'),
+        valueText: patient,
+        headText: 'Patients'),
     SizedBox(width: size.width * .04),
     doctorDetailsExperienceContainer(
         height: size.height * .07,
         width: size.width * .27,
-        valueText: '10Y +',
+        valueText: '${experience} Yrs',
         headText: 'Experience'),
     SizedBox(width: size.width * .04),
     doctorDetailsExperienceContainer(
+        rating: true,
         height: size.height * .07,
         width: size.width * .27,
-        valueText: '180Cm',
+        valueText: rating.toString(),
         headText: 'Rating'),
   ]);
 }

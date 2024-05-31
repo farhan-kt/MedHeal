@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:medheal/controller/authentication_provider.dart';
 import 'package:medheal/view/user/authentication/fill_profile.dart';
@@ -20,7 +21,13 @@ class UserProfileScreen extends StatelessWidget {
     final bottomProvider = Provider.of<BottomProvider>(context, listen: false);
     final authenticationProvider =
         Provider.of<AuthenticationProvider>(context, listen: false);
-
+    final firebaseauth = FirebaseAuth.instance.currentUser;
+    ImageProvider? imageprovider;
+    if (firebaseauth != null && firebaseauth.photoURL != null) {
+      imageprovider = NetworkImage(firebaseauth.photoURL.toString());
+    } else {
+      imageprovider = const AssetImage("assets/avatar-removebg-preview.png");
+    }
     return Scaffold(
       backgroundColor: const Color(0xFFF5F5F5),
       body: Padding(
@@ -62,25 +69,27 @@ class UserProfileScreen extends StatelessWidget {
             CircleAvatar(
               radius: circleAvatarRadius,
               backgroundColor: const Color.fromARGB(255, 143, 189, 198),
-              backgroundImage:
-                  const AssetImage('assets/avatar-removebg-preview.png'),
+              backgroundImage: imageprovider,
             ),
             SizedBox(width: size.width * .02),
-            Column(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  poppinsHeadText(
-                    text: 'Farhan',
-                    color: const Color(0xFF1D1617),
-                    fontSize: 15,
-                  ),
-                  SizedBox(height: size.height * .008),
-                  poppinsSmallText(
-                    text: 'farhan@gmail.com',
-                    color: const Color(0xFF888888),
-                  ),
-                ]),
+            Consumer<AuthenticationProvider>(
+              builder: (context, value, child) => Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    poppinsHeadText(
+                      text: value.currentUser?.userName ?? 'Unknown',
+                      color: const Color(0xFF1D1617),
+                      fontSize: 15,
+                    ),
+                    SizedBox(height: size.height * .008),
+                    poppinsHeadText(
+                      text: value.currentUser?.email ?? 'unknown',
+                      fontSize: 15,
+                      color: const Color(0xFF888888),
+                    ),
+                  ]),
+            ),
             SizedBox(height: size.height * .03),
             userProfileScreenContainer(size, context,
                 height: size.height * .13,

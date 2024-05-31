@@ -39,9 +39,10 @@ Widget userProfileScreenContainer(size, context,
                   color: Color(0xFF1995AD),
                 ),
                 SizedBox(width: sizedBoxWidth),
-                poppinsSmallText(
-                  text: "Favourite Doctor's",
-                )
+                poppinsText(
+                    text: "Favourite Doctor's",
+                    fontWeight: FontWeight.w500,
+                    fontSize: 13)
               ]),
               const Icon(Icons.arrow_forward_ios_rounded,
                   color: Color(0xFF888888))

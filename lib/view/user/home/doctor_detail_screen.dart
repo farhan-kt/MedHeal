@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:medheal/controller/admin_provider.dart';
+import 'package:medheal/model/doctor_model.dart';
 import 'package:provider/provider.dart';
 import 'package:enefty_icons/enefty_icons.dart';
 import 'package:medheal/widgets/text_widgets.dart';
@@ -7,25 +9,24 @@ import 'package:medheal/widgets/normal_widgets.dart';
 import 'package:medheal/controller/user_provider.dart';
 import 'package:medheal/view/user/home/home_widgets.dart';
 import 'package:medheal/widgets/textformfield_widget.dart';
+import 'package:intl/intl.dart'; // Add this import for date formatting
 
 class DoctorDetailScreen extends StatelessWidget {
-  const DoctorDetailScreen({super.key});
+  final DoctorModel? doctors;
+  final AdminProvider value;
+
+  const DoctorDetailScreen({super.key, this.doctors, required this.value});
 
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     final userProvider = Provider.of<UserProvider>(context, listen: false);
 
-    List<String> times = [
-      '09:00 AM',
-      '10:00 AM',
-      '11:00 AM',
-      '12:00 PM',
-      '02:00 PM',
-      '03:00 PM',
-      '04:00 PM',
-      '05:00 PM',
-    ];
+    // Handle nullable startTime and endTime with default values
+    List<String> times = _generateTimeSlots(
+        doctors?.startTime?.trim() ?? '09:00 AM',
+        doctors?.endTime?.trim() ?? '05:00 PM');
+
     return Scaffold(
       backgroundColor: const Color(0xFFFFFFFF),
       appBar: AppBar(
@@ -40,16 +41,29 @@ class DoctorDetailScreen extends StatelessWidget {
         ),
         backgroundColor: const Color(0xFFFFFFFF),
         title: poppinsText(
-            text: 'Dr. Jennie Thorn',
+            text: 'Dr. ${doctors!.fullName}',
             color: const Color(0xFF1A1A1A),
             fontSize: 18,
             fontWeight: FontWeight.bold),
         centerTitle: true,
         actions: [
           IconButton(
-            onPressed: () {},
-            icon: const Icon(EneftyIcons.heart_outline),
-          )
+            onPressed: () {
+              final wish = value.wishListCheck(doctors!);
+              value.wishlistClicked(doctors!.id!, wish);
+            },
+            icon: value.wishListCheck(doctors!)
+                ? const Icon(
+                    Icons.favorite_border_rounded,
+                    size: 30,
+                    color: Colors.red,
+                  )
+                : const Icon(
+                    Icons.favorite_rounded,
+                    size: 30,
+                    color: Colors.red,
+                  ),
+          ),
         ],
       ),
       body: Padding(
@@ -60,18 +74,25 @@ class DoctorDetailScreen extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              doctorDetailsShowingContainer(context, size,
-                  width: size.width * .915),
+              doctorDetailsScreenContainer(size,
+                  width: size.width * .915,
+                  fullName: 'Dr. ${doctors!.fullName}',
+                  age: doctors!.age,
+                  gender: doctors!.gender,
+                  category: doctors!.category,
+                  position: doctors!.position,
+                  image: doctors!.image),
               SizedBox(height: size.height * .03),
-              doctorDetailsExperienceRow(size),
+              doctorDetailsExperienceRow(size,
+                  patient: doctors!.patients,
+                  experience: doctors!.experience,
+                  rating: doctors!.rating),
               SizedBox(height: size.height * .03),
               poppinsHeadText(text: 'About me'),
               SizedBox(height: size.height * .02),
               SizedBox(
                 child: poppinsSmallText(
-                    text:
-                        'Dr. Jennie Thorn is the most immunologists specialist in Royal Hospital at Phnom penh. She achieved several awards for her wonderful contributing in medical field',
-                    color: const Color(0xFF344154)),
+                    text: doctors!.aboutDoctor, color: const Color(0xFF344154)),
               ),
               SizedBox(height: size.height * .03),
               poppinsHeadText(text: 'Working information'),
@@ -88,7 +109,7 @@ class DoctorDetailScreen extends StatelessWidget {
                     color: const Color(0xFF344154),
                   ),
                   poppinsSmallText(
-                    text: '08:00 AM - 21:00 PM',
+                    text: '${doctors!.startTime}  -  ${doctors!.endTime}',
                     color: const Color(0xFF344154),
                   ),
                 ],
@@ -96,18 +117,14 @@ class DoctorDetailScreen extends StatelessWidget {
               SizedBox(height: size.height * .02),
               poppinsHeadText(text: 'Select Date'),
               SizedBox(height: size.height * .02),
-              CustomTextFormField(
-                controller: userProvider.userBookingDateController,
-                hintText: 'Appointment Date',
-                suffixIcon: const Icon(EneftyIcons.calendar_2_outline),
-              ),
+              bookingDateTextFormField(context, userProvider,
+                  keyboardType: TextInputType.datetime),
               SizedBox(height: size.height * .02),
               poppinsHeadText(
                 text: 'Select Hour',
               ),
               SizedBox(height: size.height * .02),
               SizedBox(
-                height: size.height * .1,
                 child: GridView.builder(
                   gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                     childAspectRatio: 1 / .4,
@@ -115,7 +132,9 @@ class DoctorDetailScreen extends StatelessWidget {
                     crossAxisSpacing: size.width * 0.02,
                     mainAxisSpacing: size.height * 0.01,
                   ),
-                  itemCount: 8,
+                  shrinkWrap: true,
+                  physics: const NeverScrollableScrollPhysics(),
+                  itemCount: times.length,
                   itemBuilder: (BuildContext context, int index) {
                     String time = times[index];
                     return SizedBox(
@@ -129,7 +148,7 @@ class DoctorDetailScreen extends StatelessWidget {
                   },
                 ),
               ),
-              SizedBox(height: size.height * .04),
+              SizedBox(height: size.height * .02),
               elevatedButtonWidget(
                   buttonHeight: size.height * .06,
                   buttonWidth: size.width * .9,
@@ -137,15 +156,15 @@ class DoctorDetailScreen extends StatelessWidget {
                   onPressed: () {
                     successDialogBox(context, size,
                         isAppointment: true,
-                        headMessage: 'Your Appointment Has Been Confirmed',
+                        headMessage: 'Choose Your Payment Method',
                         elevatedButtonHeight: size.height * .05,
                         elevatedButtonWidth: size.width * .7,
                         height: size.height * .02,
                         width: size.width * .8,
-                        dialogheight: size.height * .45,
+                        dialogheight: size.height * .43,
                         dialogWidth: size.width * .2,
-                        subText:
-                            'Your appointment with Dr. Jennie Thorn on Wednesday, August 17, 2023 at 11:00 AM  ');
+                        bookingTime: doctors!.startTime,
+                        doctorName: doctors!.fullName);
                   }),
               SizedBox(height: size.height * .02),
             ],
@@ -153,5 +172,42 @@ class DoctorDetailScreen extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  List<String> _generateTimeSlots(String startTime, String endTime) {
+    List<String> timeSlots = [];
+
+    try {
+      DateTime start = _parseTime(startTime);
+      DateTime end = _parseTime(endTime);
+
+      while (start.isBefore(end)) {
+        timeSlots.add(_formatTime(start));
+        start = start.add(const Duration(minutes: 30));
+      }
+    } catch (e) {
+      debugPrint('Error generating time slots: $e');
+    }
+
+    return timeSlots;
+  }
+
+  DateTime _parseTime(String time) {
+    final trimmedTime = time.trim();
+    final components = trimmedTime.split(' ');
+    final hourMinute = components[0].split(':');
+    final hour = int.tryParse(hourMinute[0]);
+    final minute = int.tryParse(hourMinute[1]);
+    final isPM = components[1].toUpperCase() == 'PM';
+    if (hour != null && minute != null) {
+      final dateTime = DateTime(1, 1, 1, isPM ? hour + 12 : hour, minute);
+      return dateTime;
+    }
+    throw const FormatException('Invalid time format');
+  }
+
+  String _formatTime(DateTime time) {
+    final format = DateFormat.jm();
+    return format.format(time);
   }
 }

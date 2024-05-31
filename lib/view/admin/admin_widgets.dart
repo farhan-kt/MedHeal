@@ -1,11 +1,7 @@
-import 'dart:developer';
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:medheal/model/doctor_model.dart';
-import 'package:medheal/widgets/snackbar_widget.dart';
 import 'package:medheal/widgets/text_widgets.dart';
+import 'package:medheal/widgets/snackbar_widget.dart';
 import 'package:medheal/controller/admin_provider.dart';
 import 'package:medheal/widgets/textformfield_widget.dart';
 
@@ -101,20 +97,6 @@ Widget adminDoctorAddFields(
         ],
       ),
       poppinsHeadText(text: 'Working information'),
-      dropDownTextFormField(
-          hintText: 'working days..',
-          value: adminProvider.selectedWorkingDays,
-          items: adminProvider.workingDays.map((gender) {
-            return DropdownMenuItem(
-                value: gender,
-                child: interSubText(
-                  text: gender,
-                ));
-          }).toList(),
-          onChanged: (value) {
-            adminProvider.selectedWorkingDays = value.toString();
-          },
-          validateMessage: 'select working days'),
       Row(
         children: [
           Expanded(
@@ -122,6 +104,19 @@ Widget adminDoctorAddFields(
               controller: adminProvider.doctorAppointmentTimeController,
               labelText: "inspection start time",
               validateMessage: 'pick inspection time',
+              keyboardType: TextInputType.datetime,
+              initialTime: TimeOfDay.now(),
+              onTimePicked: (pickedTime) {
+                if (pickedTime != null) {
+                  if (pickedTime.hour >= 9 && pickedTime.hour <= 17) {
+                    adminProvider.doctorAppointmentTimeController.text =
+                        pickedTime.format(context);
+                  } else {
+                    SnackBarWidget().showErrorSnackbar(context,
+                        'start time must be between 9:00 AM and 5:00 PM');
+                  }
+                }
+              },
             ),
           ),
           SizedBox(width: size.width * .08),
@@ -130,6 +125,19 @@ Widget adminDoctorAddFields(
               controller: adminProvider.doctorAppointmentEndTimeController,
               labelText: 'inspection end time',
               validateMessage: 'pick inspection end time',
+              keyboardType: TextInputType.datetime,
+              initialTime: TimeOfDay.now(),
+              onTimePicked: (pickedTime) {
+                if (pickedTime != null) {
+                  if (pickedTime.hour <= 18) {
+                    adminProvider.doctorAppointmentEndTimeController.text =
+                        pickedTime.format(context);
+                  } else {
+                    SnackBarWidget().showErrorSnackbar(
+                        context, 'End time must be 6:00 PM or earlier');
+                  }
+                }
+              },
             ),
           ),
         ],

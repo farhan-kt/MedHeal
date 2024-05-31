@@ -1,6 +1,9 @@
+import 'dart:developer';
+
 import 'package:country_picker/country_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:medheal/model/authentication_model.dart';
 import 'package:medheal/widgets/snackbar_widget.dart';
 import 'package:medheal/widgets/user_bottom_bar.dart';
 import 'package:medheal/widgets/admin_bottom_bar.dart';
@@ -20,7 +23,6 @@ class AuthenticationProvider extends ChangeNotifier {
   TextEditingController profileEmailController = TextEditingController();
   TextEditingController phoneNumberController = TextEditingController();
   TextEditingController genderController = TextEditingController();
-
   TextEditingController phoneController = TextEditingController();
   TextEditingController otpController = TextEditingController();
 
@@ -33,6 +35,11 @@ class AuthenticationProvider extends ChangeNotifier {
   final forgotPasswordFormkey = GlobalKey<FormState>();
 
   final AuthenticationService authenticationService = AuthenticationService();
+
+  final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
+
+  UserModel? currentUser;
+  UserModel? sortedUser;
 
   Country selectCountry = Country(
       phoneCode: '91',
@@ -118,9 +125,10 @@ class AuthenticationProvider extends ChangeNotifier {
   }
 
   void clearFillProfileControllers() {
-    fullNameController.clear();
+    userNameController.clear();
     ageController.clear();
-    profileEmailController.clear();
+    // profileEmailController.clear();
+    emailController.clear();
     phoneNumberController.clear();
     genderController.clear();
   }
@@ -164,5 +172,36 @@ class AuthenticationProvider extends ChangeNotifier {
 
   Future<void> forgotPassword(context, {email}) async {
     authenticationService.passwordReset(email: email, context: context);
+  }
+
+  addUser() async {
+    final user = UserModel(
+      email: emailController.text,
+      phoneNumber: phoneController.text,
+      userName: userNameController.text,
+      age: ageController.text,
+      gender: genderController.text,
+      uId: firebaseAuth.currentUser!.uid,
+    );
+    await authenticationService.addUser(user);
+    getUser();
+  }
+
+  getUser() async {
+    currentUser = await authenticationService.getCurrentUser();
+    log(currentUser?.phoneNumber ?? "");
+    notifyListeners();
+  }
+
+  updateUser(userid, UserModel data) async {
+    await authenticationService.updateUser(userid, data);
+    clearFillProfileControllers();
+    notifyListeners();
+  }
+
+  getDoctorUser(String uId) async {
+    List<UserModel> allUsers = await authenticationService.getAllUser();
+    sortedUser = allUsers.firstWhere((element) => element.uId == uId);
+    notifyListeners();
   }
 }

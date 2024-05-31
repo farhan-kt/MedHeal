@@ -1,6 +1,10 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:medheal/model/doctor_model.dart';
+import 'package:provider/provider.dart';
 import 'package:medheal/widgets/text_widgets.dart';
-import 'package:medheal/widgets/normal_widgets.dart';
+import 'package:medheal/controller/admin_provider.dart';
+import 'package:medheal/widgets/all_doctor_container.dart';
 
 const double circleAvatarRadiusFraction = 0.1;
 
@@ -23,20 +27,49 @@ class FavouriteDoctorsScreen extends StatelessWidget {
           automaticallyImplyLeading: false,
           centerTitle: true),
       body: Padding(
-        padding: const EdgeInsets.all(10),
-        child: ListView.builder(
-          itemCount: 5,
-          itemBuilder: (context, index) {
-            return Column(
-              children: [
-                allDoctorsContainer(size, context,
-                    isAdmin: false, circleAvatarRadius: circleAvatarRadius),
-                SizedBox(height: size.height * .02)
-              ],
-            );
-          },
-        ),
-      ),
+          padding: const EdgeInsets.all(10),
+          child:
+              Consumer<AdminProvider>(builder: (context, doctorValue, child) {
+            final favouriteItems = checkUser(doctorValue);
+            if (favouriteItems.isEmpty) {
+              return Center(
+                child: Image.asset('assets/no doctors available.png'),
+              );
+            } else {
+              return ListView.builder(
+                itemCount: favouriteItems.length,
+                itemBuilder: (context, index) {
+                  final doctors = favouriteItems[index];
+                  return Column(
+                    children: [
+                      AllDoctorsContainer(
+                          size: size,
+                          isAdmin: false,
+                          doctors: doctors,
+                          value: doctorValue,
+                          circleAvatarRadius: circleAvatarRadius),
+                      SizedBox(height: size.height * .02),
+                    ],
+                  );
+                },
+              );
+            }
+          })),
     );
+  }
+
+  List<DoctorModel> checkUser(AdminProvider adminProvider) {
+    final currentUser = FirebaseAuth.instance.currentUser;
+    if (currentUser == null) {
+      return [];
+    }
+    final user = currentUser.email ?? currentUser.phoneNumber;
+    List<DoctorModel> myDoctors = [];
+    for (var car in adminProvider.allDoctorList) {
+      if (car.wishList.contains(user)) {
+        myDoctors.add(car);
+      }
+    }
+    return myDoctors;
   }
 }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:medheal/controller/search_controller.dart';
 import 'package:provider/provider.dart';
 import 'package:medheal/firebase_options.dart';
 import 'package:medheal/view/splash_screen.dart';
@@ -23,6 +24,7 @@ class MyApp extends StatelessWidget {
       providers: [
         ChangeNotifierProvider(create: (context) => UserProvider()),
         ChangeNotifierProvider(create: (context) => AdminProvider()),
+        ChangeNotifierProvider(create: (context) => SearchProvider()),
         ChangeNotifierProvider(create: (context) => BottomProvider()),
         ChangeNotifierProvider(create: (context) => AuthenticationProvider()),
       ],

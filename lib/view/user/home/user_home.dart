@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:medheal/widgets/text_widgets.dart';
-import 'package:medheal/widgets/normal_widgets.dart';
+import 'package:medheal/controller/admin_provider.dart';
 import 'package:medheal/view/user/home/home_widgets.dart';
+import 'package:medheal/widgets/all_doctor_container.dart';
 import 'package:medheal/controller/bottom_bar_provider.dart';
 
 const double circleAvatarRadiusFraction = 0.091;
@@ -13,6 +14,7 @@ class UserHomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
+    Provider.of<AdminProvider>(context, listen: false).getAllDoctors();
     double circleAvatarRadius = size.shortestSide * circleAvatarRadiusFraction;
     final bottomProvider = Provider.of<BottomProvider>(context, listen: false);
     return SafeArea(
@@ -57,18 +59,39 @@ class UserHomeScreen extends StatelessWidget {
                 )
               ]),
               SizedBox(height: size.height * .01),
-              ListView.builder(
-                shrinkWrap: true,
-                physics: const NeverScrollableScrollPhysics(),
-                itemCount: 3,
-                itemBuilder: (context, index) {
-                  return Column(
-                    children: [
-                      doctorDetailsShowingContainer(context, size,
-                          width: size.width * .9),
-                      SizedBox(height: size.height * .02)
-                    ],
-                  );
+              Consumer<AdminProvider>(
+                builder: (context, doctorValue, child) {
+                  if (doctorValue.isLoading) {
+                    return const Center(child: CircularProgressIndicator());
+                  } else {
+                    if (doctorValue.allDoctorList.isNotEmpty) {
+                      final allDoctor = doctorValue.allDoctorList;
+
+                      return ListView.builder(
+                        shrinkWrap: true,
+                        physics: const NeverScrollableScrollPhysics(),
+                        itemCount: allDoctor.length,
+                        itemBuilder: (context, index) {
+                          final doctors = allDoctor[index];
+                          return Column(
+                            children: [
+                              AllDoctorsContainer(
+                                  size: size,
+                                  isAdmin: false,
+                                  doctors: doctors,
+                                  value: doctorValue,
+                                  circleAvatarRadius: circleAvatarRadius),
+                              SizedBox(height: size.height * .02),
+                            ],
+                          );
+                        },
+                      );
+                    } else {
+                      return Center(
+                          child:
+                              Image.asset('assets/no doctors available.png'));
+                    }
+                  }
                 },
               ),
             ]),

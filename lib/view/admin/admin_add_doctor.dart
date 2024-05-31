@@ -1,11 +1,10 @@
-import 'dart:developer';
 import 'dart:io';
-
+import 'dart:developer';
 import 'package:flutter/material.dart';
-import 'package:medheal/model/doctor_model.dart';
 import 'package:provider/provider.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:enefty_icons/enefty_icons.dart';
+import 'package:medheal/model/doctor_model.dart';
 import 'package:medheal/widgets/text_widgets.dart';
 import 'package:medheal/widgets/normal_widgets.dart';
 import 'package:medheal/widgets/snackbar_widget.dart';
@@ -29,80 +28,96 @@ class DoctorAddingScreen extends StatelessWidget {
         ),
         centerTitle: true,
       ),
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 15),
-        child: SingleChildScrollView(
-          scrollDirection: Axis.vertical,
-          child: Column(
-            children: [
-              SizedBox(height: size.height * .02),
-              Consumer<AdminProvider>(
-                builder: (context, value, child) => Stack(
-                  children: [
-                    CircleAvatar(
-                      radius: 70,
-                      backgroundColor: Color(0xFFE3E3E3),
-                      backgroundImage: value.doctorImage != null
-                          ? Image.file(value.doctorImage!).image
-                          : const AssetImage(
-                              'assets/avatar-removebg-preview.png'),
-                    ),
-                    Positioned(
-                      bottom: 0,
-                      right: size.width * .05,
-                      child: Container(
-                        height: size.height * .04,
-                        width: size.width * .08,
-                        decoration: BoxDecoration(
-                          color: Colors.green,
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        child: IconButton(
-                          onPressed: () {
-                            pickImage(context);
-                          },
-                          icon: const Icon(
-                            EneftyIcons.edit_2_bold,
-                            color: Colors.white,
-                            size: 18,
+      body: Stack(children: [
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 15),
+          child: SingleChildScrollView(
+            scrollDirection: Axis.vertical,
+            child: Column(
+              children: [
+                SizedBox(height: size.height * .02),
+                Consumer<AdminProvider>(
+                  builder: (context, value, child) => Stack(
+                    children: [
+                      CircleAvatar(
+                        radius: 70,
+                        backgroundColor: const Color(0xFFE3E3E3),
+                        backgroundImage: value.doctorImage != null
+                            ? Image.file(value.doctorImage!).image
+                            : const AssetImage(
+                                'assets/avatar-removebg-preview.png'),
+                      ),
+                      Positioned(
+                        bottom: 0,
+                        right: size.width * .05,
+                        child: Container(
+                          height: size.height * .04,
+                          width: size.width * .08,
+                          decoration: BoxDecoration(
+                            color: Colors.green,
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          child: IconButton(
+                            onPressed: () {
+                              pickImage(context);
+                            },
+                            icon: const Icon(
+                              EneftyIcons.edit_2_bold,
+                              color: Colors.white,
+                              size: 18,
+                            ),
                           ),
                         ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
-              ),
-              SizedBox(
-                height: size.height * 1,
-                child: Form(
-                  key: authProvider.doctorAddFormKey,
-                  child: adminDoctorAddFields(size, context, adminProvider),
+                SizedBox(
+                  height: size.height * .95,
+                  child: Form(
+                    key: authProvider.doctorAddFormKey,
+                    child: adminDoctorAddFields(size, context, adminProvider),
+                  ),
                 ),
-              ),
-              elevatedButtonWidget(
-                buttonHeight: size.height * .058,
-                buttonWidth: size.width * .9,
-                buttonText: 'Add Doctor',
-                onPressed: () {
-                  if (authProvider.doctorAddFormKey.currentState!.validate()) {
-                    int rating =
-                        int.parse(adminProvider.doctorRatingController.text);
+                elevatedButtonWidget(
+                  buttonHeight: size.height * .058,
+                  buttonWidth: size.width * .9,
+                  buttonText: 'Add Doctor',
+                  onPressed: () {
+                    if (authProvider.doctorAddFormKey.currentState!
+                        .validate()) {
+                      int rating =
+                          int.parse(adminProvider.doctorRatingController.text);
 
-                    if (rating > 5) {
-                      SnackBarWidget().showErrorSnackbar(
-                          context, 'Rating should be 5 or less');
-                    } else {
-                      addData(context, adminProvider);
-                      adminProvider.clearDoctorAddingControllers();
+                      if (rating > 5) {
+                        SnackBarWidget().showErrorSnackbar(
+                            context, 'Rating should be 5 or less');
+                      } else {
+                        addData(context, adminProvider);
+                      }
                     }
-                  }
-                },
-              ),
-              SizedBox(height: size.height * .02)
-            ],
+                  },
+                ),
+                SizedBox(height: size.height * .02)
+              ],
+            ),
           ),
         ),
-      ),
+        Consumer<AdminProvider>(
+          builder: (context, value, child) {
+            return value.isLoading
+                ? Container(
+                    color: Colors.black.withOpacity(0.5),
+                    child: const Center(
+                      child: CircularProgressIndicator(
+                        color: Color(0xFF1995AD),
+                      ),
+                    ),
+                  )
+                : const SizedBox.shrink();
+          },
+        ),
+      ]),
     );
   }
 
@@ -139,31 +154,30 @@ class DoctorAddingScreen extends StatelessWidget {
     );
   }
 
-  Future<void> addData(
-      BuildContext context, AdminProvider adminProvider) async {
+  Future<void> addData(context, AdminProvider adminProvider) async {
     final pickedImage = adminProvider.doctorImage;
     if (pickedImage != null) {
-      // adminProvider.setIsAddingData(true);
+      adminProvider.setLoading(true);
       final image = await adminProvider.uploadImage(
           File(pickedImage.path), adminProvider.imageName);
 
       final cars = DoctorModel(
-          image: image,
-          fullName: adminProvider.doctorNameController.text,
-          age: adminProvider.doctorAgeController.text,
-          gender: adminProvider.selectedGender,
-          category: adminProvider.selectedCategory,
-          position: adminProvider.selectedPosition,
-          aboutDoctor: adminProvider.doctorAboutController.text,
-          workingDays: adminProvider.selectedWorkingDays,
-          startTime: adminProvider.doctorAppointmentTimeController.text,
-          endTime: adminProvider.doctorAppointmentEndTimeController.text,
-          patients: adminProvider.doctorPatientsController.text,
-          experience: adminProvider.doctorExperienceController.text,
-          rating: int.parse(adminProvider.doctorRatingController.text));
+        image: image,
+        fullName: adminProvider.doctorNameController.text,
+        age: adminProvider.doctorAgeController.text,
+        gender: adminProvider.selectedGender,
+        category: adminProvider.selectedCategory,
+        position: adminProvider.selectedPosition,
+        aboutDoctor: adminProvider.doctorAboutController.text,
+        startTime: adminProvider.doctorAppointmentTimeController.text,
+        endTime: adminProvider.doctorAppointmentEndTimeController.text,
+        patients: adminProvider.doctorPatientsController.text,
+        experience: adminProvider.doctorExperienceController.text,
+        rating: int.parse(adminProvider.doctorRatingController.text),
+        wishList: [],
+      );
 
-      adminProvider.addCar(cars);
-
+      await adminProvider.addDoctor(cars);
       adminProvider.clearDoctorAddingControllers();
 
       SnackBarWidget()
@@ -173,6 +187,6 @@ class DoctorAddingScreen extends StatelessWidget {
           .showSuccessSnackbar(context, 'Failed to Add try once more');
       log('Error: pickedImage is null');
     }
-    // carProvider.setIsAddingData(false);
+    adminProvider.setLoading(false);
   }
 }

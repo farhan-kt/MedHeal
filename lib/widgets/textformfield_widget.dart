@@ -2,92 +2,129 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:enefty_icons/enefty_icons.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:medheal/controller/user_provider.dart';
 
 class CustomTextFormField extends StatelessWidget {
+  final double? width;
+  final int? maxLines;
   final String? hintText;
   final String? labelText;
   final bool? obscureText;
-  final int? maxLines;
-  final double? width;
   final String? suffixText;
+  final String? prefixText;
   final Widget? prefixIcon;
   final Widget? suffixIcon;
+  final ValueChanged<String>? onChanged;
+
+  final TimeOfDay? initialTime;
   final String? validateMessage;
   final TextInputType? keyboardType;
   final TextEditingController controller;
-  final OutlineInputBorder? enabledBorder;
   final OutlineInputBorder? focusedBorder;
+  final OutlineInputBorder? enabledBorder;
+  final Function(TimeOfDay?)? onTimePicked;
   final OutlineInputBorder? focusErrorBorder;
   final List<TextInputFormatter>? inputFormatters;
 
   const CustomTextFormField({
     super.key,
+    this.width,
+    this.maxLines,
     this.hintText,
     this.labelText,
-    this.obscureText,
-    this.maxLines,
-    this.width,
+    this.onChanged,
     this.suffixText,
     this.prefixIcon,
+    this.prefixText,
     this.suffixIcon,
-    this.validateMessage,
+    this.obscureText,
+    this.initialTime,
+    this.onTimePicked,
     this.keyboardType,
-    required this.controller,
     this.enabledBorder,
     this.focusedBorder,
-    this.focusErrorBorder,
     this.inputFormatters,
+    this.validateMessage,
+    this.focusErrorBorder,
+    required this.controller,
   });
 
   static final RegExp emailRegex = RegExp(
     r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$',
   );
+
+  static final RegExp timeRegex = RegExp(
+    r'^(0?[1-9]|1[0-2]):[0-5][0-9] [APMapm]{2}$',
+  );
+
+  Future<void> _selectTime(context) async {
+    final TimeOfDay? picked = await showTimePicker(
+      context: context,
+      initialTime: initialTime ?? TimeOfDay.now(),
+    );
+    if (picked != null && onTimePicked != null) {
+      onTimePicked!(picked);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    return TextFormField(
-      obscureText: obscureText ?? false,
-      validator: (value) {
-        if (value == null || value.isEmpty) {
-          return validateMessage ?? 'Enter value';
-        } else if (keyboardType == TextInputType.emailAddress &&
-            !emailRegex.hasMatch(value)) {
-          return 'Enter a valid email address';
-        } else if (keyboardType == TextInputType.datetime &&
-            !emailRegex.hasMatch(value)) {
-          return 'Enter a valid datetime';
-        } else {
-          return null;
+    return GestureDetector(
+      onTap: () {
+        if (keyboardType == TextInputType.datetime) {
+          _selectTime(context);
         }
       },
-      keyboardType: keyboardType,
-      inputFormatters: inputFormatters,
-      controller: controller,
-      maxLines: maxLines ?? 1,
-      decoration: InputDecoration(
-        suffixText: suffixText,
-        suffixIcon: suffixIcon,
-        prefixIcon: prefixIcon,
-        hintText: hintText,
-        hintStyle: GoogleFonts.inter(
-          color: const Color(0xFF98A3B3),
-          fontWeight: FontWeight.w400,
-          fontSize: 14,
+      child: AbsorbPointer(
+        absorbing: keyboardType == TextInputType.datetime,
+        child: TextFormField(
+          onChanged: onChanged,
+          obscureText: obscureText ?? false,
+          validator: (value) {
+            if (value == null || value.isEmpty) {
+              return validateMessage ?? 'Enter value';
+            } else if (keyboardType == TextInputType.emailAddress &&
+                !emailRegex.hasMatch(value)) {
+              return 'Enter a valid email address';
+            } else if (keyboardType == TextInputType.datetime &&
+                !timeRegex.hasMatch(value)) {
+              return 'Enter a valid time';
+            } else {
+              return null;
+            }
+          },
+          keyboardType: keyboardType,
+          inputFormatters: inputFormatters,
+          controller: controller,
+          maxLines: maxLines ?? 1,
+          decoration: InputDecoration(
+            suffixText: suffixText,
+            suffixIcon: suffixIcon,
+            prefixIcon: prefixIcon,
+            prefixText: prefixText,
+            hintText: hintText,
+            hintStyle: GoogleFonts.inter(
+              color: const Color(0xFF98A3B3),
+              fontWeight: FontWeight.w400,
+              fontSize: 14,
+            ),
+            labelText: labelText,
+            labelStyle: GoogleFonts.inter(
+              color: const Color(0xFF98A3B3),
+              fontWeight: FontWeight.w400,
+              fontSize: 14,
+            ),
+            fillColor: const Color.fromARGB(255, 225, 227, 234),
+            filled: true,
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(12.0),
+              borderSide: BorderSide.none,
+            ),
+            enabledBorder: enabledBorder,
+            focusedBorder: focusedBorder,
+            focusedErrorBorder: focusErrorBorder,
+          ),
         ),
-        labelText: labelText,
-        labelStyle: GoogleFonts.inter(
-          color: const Color(0xFF98A3B3),
-          fontWeight: FontWeight.w400,
-          fontSize: 14,
-        ),
-        fillColor: const Color.fromARGB(255, 225, 227, 234),
-        filled: true,
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12.0),
-          borderSide: BorderSide.none,
-        ),
-        enabledBorder: enabledBorder,
-        focusedBorder: focusedBorder,
-        focusedErrorBorder: focusErrorBorder,
       ),
     );
   }
@@ -120,6 +157,66 @@ Widget dropDownTextFormField(
         color: const Color(0xFF98A3B3),
         fontWeight: FontWeight.w400,
         fontSize: 14,
+      ),
+    ),
+  );
+}
+
+Widget bookingDateTextFormField(BuildContext context, UserProvider userProvider,
+    {TextInputType? keyboardType}) {
+  final RegExp dateRegex = RegExp(
+    r'^\d{2}/\d{2}/\d{4}$',
+  );
+
+  Future<void> _selectDate(BuildContext context) async {
+    final DateTime? picked = await showDatePicker(
+      context: context,
+      initialDate: DateTime.now(),
+      firstDate: DateTime(2000),
+      lastDate: DateTime(2100),
+    );
+    if (picked != null) {
+      userProvider.userBookingDateController.text =
+          "${picked.day.toString().padLeft(2, '0')}/${picked.month.toString().padLeft(2, '0')}/${picked.year}";
+    }
+  }
+
+  return GestureDetector(
+    onTap: () {
+      if (keyboardType == TextInputType.datetime) {
+        _selectDate(context);
+      }
+    },
+    child: AbsorbPointer(
+      absorbing: keyboardType == TextInputType.datetime,
+      child: TextFormField(
+        validator: (value) {
+          if (value == null || value.isEmpty) {
+            return 'Pick a date';
+          } else if (keyboardType == TextInputType.datetime &&
+              !dateRegex.hasMatch(value)) {
+            return 'pick a valid date';
+          } else {
+            return null;
+          }
+        },
+        keyboardType: keyboardType,
+        controller: userProvider.userBookingDateController,
+        decoration: InputDecoration(
+          suffixIcon: const Icon(EneftyIcons.calendar_2_outline),
+          hintText: 'Appointment Date',
+          hintStyle: GoogleFonts.inter(
+            color: const Color(0xFF98A3B3),
+            fontWeight: FontWeight.w400,
+            fontSize: 14,
+          ),
+          fillColor: const Color.fromARGB(255, 225, 227, 234),
+          filled: true,
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(12.0),
+            borderSide: BorderSide.none,
+          ),
+        ),
       ),
     ),
   );

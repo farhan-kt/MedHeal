@@ -106,6 +106,7 @@ class CreateAccountScreen extends StatelessWidget {
                           await authProvider.accountCreate(
                               authProvider.emailController.text,
                               authProvider.passwordController.text);
+                          authProvider.addUser();
                           Navigator.pushAndRemoveUntil(
                               context,
                               MaterialPageRoute(
