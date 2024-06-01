@@ -1,7 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:medheal/controller/authentication_provider.dart';
-import 'package:medheal/view/user/authentication/fill_profile.dart';
 import 'package:provider/provider.dart';
 import 'package:medheal/widgets/text_widgets.dart';
 import 'package:medheal/widgets/normal_widgets.dart';
@@ -33,47 +32,26 @@ class UserProfileScreen extends StatelessWidget {
       body: Padding(
         padding: EdgeInsets.symmetric(
             vertical: size.height * 0.1, horizontal: size.width * .03),
-        child: Column(
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                poppinsHeadText(
-                  text: 'My Profile',
-                  fontSize: 20,
-                ),
-                SizedBox(
-                  height: size.height * .041,
-                  width: size.width * .2,
-                  child: ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: const Color(0xFF1995AD),
-                    ),
-                    onPressed: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => const FillProfileScreen()));
-                    },
-                    child: poppinsText(
-                      text: 'Edit',
-                      textAlign: TextAlign.center,
-                      color: Colors.white,
-                      fontSize: 14,
-                      fontWeight: FontWeight.w600,
-                    ),
+        child:
+            Consumer<AuthenticationProvider>(builder: (context, value, child) {
+          return Column(
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  poppinsHeadText(
+                    text: 'My Profile',
+                    fontSize: 20,
                   ),
-                ),
-              ],
-            ),
-            CircleAvatar(
-              radius: circleAvatarRadius,
-              backgroundColor: const Color.fromARGB(255, 143, 189, 198),
-              backgroundImage: imageprovider,
-            ),
-            SizedBox(width: size.width * .02),
-            Consumer<AuthenticationProvider>(
-              builder: (context, value, child) => Column(
+                ],
+              ),
+              CircleAvatar(
+                radius: circleAvatarRadius,
+                backgroundColor: const Color.fromARGB(255, 143, 189, 198),
+                backgroundImage: imageprovider,
+              ),
+              SizedBox(width: size.width * .02),
+              Column(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
@@ -89,38 +67,43 @@ class UserProfileScreen extends StatelessWidget {
                       color: const Color(0xFF888888),
                     ),
                   ]),
-            ),
-            SizedBox(height: size.height * .03),
-            userProfileScreenContainer(size, context,
-                height: size.height * .13,
+              SizedBox(height: size.height * .025),
+              userProfileScreenContainer(
+                size,
+                context,
+                height: size.height * .173,
                 width: size.width * .9,
-                sizedBoxWidth: size.width * .02),
-            SizedBox(height: size.height * .03),
-            profileScreenContainer(
-              context,
-              containerHeight: size.height * .26,
-              containerWidth: size.width * .9,
-              isAdmin: false,
-              onTap: () {
-                confirmationDialog(context, size,
-                    dialogWidth: size.width * .4,
-                    height: size.height * .015,
-                    alertMessage: 'Are you sure to log out ?',
-                    confirmText: 'log Out', onPressedConfirm: () {
-                  Navigator.pushAndRemoveUntil(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => const LoginTypeScreen()),
-                      (route) => false);
-                  bottomProvider.adminOnTap(0);
-                  bottomProvider.userOnTap(0);
-                  authenticationProvider.logOut();
-                  authenticationProvider.googleSignOut();
-                });
-              },
-            )
-          ],
-        ),
+                sizedBoxWidth: size.width * .02,
+              ),
+              SizedBox(height: size.height * .03),
+              Expanded(
+                child: profileScreenContainer(
+                  context,
+                  containerHeight: size.height * .25,
+                  containerWidth: size.width * .9,
+                  isAdmin: false,
+                  onTap: () {
+                    confirmationDialog(context, size,
+                        dialogWidth: size.width * .4,
+                        height: size.height * .015,
+                        alertMessage: 'Are you sure to log out ?',
+                        confirmText: 'log Out', onPressedConfirm: () {
+                      Navigator.pushAndRemoveUntil(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const LoginTypeScreen()),
+                          (route) => false);
+                      bottomProvider.adminOnTap(0);
+                      bottomProvider.userOnTap(0);
+                      authenticationProvider.logOut();
+                      authenticationProvider.googleSignOut();
+                    });
+                  },
+                ),
+              )
+            ],
+          );
+        }),
       ),
     );
   }

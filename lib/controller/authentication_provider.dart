@@ -180,7 +180,7 @@ class AuthenticationProvider extends ChangeNotifier {
       phoneNumber: phoneController.text,
       userName: userNameController.text,
       age: ageController.text,
-      gender: genderController.text,
+      gender: selectedGender,
       uId: firebaseAuth.currentUser!.uid,
     );
     await authenticationService.addUser(user);

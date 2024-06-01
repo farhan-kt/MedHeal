@@ -38,24 +38,19 @@ Widget loginTypeOutlinedButton(Size size, {text, onPressed}) {
   );
 }
 
-Widget profileFillFields(size, AuthenticationProvider authProvider) {
+Widget profileFillFields(size, AuthenticationProvider authProvider,
+    {userNameController, ageController, phoneController}) {
   return Column(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
     CustomTextFormField(
-      controller: authProvider.fullNameController,
+      controller: userNameController,
       hintText: 'Full Name',
     ),
     CustomTextFormField(
-      controller: authProvider.ageController,
+      controller: ageController,
       hintText: 'Age',
-      suffixIcon: const Icon(EneftyIcons.calendar_2_outline),
     ),
     CustomTextFormField(
-      controller: authProvider.profileEmailController,
-      hintText: 'Email',
-      keyboardType: TextInputType.emailAddress,
-    ),
-    CustomTextFormField(
-      controller: authProvider.phoneNumberController,
+      controller: phoneController,
       hintText: ' Phone Number',
     ),
     dropDownTextFormField(
