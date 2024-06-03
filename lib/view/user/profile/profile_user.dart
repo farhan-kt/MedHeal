@@ -86,8 +86,8 @@ class UserProfileScreen extends StatelessWidget {
                     confirmationDialog(context, size,
                         dialogWidth: size.width * .4,
                         height: size.height * .015,
-                        alertMessage: 'Are you sure to log out ?',
-                        confirmText: 'log Out', onPressedConfirm: () {
+                        alertMessage: 'Are you sure to Log out ?',
+                        confirmText: 'Log Out', onPressedConfirm: () {
                       Navigator.pushAndRemoveUntil(
                           context,
                           MaterialPageRoute(

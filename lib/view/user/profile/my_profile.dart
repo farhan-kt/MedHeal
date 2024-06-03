@@ -70,7 +70,7 @@ class ProfileDetailsScreen extends StatelessWidget {
                     SizedBox(height: size.height * .02),
                     userProfileDetailsListTile(context,
                         titleText: 'USER',
-                        valueText: value.currentUser!.userName!.toUpperCase()),
+                        valueText: value.currentUser?.userName ?? 'unknown'),
                     SizedBox(
                       height: size.height * .02,
                     ),
@@ -87,7 +87,7 @@ class ProfileDetailsScreen extends StatelessWidget {
                         Flexible(
                           child: userProfileDetailsListTile(context,
                               titleText: 'GENDER',
-                              valueText: value.currentUser!.gender ?? ''),
+                              valueText: value.currentUser?.gender ?? ''),
                         ),
                       ],
                     ),
@@ -96,14 +96,14 @@ class ProfileDetailsScreen extends StatelessWidget {
                     ),
                     userProfileDetailsListTile(context,
                         titleText: 'PHONE',
-                        valueText: '+91 ${value.currentUser!.phoneNumber}'),
+                        valueText: '+91 ${value.currentUser?.phoneNumber}'),
                     SizedBox(
                       height: size.height * .02,
                     ),
                     userProfileDetailsListTile(
                       context,
                       titleText: 'EMAIL',
-                      valueText: value.currentUser!.email,
+                      valueText: value.currentUser?.email ?? 'unknown',
                     ),
                     SizedBox(
                       height: size.height * .02,
