@@ -40,7 +40,9 @@ class UserProfileScreen extends StatelessWidget {
               CircleAvatar(
                 radius: circleAvatarRadius,
                 backgroundColor: const Color.fromARGB(255, 143, 189, 198),
-                backgroundImage: imageProvider,
+                backgroundImage: value.currentUser?.image != null
+                    ? NetworkImage(value.currentUser!.image!)
+                    : imageProvider,
               ),
               SizedBox(width: size.width * .02),
               Column(

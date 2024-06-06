@@ -134,7 +134,7 @@ class AuthenticationProvider extends ChangeNotifier {
     phoneNumberController.clear();
     genderController.clear();
     profileImage = null;
-    selectedGender = null;
+    // selectedGender = null;
   }
 
   void clearPhoneVerificationController() {

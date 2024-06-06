@@ -79,7 +79,7 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
                 Consumer<AuthenticationProvider>(
                   builder: (context, value, child) => CircleAvatar(
                       radius: 80,
-                      backgroundColor: Colors.orange[400],
+                      backgroundColor: const Color.fromARGB(255, 143, 189, 198),
                       backgroundImage: value.profileImage != null
                           ? Image.file(value.profileImage!).image
                           : _imageProvider),
