@@ -1,8 +1,11 @@
 import 'dart:developer';
+import 'dart:io';
 
 import 'package:country_picker/country_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:google_sign_in/google_sign_in.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:medheal/model/authentication_model.dart';
 import 'package:medheal/widgets/snackbar_widget.dart';
 import 'package:medheal/widgets/user_bottom_bar.dart';
@@ -127,10 +130,11 @@ class AuthenticationProvider extends ChangeNotifier {
   void clearFillProfileControllers() {
     userNameController.clear();
     ageController.clear();
-    // profileEmailController.clear();
     emailController.clear();
     phoneNumberController.clear();
     genderController.clear();
+    profileImage = null;
+    selectedGender = null;
   }
 
   void clearPhoneVerificationController() {
@@ -150,9 +154,26 @@ class AuthenticationProvider extends ChangeNotifier {
     await authenticationService.logOut();
   }
 
-  Future<void> googleSignIn() async {
-    await authenticationService.googleSignIn();
-    notifyListeners();
+  void googleSignIn(BuildContext context) async {
+    try {
+      final user = await authenticationService.googleSignIn();
+      if (user != null) {
+        await authenticationService.addUser(user);
+        currentUser = user;
+        Navigator.pushAndRemoveUntil(
+          context,
+          MaterialPageRoute(
+            builder: (context) => const UserBottomBar(),
+          ),
+          (route) => false,
+        );
+        notifyListeners();
+      } else {
+        throw Exception('User is null');
+      }
+    } catch (e) {
+      log('Sign up with Google error: $e');
+    }
   }
 
   Future<void> googleSignOut() async {
@@ -170,8 +191,26 @@ class AuthenticationProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> forgotPassword(context, {email}) async {
-    authenticationService.passwordReset(email: email, context: context);
+  // Future<void> forgotPassword(context, {email, Function? success}) async {
+  //   authenticationService.passwordReset(
+  //       email: email, context: context, snackBarSuccess: success);
+  // }
+
+  Future<void> forgotPassword(
+    BuildContext context, {
+    required String email,
+    // required Function snackBarSuccess,
+  }) async {
+    authenticationService.passwordReset(
+      email: email,
+      context: context,
+      // snackBarSuccess: snackBarSuccess,
+      showSnackbar: (message) => ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(message),
+        ),
+      ),
+    );
   }
 
   addUser() async {
@@ -203,5 +242,46 @@ class AuthenticationProvider extends ChangeNotifier {
     List<UserModel> allUsers = await authenticationService.getAllUser();
     sortedUser = allUsers.firstWhere((element) => element.uId == uId);
     notifyListeners();
+  }
+
+  File? profileImage;
+
+  String imageName = DateTime.now().microsecondsSinceEpoch.toString();
+
+  final ImagePicker imagePicker = ImagePicker();
+
+  bool isLoading = false;
+
+  void setLoading(bool value) {
+    isLoading = value;
+    notifyListeners();
+  }
+
+  Future getImage(ImageSource source) async {
+    final pickedFile = await imagePicker.pickImage(source: source);
+
+    if (pickedFile != null) {
+      profileImage = File(pickedFile.path);
+      log("Image picked");
+      notifyListeners();
+    }
+  }
+
+  Future<String> uploadImage(image, imageName) async {
+    try {
+      if (image != null) {
+        String downloadUrl =
+            await authenticationService.uploadImage(imageName, image);
+        log(downloadUrl);
+        notifyListeners();
+        return downloadUrl;
+      } else {
+        log('image is null');
+        return '';
+      }
+    } catch (e) {
+      log('got an error of $e');
+      rethrow;
+    }
   }
 }

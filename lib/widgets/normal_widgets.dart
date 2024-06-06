@@ -210,7 +210,7 @@ Widget doctorDetailsScreenContainer(Size size,
               Row(
                 children: [
                   poppinsText(
-                      text: '${category} | ',
+                      text: '$category | ',
                       color: const Color(0xFF101828),
                       fontSize: 12),
                   poppinsText(

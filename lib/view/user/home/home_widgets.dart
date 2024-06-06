@@ -1,10 +1,13 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:enefty_icons/enefty_icons.dart';
+import 'package:medheal/controller/authentication_provider.dart';
 import 'package:medheal/view/user/home/category.dart';
 import 'package:medheal/widgets/text_widgets.dart';
 import 'package:medheal/view/user/user_widgets.dart';
 import 'package:medheal/widgets/normal_widgets.dart';
 import 'package:medheal/view/user/profile/favourite_doctors.dart';
+import 'package:provider/provider.dart';
 
 Widget homeCategoryAvatar(context, imagePath, {category, circleRadius}) {
   return GestureDetector(
@@ -131,28 +134,40 @@ Widget homeCategory(
 }
 
 Widget homeAppBar(Size size, context) {
+  final firebaseauth = FirebaseAuth.instance.currentUser;
+  ImageProvider? imageprovider;
+  if (firebaseauth != null && firebaseauth.photoURL != null) {
+    imageprovider = NetworkImage(firebaseauth.photoURL.toString());
+  } else {
+    imageprovider = const AssetImage("assets/avatar-removebg-preview.png");
+  }
   return Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
     SizedBox(
-      child: Row(
-        children: [
-          const CircleAvatar(
-            radius: 25,
-            backgroundColor: Color.fromARGB(255, 143, 189, 198),
-            backgroundImage: AssetImage('assets/avatar-removebg-preview.png'),
-          ),
-          SizedBox(width: size.width * .02),
-          Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-            poppinsSmallText(
-              text: 'Welcome',
-              color: const Color.fromARGB(255, 155, 141, 143),
-            ),
-            poppinsHeadText(
-              text: 'Farhan',
-              color: const Color(0xFF1D1617),
-              fontSize: 14,
-            ),
-          ]),
-        ],
+      child: Consumer<AuthenticationProvider>(
+        builder: (context, value, child) {
+          return Row(
+            children: [
+              CircleAvatar(
+                  radius: 25,
+                  backgroundColor: const Color.fromARGB(255, 143, 189, 198),
+                  backgroundImage: value.currentUser?.image != null
+                      ? NetworkImage(value.currentUser?.image ?? '')
+                      : imageprovider),
+              SizedBox(width: size.width * .02),
+              Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+                poppinsSmallText(
+                  text: 'Welcome',
+                  color: const Color.fromARGB(255, 155, 141, 143),
+                ),
+                poppinsHeadText(
+                  text: value.currentUser?.userName!.toUpperCase() ?? 'unknown',
+                  color: const Color(0xFF1D1617),
+                  fontSize: 14,
+                ),
+              ]),
+            ],
+          );
+        },
       ),
     ),
     SizedBox(
@@ -342,7 +357,7 @@ Widget doctorDetailsExperienceRow(Size size, {patient, experience, rating}) {
     doctorDetailsExperienceContainer(
         height: size.height * .07,
         width: size.width * .27,
-        valueText: '${experience} Yrs',
+        valueText: '$experience Yrs',
         headText: 'Experience'),
     SizedBox(width: size.width * .04),
     doctorDetailsExperienceContainer(

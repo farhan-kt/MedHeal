@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:medheal/widgets/text_widgets.dart';
@@ -16,6 +17,7 @@ class UserHomeScreen extends StatelessWidget {
     Size size = MediaQuery.of(context).size;
     Provider.of<AdminProvider>(context, listen: false).getAllDoctors();
     double circleAvatarRadius = size.shortestSide * circleAvatarRadiusFraction;
+
     final bottomProvider = Provider.of<BottomProvider>(context, listen: false);
     return SafeArea(
       child: Scaffold(

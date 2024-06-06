@@ -5,7 +5,7 @@ import 'package:provider/provider.dart';
 import 'package:medheal/widgets/text_widgets.dart';
 import 'package:medheal/widgets/normal_widgets.dart';
 import 'package:medheal/controller/bottom_bar_provider.dart';
-import 'package:medheal/view/user/profile/profile_widgets.dart';
+import 'package:medheal/view/user/profile/widget_profile.dart';
 import 'package:medheal/view/user/authentication/login_type.dart';
 
 const double circleAvatarRadiusFraction = 0.15;
@@ -20,12 +20,13 @@ class UserProfileScreen extends StatelessWidget {
     final bottomProvider = Provider.of<BottomProvider>(context, listen: false);
     final authenticationProvider =
         Provider.of<AuthenticationProvider>(context, listen: false);
+
     final firebaseauth = FirebaseAuth.instance.currentUser;
-    ImageProvider? imageprovider;
+    ImageProvider? imageProvider;
     if (firebaseauth != null && firebaseauth.photoURL != null) {
-      imageprovider = NetworkImage(firebaseauth.photoURL.toString());
+      imageProvider = NetworkImage(firebaseauth.photoURL.toString());
     } else {
-      imageprovider = const AssetImage("assets/avatar-removebg-preview.png");
+      imageProvider = const AssetImage("assets/avatar-removebg-preview.png");
     }
     return Scaffold(
       backgroundColor: const Color(0xFFF5F5F5),
@@ -36,19 +37,10 @@ class UserProfileScreen extends StatelessWidget {
             Consumer<AuthenticationProvider>(builder: (context, value, child) {
           return Column(
             children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  poppinsHeadText(
-                    text: 'My Profile',
-                    fontSize: 20,
-                  ),
-                ],
-              ),
               CircleAvatar(
                 radius: circleAvatarRadius,
                 backgroundColor: const Color.fromARGB(255, 143, 189, 198),
-                backgroundImage: imageprovider,
+                backgroundImage: imageProvider,
               ),
               SizedBox(width: size.width * .02),
               Column(
@@ -62,19 +54,18 @@ class UserProfileScreen extends StatelessWidget {
                     ),
                     SizedBox(height: size.height * .008),
                     poppinsHeadText(
-                      text: value.currentUser?.email ?? 'unknown',
+                      text: value.currentUser?.email ?? firebaseauth?.email,
                       fontSize: 15,
                       color: const Color(0xFF888888),
                     ),
                   ]),
               SizedBox(height: size.height * .025),
-              userProfileScreenContainer(
-                size,
-                context,
-                height: size.height * .173,
-                width: size.width * .9,
-                sizedBoxWidth: size.width * .02,
-              ),
+              userProfileScreenContainer(size, context,
+                  height: size.height * .173,
+                  width: size.width * .9,
+                  sizedBoxWidth: size.width * .02,
+                  value: value,
+                  imageProvider: imageProvider),
               SizedBox(height: size.height * .03),
               Expanded(
                 child: profileScreenContainer(

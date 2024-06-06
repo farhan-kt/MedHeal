@@ -85,8 +85,13 @@ successDialogBox(context, Size size,
                               buttonText: 'Payment'),
                         ],
                       )
-                    : const CircularProgressIndicator(
-                        color: Color(0xFF1995AD),
+                    : elevatedButtonWidget(
+                        buttonHeight: size.height * .06,
+                        buttonText: 'OK',
+                        buttonWidth: size.width * .5,
+                        onPressed: () {
+                          Navigator.pop(context);
+                        },
                       )
               ],
             ),
@@ -129,7 +134,7 @@ appointmentDialogBox(routeContext, Size size, {doctorName, bookingTime}) {
                   child: poppinsText(
                     textAlign: TextAlign.center,
                     text:
-                        'Your appointment with Dr. ${doctorName} on Wednesday, August 17, 2023 at ${bookingTime}  ',
+                        'Your appointment with Dr. $doctorName on Wednesday, August 17, 2023 at $bookingTime  ',
                     fontSize: 14,
                     fontWeight: FontWeight.w400,
                     color: const Color(0xFF101828),

@@ -12,7 +12,7 @@ class RazorPay {
       'amount': amount,
       'name': 'Quick Book',
       'description': "",
-      'prefill': {'contact': "9656650450", 'email': 'adnanadnan98271@gmail.com'}
+      'prefill': {'contact': "9567644901", 'email': 'farhankt46@gmail.com'}
     };
 
     _razorpay.open(options);

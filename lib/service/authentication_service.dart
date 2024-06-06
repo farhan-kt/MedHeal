@@ -81,7 +81,34 @@ class AuthenticationService {
     await firebaseAuth.signOut();
   }
 
-  Future<void> googleSignIn() async {
+  // googleSignIn() async {
+  //   try {
+  //     final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
+  //     final GoogleSignInAuthentication? googleAuth =
+  //         await googleUser?.authentication;
+
+  //     if (googleAuth == null) {
+  //       log('Google authentication failed');
+  //       throw Exception('Google authentication failed');
+  //     }
+
+  //     final credential = GoogleAuthProvider.credential(
+  //       accessToken: googleAuth.accessToken,
+  //       idToken: googleAuth.idToken,
+  //     );
+
+  //     final UserCredential userCredential =
+  //         await FirebaseAuth.instance.signInWithCredential(credential);
+
+  //     final User? guser = userCredential.user;
+  //     log("${guser?.displayName}");
+  //   } catch (error) {
+  //     log('Google SignIn error : $error');
+  //     rethrow;
+  //   }
+  // }
+
+  Future<UserModel?> googleSignIn() async {
     try {
       final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
       final GoogleSignInAuthentication? googleAuth =
@@ -99,9 +126,22 @@ class AuthenticationService {
 
       final UserCredential userCredential =
           await FirebaseAuth.instance.signInWithCredential(credential);
+      final User? gUser = userCredential.user;
 
-      final User? guser = userCredential.user;
-      log("${guser?.displayName}");
+      if (gUser != null) {
+        final user = UserModel(
+          image: gUser.photoURL ?? '',
+          uId: gUser.uid,
+          userName: gUser.displayName ?? '',
+          email: gUser.email ?? '',
+          phoneNumber: gUser.phoneNumber ?? '',
+        );
+
+        return user;
+      } else {
+        log('Google user is null');
+        return null;
+      }
     } catch (error) {
       log('Google SignIn error : $error');
       rethrow;
@@ -142,11 +182,10 @@ class AuthenticationService {
   Future<PhoneAuthCredential?> verifyOtp(
       otp, context, Function? snackBarError) async {
     try {
-      log('message');
       PhoneAuthCredential credential = PhoneAuthProvider.credential(
           verificationId: verificationid!, smsCode: otp);
       await firebaseAuth.signInWithCredential(credential);
-      log('message');
+
       Navigator.pushAndRemoveUntil(
           context,
           MaterialPageRoute(
@@ -161,16 +200,37 @@ class AuthenticationService {
     return null;
   }
 
-  void passwordReset({required email, context}) async {
+  // void passwordReset(
+  //     {required String email, context, Function? snackBarSuccess}) async {
+  //   try {
+
+  //     await firebaseAuth.sendPasswordResetEmail(email: email);
+  //     log('success');
+
+  //     snackBarSuccess;
+  //   } on FirebaseAuthException catch (e) {
+  //     log('error occure');
+  //     ScaffoldMessenger.of(context).showSnackBar(
+  //       SnackBar(
+  //         content: Text(
+  //           e.message.toString(),
+  //         ),
+  //       ),
+  //     );
+  //   }
+  // }
+
+  void passwordReset({
+    required String email,
+    required BuildContext context,
+    // required Function snackBarSuccess,
+    required Function(String message) showSnackbar,
+  }) async {
     try {
-      log('start');
       await firebaseAuth.sendPasswordResetEmail(email: email);
-      log('success');
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text("Password reset email sent"),
-        ),
-      );
+      log('Password reseted');
+      showSnackbar('Password reset link sent to your Email');
+      // snackBarSuccess(); // Call the success callback
     } on FirebaseAuthException catch (e) {
       log('error occure');
       ScaffoldMessenger.of(context).showSnackBar(
@@ -183,14 +243,6 @@ class AuthenticationService {
     }
   }
 
-  // updateUser(userid, UserModel data) async {
-  //   try {
-  //     await user.doc(userid).update(data.toJson());
-  //   } catch (e) {
-  //     log("error in updating product : $e");
-  //   }
-  // }
-
   updateUser(userid, UserModel data) async {
     try {
       await users.doc(userid).update(
@@ -199,6 +251,16 @@ class AuthenticationService {
     } catch (e) {
       log("error in updating product : $e");
     }
+  }
+
+  Future<String> uploadImage(imageName, imageFile) async {
+    Reference imageFolder = storage.child('profileImage');
+    Reference? uploadImage = imageFolder.child('$imageName.jpg');
+
+    await uploadImage.putFile(imageFile);
+    String downloadURL = await uploadImage.getDownloadURL();
+    log('Image successfully uploaded to Firebase Storage.');
+    return downloadURL;
   }
 
   Future<List<UserModel>> getAllUser() async {

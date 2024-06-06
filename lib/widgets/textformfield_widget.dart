@@ -89,6 +89,9 @@ class CustomTextFormField extends StatelessWidget {
             } else if (keyboardType == TextInputType.datetime &&
                 !timeRegex.hasMatch(value)) {
               return 'Enter a valid time';
+            } else if (keyboardType == TextInputType.phone &&
+                value.length != 10) {
+              return 'Enter 10 digits';
             } else {
               return null;
             }

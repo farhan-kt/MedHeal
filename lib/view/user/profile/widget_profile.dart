@@ -5,13 +5,12 @@ import 'package:medheal/widgets/normal_widgets.dart';
 import 'package:medheal/widgets/text_widgets.dart';
 import 'package:medheal/view/user/profile/favourite_doctors.dart';
 
-Widget userProfileScreenContainer(
-  size,
-  context, {
-  required height,
-  required width,
-  sizedBoxWidth,
-}) {
+Widget userProfileScreenContainer(size, context,
+    {required height,
+    required width,
+    sizedBoxWidth,
+    required value,
+    required imageProvider}) {
   return Container(
     height: height,
     width: width,
@@ -29,11 +28,16 @@ Widget userProfileScreenContainer(
       children: [
         poppinsHeadText(text: 'Settings'),
         profileContainerListTile(context,
-            title: 'Profile',
+            title: 'My Profile',
             icon: EneftyIcons.profile_outline,
             suffixIcon: true, onTap: () {
-          Navigator.push(context,
-              MaterialPageRoute(builder: (context) => ProfileDetailsScreen()));
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => ProfileDetailsScreen(
+                        value: value,
+                        imageProvider: imageProvider,
+                      )));
         }, iconColor: const Color(0xFF1995AD)),
         profileContainerListTile(context,
             title: "Favourite Doctor's",

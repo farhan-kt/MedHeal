@@ -36,7 +36,7 @@ class CategoryScreen extends StatelessWidget {
             color: Colors.black,
           ),
         ),
-        backgroundColor: const Color(0xFFFFFFFF),
+        backgroundColor: const Color(0xFFF5F5F5),
         title: poppinsText(
             text: category,
             color: const Color(0xFF1A1A1A),

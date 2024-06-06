@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
-import 'package:medheal/controller/authentication_provider.dart';
-import 'package:medheal/widgets/normal_widgets.dart';
-import 'package:medheal/widgets/text_widgets.dart';
-import 'package:medheal/widgets/textformfield_widget.dart';
 import 'package:provider/provider.dart';
+import 'package:medheal/widgets/text_widgets.dart';
+import 'package:medheal/widgets/normal_widgets.dart';
+import 'package:medheal/widgets/textformfield_widget.dart';
+import 'package:medheal/controller/authentication_provider.dart';
 
 class ForgotPasswordScreen extends StatelessWidget {
   const ForgotPasswordScreen({super.key});

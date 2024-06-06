@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:enefty_icons/enefty_icons.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -52,6 +53,8 @@ Widget profileFillFields(size, AuthenticationProvider authProvider,
     CustomTextFormField(
       controller: phoneController,
       hintText: ' Phone Number',
+      inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+      keyboardType: TextInputType.phone,
     ),
     dropDownTextFormField(
         hintText: 'Gender',
@@ -77,11 +80,7 @@ authenticationBoxRow(Size size, context,
     children: [
       InkWell(
         onTap: () async {
-          await authenticationProvider!.googleSignIn();
-          Navigator.pushAndRemoveUntil(
-              context,
-              MaterialPageRoute(builder: (context) => const UserBottomBar()),
-              (route) => false);
+          authenticationProvider!.googleSignIn(context);
         },
         child: Container(
           height: size.height * .065,
@@ -212,7 +211,7 @@ Widget signInTextFormField(
                 Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) => ForgotPasswordScreen()));
+                        builder: (context) => const ForgotPasswordScreen()));
               },
               child: poppinsText(
                   text: 'Forgot the password?',
