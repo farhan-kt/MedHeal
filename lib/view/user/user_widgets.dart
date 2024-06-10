@@ -1,11 +1,14 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:flutter/material.dart';
+import 'package:medheal/model/appointment_model.dart';
 import 'package:medheal/payment.dart';
+import 'package:medheal/widgets/snackbar_widget.dart';
 import 'package:provider/provider.dart';
 import 'package:enefty_icons/enefty_icons.dart';
 import 'package:medheal/widgets/text_widgets.dart';
 import 'package:medheal/widgets/normal_widgets.dart';
-import 'package:medheal/controller/user_provider.dart';
-import 'package:medheal/view/user/home/home_widgets.dart';
+import 'package:medheal/controller/appointment_provider.dart';
 import 'package:medheal/widgets/textformfield_widget.dart';
 
 successDialogBox(context, Size size,
@@ -19,6 +22,8 @@ successDialogBox(context, Size size,
     dialogWidth,
     headMessage,
     subText,
+    AppointmentModel? appointment,
+    AppointmentProvider? userProvider,
     required bool? isAppointment}) {
   return showDialog(
     context: context,
@@ -65,10 +70,24 @@ successDialogBox(context, Size size,
                           elevatedButtonWidget(
                               buttonHeight: elevatedButtonHeight,
                               buttonWidth: elevatedButtonWidth,
-                              onPressed: () {
-                                appointmentDialogBox(context, size,
-                                    doctorName: doctorName,
-                                    bookingTime: bookingTime);
+                              onPressed: () async {
+                                bool success =
+                                    await userProvider!.addAppointment(
+                                  appointment!,
+                                  (error) {
+                                    SnackBarWidget()
+                                        .showErrorSnackbar(context, error);
+                                  },
+                                );
+
+                                if (success) {
+                                  appointmentDialogBox(context, size,
+                                      doctorName: doctorName,
+                                      bookingTime: bookingTime);
+                                } else {
+                                  Navigator.pop(context);
+                                  userProvider.selectedTime = null;
+                                }
                               },
                               buttonText: 'Direct Pay'),
                           SizedBox(
@@ -81,6 +100,13 @@ successDialogBox(context, Size size,
                                 int amount = 20000;
                                 RazorPay razorPayInstance = RazorPay();
                                 razorPayInstance.razorPay(amount.toString());
+                                userProvider!.addAppointment(
+                                  appointment!,
+                                  (error) {
+                                    SnackBarWidget()
+                                        .showErrorSnackbar(context, error);
+                                  },
+                                );
                               },
                               buttonText: 'Payment'),
                         ],
@@ -159,7 +185,7 @@ appointmentDialogBox(routeContext, Size size, {doctorName, bookingTime}) {
 }
 
 Widget showBottom(Size size, context) {
-  final userProvider = Provider.of<UserProvider>(context, listen: false);
+  final userProvider = Provider.of<AppointmentProvider>(context, listen: false);
   List<String> times = [
     '09:00 AM',
     '10:00 AM',
@@ -230,30 +256,72 @@ Widget showBottom(Size size, context) {
                 text: 'Select Hour',
               ),
               SizedBox(height: size.height * .02),
-              SizedBox(
-                height: size.height * .22,
-                child: GridView.builder(
-                  physics: const NeverScrollableScrollPhysics(),
-                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                    childAspectRatio: 1 / .4,
-                    crossAxisCount: 3,
-                    crossAxisSpacing: size.width * 0.02,
-                    mainAxisSpacing: size.height * 0.01,
-                  ),
-                  itemCount: 8,
-                  itemBuilder: (BuildContext context, int index) {
-                    String time = times[index];
-                    return SizedBox(
-                      height: size.height * .01,
-                      width: size.width * .5,
-                      child: doctorDetailsTimeButton(
-                        onPressed: () {},
-                        time: time,
-                      ),
-                    );
-                  },
-                ),
-              ),
+              // SizedBox(
+              //   height: size.height * .22,
+              //   child: GridView.builder(
+              //     physics: const NeverScrollableScrollPhysics(),
+              //     gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+              //       childAspectRatio: 1 / .4,
+              //       crossAxisCount: 3,
+              //       crossAxisSpacing: size.width * 0.02,
+              //       mainAxisSpacing: size.height * 0.01,
+              //     ),
+              //     itemCount: 8,
+              //     itemBuilder: (BuildContext context, int index) {
+              //       String time = times[index];
+              //       return SizedBox(
+              //         height: size.height * .01,
+              //         width: size.width * .5,
+              //         child: doctorDetailsTimeButton(
+              //           ,
+
+              //           onPressed: () {},
+              //           time: time,
+              //         ),
+              //       );
+              //     },
+              //   ),
+              // ),
+              //  FutureBuilder<List<bool>>(
+              //   future: _checkTimeSlots(userProvider, times, doctors!.id!, userProvider.selectedDate!),
+              //   builder: (context, snapshot) {
+              //     if (snapshot.connectionState == ConnectionState.waiting) {
+              //       return const CircularProgressIndicator();
+              //     } else if (snapshot.hasError) {
+              //       return const Text('Error checking slots');
+              //     } else {
+              //       final bookedSlots = snapshot.data!;
+              //       return GridView.builder(
+              //         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+              //           childAspectRatio: 1 / .4,
+              //           crossAxisCount: 3,
+              //           crossAxisSpacing: size.width * 0.02,
+              //           mainAxisSpacing: size.height * .01,
+              //         ),
+              //         shrinkWrap: true,
+              //         physics: const NeverScrollableScrollPhysics(),
+              //         itemCount: times.length,
+              //         itemBuilder: (BuildContext context, int index) {
+              //           String time = times[index];
+              //           bool isBooked = bookedSlots[index];
+              //           return SizedBox(
+              //             height: size.height * .0007,
+              //             width: size.width * .5,
+              //             child: doctorDetailsTimeButton(
+              //               isBooked: isBooked,
+              //               time: time,
+              //               onPressed: () {
+              //                 if (!isBooked) {
+              //                   userProvider.setSelectedTime(time);
+              //                 }
+              //               },
+              //             ),
+              //           );
+              //         },
+              //       );
+              //     }
+              //   },
+              // ),
               SizedBox(height: size.height * .07),
               SizedBox(height: size.height * .02),
             ],
@@ -284,6 +352,7 @@ Widget showBottom(Size size, context) {
             buttonText: 'Reshedule Appointment',
             onPressed: () {
               successDialogBox(context, size,
+                  userProvider: userProvider,
                   isAppointment: true,
                   headMessage: 'Your Appointment Has Been Resheduled',
                   elevatedButtonHeight: size.height * .05,
@@ -300,4 +369,15 @@ Widget showBottom(Size size, context) {
       ),
     )
   ]);
+}
+
+Future<List<bool>> _checkTimeSlots(AppointmentProvider provider,
+    List<String> times, String docId, String date) async {
+  List<bool> isBooked = [];
+  for (String time in times) {
+    bool booked = await provider.appointmentService
+        .isTimeSlotAvailable(docId, date, time);
+    isBooked.add(booked);
+  }
+  return isBooked;
 }

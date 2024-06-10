@@ -93,7 +93,7 @@ class UserProfileScreen extends StatelessWidget {
                     });
                   },
                 ),
-              )
+              ),
             ],
           );
         }),

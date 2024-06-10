@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:medheal/model/doctor_model.dart';
@@ -100,6 +101,7 @@ class AllDoctorsContainer extends StatelessWidget {
                       builder: (context) => DoctorDetailScreen(
                             doctors: doctors,
                             value: value,
+                            userId: FirebaseAuth.instance.currentUser!.uid,
                           )));
             },
             child: Container(

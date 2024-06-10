@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:enefty_icons/enefty_icons.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:medheal/controller/user_provider.dart';
+import 'package:medheal/controller/appointment_provider.dart';
 
 class CustomTextFormField extends StatelessWidget {
   final double? width;
@@ -165,22 +165,28 @@ Widget dropDownTextFormField(
   );
 }
 
-Widget bookingDateTextFormField(BuildContext context, UserProvider userProvider,
+Widget bookingDateTextFormField(
+    BuildContext context, AppointmentProvider userProvider,
     {TextInputType? keyboardType}) {
   final RegExp dateRegex = RegExp(
     r'^\d{2}/\d{2}/\d{4}$',
   );
 
+  final DateTime now = DateTime.now();
+  final DateTime tomorrow = now.add(Duration(days: 1));
+
   Future<void> _selectDate(BuildContext context) async {
     final DateTime? picked = await showDatePicker(
       context: context,
-      initialDate: DateTime.now(),
+      initialDate: tomorrow,
       firstDate: DateTime(2000),
       lastDate: DateTime(2100),
     );
     if (picked != null) {
-      userProvider.userBookingDateController.text =
+      final formattedDate =
           "${picked.day.toString().padLeft(2, '0')}/${picked.month.toString().padLeft(2, '0')}/${picked.year}";
+      userProvider.userBookingDateController.text = formattedDate;
+      userProvider.setSelectedDate(formattedDate);
     }
   }
 
@@ -198,7 +204,7 @@ Widget bookingDateTextFormField(BuildContext context, UserProvider userProvider,
             return 'Pick a date';
           } else if (keyboardType == TextInputType.datetime &&
               !dateRegex.hasMatch(value)) {
-            return 'pick a valid date';
+            return 'Pick a valid date';
           } else {
             return null;
           }

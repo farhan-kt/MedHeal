@@ -1,28 +1,31 @@
 import 'package:flutter/material.dart';
-import 'package:medheal/controller/admin_provider.dart';
-import 'package:medheal/model/doctor_model.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:enefty_icons/enefty_icons.dart';
+import 'package:medheal/model/doctor_model.dart';
 import 'package:medheal/widgets/text_widgets.dart';
 import 'package:medheal/view/user/user_widgets.dart';
 import 'package:medheal/widgets/normal_widgets.dart';
-import 'package:medheal/controller/user_provider.dart';
+import 'package:medheal/controller/admin_provider.dart';
 import 'package:medheal/view/user/home/home_widgets.dart';
 import 'package:medheal/widgets/textformfield_widget.dart';
-import 'package:intl/intl.dart'; // Add this import for date formatting
+import 'package:medheal/controller/appointment_provider.dart';
+import 'package:medheal/model/appointment_model.dart';
 
 class DoctorDetailScreen extends StatelessWidget {
   final DoctorModel? doctors;
   final AdminProvider value;
+  final String userId;
 
-  const DoctorDetailScreen({super.key, this.doctors, required this.value});
+  const DoctorDetailScreen(
+      {super.key, this.doctors, required this.value, required this.userId});
 
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-    final userProvider = Provider.of<UserProvider>(context, listen: false);
+    final appointmentProvider =
+        Provider.of<AppointmentProvider>(context, listen: false);
 
-    // Handle nullable startTime and endTime with default values
     List<String> times = _generateTimeSlots(
         doctors?.startTime?.trim() ?? '09:00 AM',
         doctors?.endTime?.trim() ?? '05:00 PM');
@@ -117,54 +120,88 @@ class DoctorDetailScreen extends StatelessWidget {
               SizedBox(height: size.height * .02),
               poppinsHeadText(text: 'Select Date'),
               SizedBox(height: size.height * .02),
-              bookingDateTextFormField(context, userProvider,
+              bookingDateTextFormField(context, appointmentProvider,
                   keyboardType: TextInputType.datetime),
               SizedBox(height: size.height * .02),
               poppinsHeadText(
                 text: 'Select Hour',
               ),
               SizedBox(height: size.height * .02),
-              SizedBox(
-                child: GridView.builder(
-                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                    childAspectRatio: 1 / .4,
-                    crossAxisCount: 3,
-                    crossAxisSpacing: size.width * 0.02,
-                    mainAxisSpacing: size.height * 0.01,
-                  ),
-                  shrinkWrap: true,
-                  physics: const NeverScrollableScrollPhysics(),
-                  itemCount: times.length,
-                  itemBuilder: (BuildContext context, int index) {
-                    String time = times[index];
-                    return SizedBox(
-                      height: size.height * .0007,
-                      width: size.width * .5,
-                      child: doctorDetailsTimeButton(
-                        onPressed: () {},
-                        time: time,
-                      ),
-                    );
-                  },
-                ),
-              ),
+              SizedBox(child: Consumer<AppointmentProvider>(
+                builder: (context, value, child) {
+                  return GridView.builder(
+                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                      childAspectRatio: 1 / .4,
+                      crossAxisCount: 3,
+                      crossAxisSpacing: size.width * 0.02,
+                      mainAxisSpacing: size.height * .01,
+                    ),
+                    shrinkWrap: true,
+                    physics: const NeverScrollableScrollPhysics(),
+                    itemCount: times.length,
+                    itemBuilder: (BuildContext context, int index) {
+                      String time = times[index];
+                      bool isSelected = value.selectedTime == time;
+                      return SizedBox(
+                        height: size.height * .0007,
+                        width: size.width * .5,
+                        child: doctorDetailsTimeButton(
+                          onPressed: () {
+                            value.setSelectedTime(time);
+                          },
+                          isSelected: isSelected,
+                          time: time,
+                        ),
+                      );
+                    },
+                  );
+                },
+              )),
               SizedBox(height: size.height * .02),
               elevatedButtonWidget(
                   buttonHeight: size.height * .06,
                   buttonWidth: size.width * .9,
                   buttonText: 'BOOK APPOINTMENT',
                   onPressed: () {
-                    successDialogBox(context, size,
-                        isAppointment: true,
-                        headMessage: 'Choose Your Payment Method',
-                        elevatedButtonHeight: size.height * .05,
-                        elevatedButtonWidth: size.width * .7,
-                        height: size.height * .02,
-                        width: size.width * .8,
-                        dialogheight: size.height * .43,
-                        dialogWidth: size.width * .2,
-                        bookingTime: doctors!.startTime,
-                        doctorName: doctors!.fullName);
+                    final selectedDate = appointmentProvider.selectedDate;
+                    final selectedTime = appointmentProvider.selectedTime;
+                    if (selectedDate != null && selectedTime != null) {
+                      final appointment = AppointmentModel(
+                          uId: userId,
+                          docId: doctors!.id,
+                          date: selectedDate,
+                          time: selectedTime);
+                      // userProvider.addAppointment(appointment);
+                      successDialogBox(context, size,
+                          userProvider: appointmentProvider,
+                          appointment: appointment,
+                          isAppointment: true,
+                          headMessage: 'Appointment Booked Successfully',
+                          elevatedButtonHeight: size.height * .05,
+                          elevatedButtonWidth: size.width * .7,
+                          height: size.height * .02,
+                          width: size.width * .8,
+                          dialogheight: size.height * .43,
+                          dialogWidth: size.width * .2,
+                          bookingTime: selectedTime,
+                          doctorName: doctors!.fullName);
+                    } else {
+                      showDialog(
+                        context: context,
+                        builder: (context) => AlertDialog(
+                          title: const Text('Error'),
+                          content: const Text('Please select a date and time'),
+                          actions: <Widget>[
+                            TextButton(
+                              onPressed: () {
+                                Navigator.of(context).pop();
+                              },
+                              child: const Text('OK'),
+                            ),
+                          ],
+                        ),
+                      );
+                    }
                   }),
               SizedBox(height: size.height * .02),
             ],
@@ -190,6 +227,17 @@ class DoctorDetailScreen extends StatelessWidget {
     }
 
     return timeSlots;
+  }
+
+  Future<List<bool>> _checkTimeSlots(AppointmentProvider provider,
+      List<String> times, String docId, String date) async {
+    List<bool> isBooked = [];
+    for (String time in times) {
+      bool booked = await provider.appointmentService
+          .isTimeSlotAvailable(docId, date, time);
+      isBooked.add(!booked);
+    }
+    return isBooked;
   }
 
   DateTime _parseTime(String time) {

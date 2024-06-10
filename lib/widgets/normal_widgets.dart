@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:enefty_icons/enefty_icons.dart';
 import 'package:medheal/view/user/home/doctor_detail_screen.dart';
@@ -113,6 +114,7 @@ Widget doctorDetailsShowingContainer(context, size, {width, valueProvider}) {
           MaterialPageRoute(
               builder: (context) => DoctorDetailScreen(
                     value: valueProvider,
+                    userId: FirebaseAuth.instance.currentUser!.uid,
                   )));
     },
     child: Container(

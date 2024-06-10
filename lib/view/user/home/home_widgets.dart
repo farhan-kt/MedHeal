@@ -329,18 +329,23 @@ Widget homeUpcomingAppointment(Size size, context) {
   );
 }
 
-Widget doctorDetailsTimeButton({onPressed, time}) {
+Widget doctorDetailsTimeButton({
+  VoidCallback? onPressed,
+  time,
+  required bool isSelected,
+}) {
+  Color buttonColor = isSelected ? Colors.black : Color(0xFF1995AD);
   return OutlinedButton(
     style: ButtonStyle(
       side: MaterialStateProperty.all(
-        const BorderSide(color: Color(0xFF1995AD), width: 1.2),
+        BorderSide(color: buttonColor, width: 1.2),
       ),
     ),
     onPressed: onPressed,
     child: poppinsHeadText(
       textAlign: TextAlign.center,
       text: time,
-      color: const Color(0xFF1995AD),
+      color: buttonColor,
       fontSize: 14,
     ),
   );
