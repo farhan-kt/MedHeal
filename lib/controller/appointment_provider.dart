@@ -111,11 +111,26 @@ class AppointmentProvider extends ChangeNotifier {
           .where((appointment) => appointment.uId == userId)
           .toList();
 
-      // Categorize appointments
       allAppointmentList = userAppointments;
     } catch (error) {
       log('Error fetching user appointments: $error');
     }
     setLoading(false);
+  }
+
+  List<AppointmentModel> canceledAppointmentList = [];
+
+  Future<void> cancelAppointment(String id) async {
+    try {
+      AppointmentModel appointment =
+          allAppointmentList.firstWhere((app) => app.id == id);
+      appointment.status = 'canceled';
+      await appointmentService.updateAppointment(id, appointment);
+      await getAllAppointments();
+
+      canceledAppointmentList.add(appointment);
+    } catch (error) {
+      log('Error during canceling appointment: $error');
+    }
   }
 }

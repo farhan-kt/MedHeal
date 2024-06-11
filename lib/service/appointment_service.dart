@@ -20,17 +20,6 @@ class AppointmentService {
     });
   }
 
-  // Future<void> addAppointment(AppointmentModel data) async {
-  //   try {
-  //     // await appointment.add(data);
-  //     DocumentReference docRef = await appointment.add(data);
-  //     data.id = docRef.id;
-  //     await docRef.set(data);
-  //   } catch (error) {
-  //     log('error during adding appointment :$error');
-  //   }
-  // }
-
   Future<bool> isTimeSlotAvailable(
       String docId, String date, String time) async {
     final querySnapshot = await appointment

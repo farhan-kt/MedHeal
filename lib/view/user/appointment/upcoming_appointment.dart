@@ -1,14 +1,12 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:medheal/model/doctor_model.dart';
+import 'package:medheal/widgets/text_widgets.dart';
+import 'package:medheal/view/user/user_widgets.dart';
+import 'package:medheal/model/appointment_model.dart';
 import 'package:medheal/controller/admin_provider.dart';
 import 'package:medheal/controller/appointment_provider.dart';
-import 'package:medheal/model/appointment_model.dart';
-import 'package:medheal/model/doctor_model.dart';
-import 'package:medheal/view/user/user_widgets.dart';
 import 'package:medheal/view/user/appointment/widgets_appointment.dart';
-import 'package:medheal/widgets/text_widgets.dart';
-import 'package:provider/provider.dart';
 
 const double circleAvatarRadiusFraction = 0.1;
 
@@ -31,7 +29,8 @@ class UpcomingAppointments extends StatelessWidget {
         child: Consumer<AppointmentProvider>(
           builder: (context, appointmentProvider, child) {
             if (appointmentProvider.isLoading) {
-              return const Center(child: CircularProgressIndicator());
+              return const Center(
+                  child: CircularProgressIndicator(color: Color(0xFF1995AD)));
             }
             List<AppointmentModel> upcomingAppointments = appointmentProvider
                 .allAppointmentList
@@ -46,30 +45,6 @@ class UpcomingAppointments extends StatelessWidget {
                 color: const Color(0xFF1995AD),
               ));
             }
-            // return ListView.builder(
-            //   itemCount: upcomingAppointments.length,
-            //   itemBuilder: (context, index) {
-            //     final appointment = upcomingAppointments[index];
-            //     final doctor = doctorProvider.getDoctorById(appointment.docId!);
-            //     return Column(
-            //       children: [
-            //         appointmentScheduledContainer(size, context,
-            //             circleAvatarRadius: circleAvatarRadius,
-            //             appointment: appointment,
-            //             doctor: doctor,
-            //             isUpcoming: true, onPressed: () {
-            //           showBottomSheet(
-            //             context: context,
-            //             builder: (context) {
-            //               return showBottom(size, context);
-            //             },
-            //           );
-            //         }),
-            //         SizedBox(height: size.height * .02),
-            //       ],
-            //     );
-            //   },
-            // );
             return ListView.builder(
               itemCount: upcomingAppointments.length,
               itemBuilder: (context, index) {
@@ -78,7 +53,8 @@ class UpcomingAppointments extends StatelessWidget {
                   future: doctorProvider.getDoctorById(appointment.docId!),
                   builder: (context, snapshot) {
                     if (snapshot.connectionState == ConnectionState.waiting) {
-                      return CircularProgressIndicator();
+                      return const CircularProgressIndicator(
+                          color: Color(0xFF1995AD));
                     } else if (snapshot.hasError) {
                       return Text('Error: ${snapshot.error}');
                     } else {
@@ -93,7 +69,8 @@ class UpcomingAppointments extends StatelessWidget {
                             showBottomSheet(
                               context: context,
                               builder: (context) {
-                                return showBottom(size, context);
+                                return showBottom(size, context,
+                                    appointment: appointment, doctor: doctor);
                               },
                             );
                           }),

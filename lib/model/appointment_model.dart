@@ -6,6 +6,7 @@ class AppointmentModel {
   String? docId;
   String? date;
   String? time;
+  String? status;
   DoctorModel? doctor;
 
   AppointmentModel(
@@ -14,6 +15,7 @@ class AppointmentModel {
       this.docId,
       required this.date,
       required this.time,
+      this.status,
       this.doctor});
 
   factory AppointmentModel.fromJson(String id, Map<String, dynamic> json) {
@@ -23,6 +25,7 @@ class AppointmentModel {
       docId: json['docId'],
       date: json['date'],
       time: json['time'],
+      status: json['status'],
       doctor: null,
     );
   }
@@ -34,6 +37,7 @@ class AppointmentModel {
       'id': id,
       'date': date,
       'time': time,
+      'status': status,
     };
   }
 }

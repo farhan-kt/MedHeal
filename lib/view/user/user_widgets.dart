@@ -1,8 +1,11 @@
 // ignore_for_file: use_build_context_synchronously
 
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:medheal/model/appointment_model.dart';
+import 'package:medheal/model/doctor_model.dart';
 import 'package:medheal/payment.dart';
+import 'package:medheal/view/user/home/home_widgets.dart';
 import 'package:medheal/widgets/snackbar_widget.dart';
 import 'package:provider/provider.dart';
 import 'package:enefty_icons/enefty_icons.dart';
@@ -96,10 +99,11 @@ successDialogBox(context, Size size,
                           elevatedButtonWidget(
                               buttonHeight: elevatedButtonHeight,
                               buttonWidth: elevatedButtonWidth,
-                              onPressed: () {
+                              onPressed: () async {
                                 int amount = 20000;
                                 RazorPay razorPayInstance = RazorPay();
-                                razorPayInstance.razorPay(amount.toString());
+                                await razorPayInstance
+                                    .razorPay(amount.toString());
                                 userProvider!.addAppointment(
                                   appointment!,
                                   (error) {
@@ -184,18 +188,63 @@ appointmentDialogBox(routeContext, Size size, {doctorName, bookingTime}) {
   );
 }
 
-Widget showBottom(Size size, context) {
-  final userProvider = Provider.of<AppointmentProvider>(context, listen: false);
-  List<String> times = [
-    '09:00 AM',
-    '10:00 AM',
-    '11:00 AM',
-    '12:00 PM',
-    '02:00 PM',
-    '03:00 PM',
-    '04:00 PM',
-    '05:00 PM',
-  ];
+Widget showBottom(Size size, context,
+    {required DoctorModel? doctor, required AppointmentModel? appointment}) {
+  final appointmentProvider =
+      Provider.of<AppointmentProvider>(context, listen: false);
+
+  DateTime _parseTime(String time) {
+    final trimmedTime = time.trim();
+    final components = trimmedTime.split(' ');
+    final hourMinute = components[0].split(':');
+    final hour = int.tryParse(hourMinute[0]);
+    final minute = int.tryParse(hourMinute[1]);
+    final isPM = components[1].toUpperCase() == 'PM';
+    if (hour != null && minute != null) {
+      final dateTime = DateTime(1, 1, 1, isPM ? hour + 12 : hour, minute);
+      return dateTime;
+    }
+    throw const FormatException('Invalid time format');
+  }
+
+  Future<List<bool>> _checkTimeSlots(AppointmentProvider provider,
+      List<String> times, String docId, String date) async {
+    List<bool> isBooked = [];
+    for (String time in times) {
+      bool booked = await provider.appointmentService
+          .isTimeSlotAvailable(docId, date, time);
+      isBooked.add(!booked);
+    }
+    return isBooked;
+  }
+
+  String _formatTime(DateTime time) {
+    final format = DateFormat.jm();
+    return format.format(time);
+  }
+
+  List<String> generateTimeSlots(String startTime, String endTime) {
+    List<String> timeSlots = [];
+
+    try {
+      DateTime start = _parseTime(startTime);
+      DateTime end = _parseTime(endTime);
+
+      while (start.isBefore(end)) {
+        timeSlots.add(_formatTime(start));
+        start = start.add(const Duration(minutes: 30));
+      }
+    } catch (e) {
+      debugPrint('Error generating time slots: $e');
+    }
+
+    return timeSlots;
+  }
+
+  List<String> times = generateTimeSlots(
+      doctor?.startTime?.trim() ?? '09:00 AM',
+      doctor?.endTime?.trim() ?? '05:00 PM');
+
   return Stack(children: [
     Container(
       height: size.height * .6,
@@ -238,7 +287,7 @@ Widget showBottom(Size size, context) {
                     color: const Color(0xFF344154),
                   ),
                   poppinsSmallText(
-                    text: '08:00 AM - 21:00 PM',
+                    text: '${doctor!.startTime}  -  ${doctor.endTime}',
                     color: const Color(0xFF344154),
                   ),
                 ],
@@ -246,89 +295,50 @@ Widget showBottom(Size size, context) {
               SizedBox(height: size.height * .02),
               poppinsHeadText(text: 'Select Date'),
               SizedBox(height: size.height * .02),
-              CustomTextFormField(
-                controller: userProvider.userBookingResheduledController,
-                hintText: 'Date',
-                suffixIcon: const Icon(EneftyIcons.calendar_2_outline),
-              ),
+              bookingDateTextFormField(context, appointmentProvider,
+                  keyboardType: TextInputType.datetime),
               SizedBox(height: size.height * .02),
               poppinsHeadText(
                 text: 'Select Hour',
               ),
               SizedBox(height: size.height * .02),
-              // SizedBox(
-              //   height: size.height * .22,
-              //   child: GridView.builder(
-              //     physics: const NeverScrollableScrollPhysics(),
-              //     gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-              //       childAspectRatio: 1 / .4,
-              //       crossAxisCount: 3,
-              //       crossAxisSpacing: size.width * 0.02,
-              //       mainAxisSpacing: size.height * 0.01,
-              //     ),
-              //     itemCount: 8,
-              //     itemBuilder: (BuildContext context, int index) {
-              //       String time = times[index];
-              //       return SizedBox(
-              //         height: size.height * .01,
-              //         width: size.width * .5,
-              //         child: doctorDetailsTimeButton(
-              //           ,
-
-              //           onPressed: () {},
-              //           time: time,
-              //         ),
-              //       );
-              //     },
-              //   ),
-              // ),
-              //  FutureBuilder<List<bool>>(
-              //   future: _checkTimeSlots(userProvider, times, doctors!.id!, userProvider.selectedDate!),
-              //   builder: (context, snapshot) {
-              //     if (snapshot.connectionState == ConnectionState.waiting) {
-              //       return const CircularProgressIndicator();
-              //     } else if (snapshot.hasError) {
-              //       return const Text('Error checking slots');
-              //     } else {
-              //       final bookedSlots = snapshot.data!;
-              //       return GridView.builder(
-              //         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-              //           childAspectRatio: 1 / .4,
-              //           crossAxisCount: 3,
-              //           crossAxisSpacing: size.width * 0.02,
-              //           mainAxisSpacing: size.height * .01,
-              //         ),
-              //         shrinkWrap: true,
-              //         physics: const NeverScrollableScrollPhysics(),
-              //         itemCount: times.length,
-              //         itemBuilder: (BuildContext context, int index) {
-              //           String time = times[index];
-              //           bool isBooked = bookedSlots[index];
-              //           return SizedBox(
-              //             height: size.height * .0007,
-              //             width: size.width * .5,
-              //             child: doctorDetailsTimeButton(
-              //               isBooked: isBooked,
-              //               time: time,
-              //               onPressed: () {
-              //                 if (!isBooked) {
-              //                   userProvider.setSelectedTime(time);
-              //                 }
-              //               },
-              //             ),
-              //           );
-              //         },
-              //       );
-              //     }
-              //   },
-              // ),
-              SizedBox(height: size.height * .07),
+              SizedBox(child: Consumer<AppointmentProvider>(
+                builder: (context, value, child) {
+                  return GridView.builder(
+                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                      childAspectRatio: 1 / .4,
+                      crossAxisCount: 3,
+                      crossAxisSpacing: size.width * 0.02,
+                      mainAxisSpacing: size.height * .01,
+                    ),
+                    shrinkWrap: true,
+                    physics: const NeverScrollableScrollPhysics(),
+                    itemCount: times.length,
+                    itemBuilder: (BuildContext context, int index) {
+                      String time = times[index];
+                      bool isSelected = value.selectedTime == time;
+                      return SizedBox(
+                        height: size.height * .0007,
+                        width: size.width * .5,
+                        child: doctorDetailsTimeButton(
+                          onPressed: () {
+                            value.setSelectedTime(time);
+                          },
+                          isSelected: isSelected,
+                          time: time,
+                        ),
+                      );
+                    },
+                  );
+                },
+              )),
               SizedBox(height: size.height * .02),
             ],
           ),
         ),
       ),
     ),
+    SizedBox(height: size.height * .02),
     Positioned(
       bottom: size.height * .01,
       left: size.width * .08,
@@ -350,10 +360,22 @@ Widget showBottom(Size size, context) {
             buttonWidth: size.width * .65,
             bgColor: const Color(0xFF1995AD),
             buttonText: 'Reshedule Appointment',
-            onPressed: () {
+            onPressed: () async {
+              final selectedDate = appointmentProvider.selectedDate;
+              final selectedTime = appointmentProvider.selectedTime;
+              final resheduledAppointment = AppointmentModel(
+                  id: appointment!.id,
+                  docId: appointment.docId,
+                  uId: appointment.uId,
+                  date: selectedDate,
+                  time: selectedTime);
+
+              await appointmentProvider.updateAppointment(
+                  appointment.id!, resheduledAppointment);
+
               successDialogBox(context, size,
-                  userProvider: userProvider,
-                  isAppointment: true,
+                  userProvider: appointmentProvider,
+                  isAppointment: false,
                   headMessage: 'Your Appointment Has Been Resheduled',
                   elevatedButtonHeight: size.height * .05,
                   elevatedButtonWidth: size.width * .7,
@@ -362,22 +384,11 @@ Widget showBottom(Size size, context) {
                   dialogheight: size.height * .45,
                   dialogWidth: size.width * .2,
                   subText:
-                      'Your appointment with Dr. Jennie Thorn was Resheduled on Wednesday, August 17, 2023 at 11:00 AM ');
+                      'Your appointment with ${doctor.fullName} was Resheduled');
             },
           ),
         ],
       ),
     )
   ]);
-}
-
-Future<List<bool>> _checkTimeSlots(AppointmentProvider provider,
-    List<String> times, String docId, String date) async {
-  List<bool> isBooked = [];
-  for (String time in times) {
-    bool booked = await provider.appointmentService
-        .isTimeSlotAvailable(docId, date, time);
-    isBooked.add(booked);
-  }
-  return isBooked;
 }

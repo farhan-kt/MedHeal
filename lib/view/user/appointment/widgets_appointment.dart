@@ -31,8 +31,8 @@ Widget appointmentScheduledContainer(Size size, context,
               CircleAvatar(
                 radius: circleAvatarRadius,
                 backgroundColor: const Color.fromARGB(255, 226, 84, 84),
-                backgroundImage: doctor?.image != null
-                    ? NetworkImage(doctor!.image!) as ImageProvider<Object>
+                backgroundImage: doctor.image != null
+                    ? NetworkImage(doctor.image!) as ImageProvider<Object>
                     : const AssetImage('assets/avatar-removebg-preview.png'),
               ),
               SizedBox(
@@ -45,12 +45,12 @@ Widget appointmentScheduledContainer(Size size, context,
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     poppinsHeadText(
-                      text: 'Dr. ${doctor?.fullName}',
+                      text: 'Dr. ${doctor.fullName}',
                       color: const Color(0xFF1D1617),
                       fontSize: 14,
                     ),
                     poppinsSmallText(
-                      text: doctor?.category ?? 'unknown',
+                      text: doctor.category ?? 'unknown',
                       color: const Color(0xFF7B6F72),
                     ),
                     Row(
@@ -91,7 +91,8 @@ Widget appointmentScheduledContainer(Size size, context,
                         height: size.height * .02,
                         alertMessage:
                             'Are You Sure to cancel your Appointment ?',
-                        confirmText: 'Confirm', onPressedConfirm: () {
+                        confirmText: 'Confirm', onPressedConfirm: () async {
+                      appointmentProvider.cancelAppointment(appointment.id!);
                       appointmentProvider.deleteAppointment(appointment.id!);
                     });
                   },

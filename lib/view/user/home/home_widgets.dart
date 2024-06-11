@@ -243,12 +243,12 @@ Widget homeUpcomingAppointment(Size size, context) {
                 return [
                   PopupMenuItem(
                       onTap: () {
-                        showBottomSheet(
-                          context: context,
-                          builder: (context) {
-                            return showBottom(size, context);
-                          },
-                        );
+                        // showBottomSheet(
+                        //   context: context,
+                        //   builder: (context) {
+                        //     return showBottom(size, context);
+                        //   },
+                        // );
                       },
                       child:
                           poppinsText(text: 'Reshedule', color: Colors.black),
