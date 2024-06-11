@@ -41,6 +41,12 @@ class AppointmentService {
     return querySnapshot.docs.isEmpty;
   }
 
+  Future<List<AppointmentModel>> getUserAppointments(String userId) async {
+    final querySnapshot =
+        await appointment.where('userId', isEqualTo: userId).get();
+    return querySnapshot.docs.map((doc) => doc.data()).toList();
+  }
+
   Future<void> addAppointment(AppointmentModel data) async {
     try {
       final isAvailable =

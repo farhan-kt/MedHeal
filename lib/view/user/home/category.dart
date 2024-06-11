@@ -52,7 +52,7 @@ class CategoryScreen extends StatelessWidget {
       ),
       body: Padding(
         padding: const EdgeInsets.all(10),
-        child: Consumer<AdminProvider>(
+        child: Consumer<DoctorProvider>(
           builder: (context, doctorValue, child) {
             final filteredDoctors = doctorValue.allDoctorList
                 .where((doctors) => doctors.category == category)

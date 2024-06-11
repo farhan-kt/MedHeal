@@ -15,7 +15,7 @@ class UserHomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-    Provider.of<AdminProvider>(context, listen: false).getAllDoctors();
+    Provider.of<DoctorProvider>(context, listen: false).getAllDoctors();
     double circleAvatarRadius = size.shortestSide * circleAvatarRadiusFraction;
 
     final bottomProvider = Provider.of<BottomProvider>(context, listen: false);
@@ -61,7 +61,7 @@ class UserHomeScreen extends StatelessWidget {
                 )
               ]),
               SizedBox(height: size.height * .01),
-              Consumer<AdminProvider>(
+              Consumer<DoctorProvider>(
                 builder: (context, doctorValue, child) {
                   if (doctorValue.isLoading) {
                     return const Center(child: CircularProgressIndicator());

@@ -8,7 +8,7 @@ import 'package:medheal/widgets/textformfield_widget.dart';
 Widget adminDoctorAddFields(
   Size size,
   context,
-  AdminProvider adminProvider,
+  DoctorProvider adminProvider,
 ) {
   return Column(
     crossAxisAlignment: CrossAxisAlignment.start,

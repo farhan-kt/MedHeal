@@ -29,7 +29,7 @@ class FavouriteDoctorsScreen extends StatelessWidget {
       body: Padding(
           padding: const EdgeInsets.all(10),
           child:
-              Consumer<AdminProvider>(builder: (context, doctorValue, child) {
+              Consumer<DoctorProvider>(builder: (context, doctorValue, child) {
             final favouriteItems = checkUser(doctorValue);
             if (favouriteItems.isEmpty) {
               return Center(
@@ -58,7 +58,7 @@ class FavouriteDoctorsScreen extends StatelessWidget {
     );
   }
 
-  List<DoctorModel> checkUser(AdminProvider adminProvider) {
+  List<DoctorModel> checkUser(DoctorProvider adminProvider) {
     final currentUser = FirebaseAuth.instance.currentUser;
     if (currentUser == null) {
       return [];

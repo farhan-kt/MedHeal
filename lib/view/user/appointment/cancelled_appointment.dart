@@ -21,8 +21,8 @@ class CancelledAppointments extends StatelessWidget {
           itemBuilder: (context, index) {
             return Column(
               children: [
-                appointmentScheduledContainer(size, context,
-                    circleAvatarRadius: circleAvatarRadius, isUpcoming: false),
+                // appointmentScheduledContainer(size, context,
+                //     circleAvatarRadius: circleAvatarRadius, isUpcoming: false),
                 SizedBox(height: size.height * .02),
               ],
             );

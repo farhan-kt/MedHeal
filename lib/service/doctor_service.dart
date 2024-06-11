@@ -83,4 +83,16 @@ class DoctorService {
     }
     return null;
   }
+
+  Future<DoctorModel?> getDoctorById(String id) async {
+    try {
+      final docSnapshot = await doctor.doc(id).get();
+      if (docSnapshot.exists) {
+        return docSnapshot.data();
+      }
+    } catch (error) {
+      log('Error fetching doctor by ID: $error');
+    }
+    return null;
+  }
 }

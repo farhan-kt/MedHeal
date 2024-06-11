@@ -1,8 +1,10 @@
 import 'dart:developer';
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:medheal/model/appointment_model.dart';
 import 'package:medheal/service/appointment_service.dart';
+import 'package:medheal/service/doctor_service.dart';
 
 class AppointmentProvider extends ChangeNotifier {
   TextEditingController userBookingDateController = TextEditingController();
@@ -37,21 +39,6 @@ class AppointmentProvider extends ChangeNotifier {
     selectedDate = date;
     notifyListeners();
   }
-
-  // Future<void> addAppointment(
-  //     AppointmentModel data, Function(String) onError) async {
-  //   setLoading(true);
-  //   try {
-  //     await appointmentService.addAppointment(data);
-  //     clearAppointmentControllers();
-  //     await getAllAppointments();
-  //   } catch (error) {
-  //     log('Error during adding appointment: $error');
-  //     onError('Slot is already booked');
-  //     onError;
-  //   }
-  //   setLoading(false);
-  // }
 
   Future<bool> addAppointment(
       AppointmentModel data, Function(String) onError) async {
@@ -95,5 +82,40 @@ class AppointmentProvider extends ChangeNotifier {
     userBookingResheduledController.clear();
     selectedTime = null;
     notifyListeners();
+  }
+
+  final DoctorService doctorService = DoctorService();
+
+  // Future<void> getUserAppointments() async {
+  //   setLoading(true);
+  //   try {
+  //     String userId = FirebaseAuth.instance.currentUser!.uid;
+  //     allAppointmentList = await appointmentService.getUserAppointments(userId);
+  //     for (var appointment in allAppointmentList) {
+  //       appointment.doctor =
+  //           await doctorService.getDoctorById(appointment.docId!);
+  //     }
+  //   } catch (error) {
+  //     log('Error fetching user appointments: $error');
+  //   }
+  //   setLoading(false);
+  // }
+
+  Future<void> getUserAppointments() async {
+    setLoading(true);
+    try {
+      String userId = FirebaseAuth.instance.currentUser!.uid;
+      List<AppointmentModel> allAppointments =
+          await appointmentService.getAllAppointments();
+      List<AppointmentModel> userAppointments = allAppointments
+          .where((appointment) => appointment.uId == userId)
+          .toList();
+
+      // Categorize appointments
+      allAppointmentList = userAppointments;
+    } catch (error) {
+      log('Error fetching user appointments: $error');
+    }
+    setLoading(false);
   }
 }

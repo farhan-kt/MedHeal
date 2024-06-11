@@ -10,7 +10,7 @@ import 'package:medheal/view/user/home/doctor_detail_screen.dart';
 class AllDoctorsContainer extends StatelessWidget {
   final Size size;
   final bool? isAdmin;
-  final AdminProvider value;
+  final DoctorProvider value;
   final DoctorModel? doctors;
   final double circleAvatarRadius;
 
@@ -25,7 +25,7 @@ class AllDoctorsContainer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final adminProvider = Provider.of<AdminProvider>(context, listen: false);
+    final adminProvider = Provider.of<DoctorProvider>(context, listen: false);
     return isAdmin == true
         ? Container(
             height: size.height * .16,

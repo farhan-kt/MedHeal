@@ -13,9 +13,9 @@ class AllDoctorsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-    Provider.of<AdminProvider>(context, listen: false).getAllDoctors();
+    Provider.of<DoctorProvider>(context, listen: false).getAllDoctors();
     double circleAvatarRadius = size.shortestSide * circleAvatarRadiusFraction;
-    final searchProvider = Provider.of<AdminProvider>(context, listen: false);
+    final searchProvider = Provider.of<DoctorProvider>(context, listen: false);
     return Scaffold(
       backgroundColor: const Color(0xFFF5F5F5),
       appBar: AppBar(
@@ -41,7 +41,7 @@ class AllDoctorsScreen extends StatelessWidget {
           )),
       body: Padding(
         padding: const EdgeInsets.all(10),
-        child: Consumer<AdminProvider>(
+        child: Consumer<DoctorProvider>(
           builder: (context, doctorValue, child) {
             if (doctorValue.isLoading) {
               return const Center(child: CircularProgressIndicator());

@@ -13,9 +13,9 @@ class AdminHomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-    Provider.of<AdminProvider>(context, listen: false).getAllDoctors();
+    Provider.of<DoctorProvider>(context, listen: false).getAllDoctors();
     double circleAvatarRadius = size.shortestSide * circleAvatarRadiusFraction;
-    final adminProvider = Provider.of<AdminProvider>(context, listen: false);
+    final adminProvider = Provider.of<DoctorProvider>(context, listen: false);
     return Scaffold(
       backgroundColor: const Color(0xFFF5F5F5),
       appBar: AppBar(
@@ -40,7 +40,7 @@ class AdminHomeScreen extends StatelessWidget {
           )),
       body: Padding(
         padding: const EdgeInsets.all(10),
-        child: Consumer<AdminProvider>(
+        child: Consumer<DoctorProvider>(
           builder: (context, doctorValue, child) {
             if (doctorValue.isLoading) {
               return const Center(child: CircularProgressIndicator());

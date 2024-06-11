@@ -4,7 +4,6 @@ import 'package:provider/provider.dart';
 import 'package:enefty_icons/enefty_icons.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:medheal/widgets/text_widgets.dart';
-import 'package:medheal/widgets/user_bottom_bar.dart';
 import 'package:medheal/widgets/textformfield_widget.dart';
 import 'package:medheal/controller/authentication_provider.dart';
 import 'package:medheal/view/user/authentication/phone_screen.dart';

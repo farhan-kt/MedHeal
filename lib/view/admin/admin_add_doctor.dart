@@ -18,7 +18,7 @@ class DoctorAddingScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-    final adminProvider = Provider.of<AdminProvider>(context, listen: false);
+    final adminProvider = Provider.of<DoctorProvider>(context, listen: false);
     final authProvider =
         Provider.of<AuthenticationProvider>(context, listen: false);
     return Scaffold(
@@ -36,7 +36,7 @@ class DoctorAddingScreen extends StatelessWidget {
             child: Column(
               children: [
                 SizedBox(height: size.height * .02),
-                Consumer<AdminProvider>(
+                Consumer<DoctorProvider>(
                   builder: (context, value, child) => Stack(
                     children: [
                       CircleAvatar(
@@ -103,7 +103,7 @@ class DoctorAddingScreen extends StatelessWidget {
             ),
           ),
         ),
-        Consumer<AdminProvider>(
+        Consumer<DoctorProvider>(
           builder: (context, value, child) {
             return value.isLoading
                 ? Container(
@@ -122,7 +122,7 @@ class DoctorAddingScreen extends StatelessWidget {
   }
 
   Future<void> pickImage(BuildContext context) async {
-    final pro = Provider.of<AdminProvider>(context, listen: false);
+    final pro = Provider.of<DoctorProvider>(context, listen: false);
     await showModalBottomSheet(
       context: context,
       builder: (BuildContext context) {
@@ -154,7 +154,7 @@ class DoctorAddingScreen extends StatelessWidget {
     );
   }
 
-  Future<void> addData(context, AdminProvider adminProvider) async {
+  Future<void> addData(context, DoctorProvider adminProvider) async {
     final pickedImage = adminProvider.doctorImage;
     if (pickedImage != null) {
       adminProvider.setLoading(true);

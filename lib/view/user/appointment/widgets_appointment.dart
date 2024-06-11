@@ -1,9 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:medheal/controller/appointment_provider.dart';
+import 'package:medheal/model/appointment_model.dart';
+import 'package:medheal/model/doctor_model.dart';
 import 'package:medheal/widgets/normal_widgets.dart';
 import 'package:medheal/widgets/text_widgets.dart';
+import 'package:provider/provider.dart';
 
 Widget appointmentScheduledContainer(Size size, context,
-    {circleAvatarRadius, bool? isUpcoming, onPressed}) {
+    {circleAvatarRadius,
+    bool? isUpcoming,
+    onPressed,
+    required AppointmentModel appointment,
+    required DoctorModel doctor}) {
+  final appointmentProvider =
+      Provider.of<AppointmentProvider>(context, listen: false);
   return Container(
     decoration: BoxDecoration(
       color: const Color(0xFFFFFFFF),
@@ -21,9 +31,9 @@ Widget appointmentScheduledContainer(Size size, context,
               CircleAvatar(
                 radius: circleAvatarRadius,
                 backgroundColor: const Color.fromARGB(255, 226, 84, 84),
-                // backgroundColor: Color(0xFFE3E3E3),
-                backgroundImage:
-                    const AssetImage('assets/avatar-removebg-preview.png'),
+                backgroundImage: doctor?.image != null
+                    ? NetworkImage(doctor!.image!) as ImageProvider<Object>
+                    : const AssetImage('assets/avatar-removebg-preview.png'),
               ),
               SizedBox(
                 width: size.width * .035,
@@ -35,22 +45,22 @@ Widget appointmentScheduledContainer(Size size, context,
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     poppinsHeadText(
-                      text: 'Dr. Jennie Thorn',
+                      text: 'Dr. ${doctor?.fullName}',
                       color: const Color(0xFF1D1617),
                       fontSize: 14,
                     ),
                     poppinsSmallText(
-                      text: 'Dentist',
+                      text: doctor?.category ?? 'unknown',
                       color: const Color(0xFF7B6F72),
                     ),
                     Row(
                       children: [
                         poppinsSmallText(
-                          text: 'Aug 17, 2023 | ',
+                          text: '${appointment.date} | ',
                           color: const Color(0xFF7B6F72),
                         ),
                         poppinsText(
-                          text: '11:00 AM',
+                          text: appointment.time,
                           color: const Color(0xFF7B6F72),
                           fontSize: 12,
                         ),
@@ -70,7 +80,7 @@ Widget appointmentScheduledContainer(Size size, context,
               if (isUpcoming!)
                 OutlinedButton(
                   style: ButtonStyle(
-                    side: MaterialStateProperty.all(
+                    side: WidgetStateProperty.all(
                       const BorderSide(color: Color(0xFFED3443), width: 1.2),
                     ),
                   ),
@@ -81,8 +91,9 @@ Widget appointmentScheduledContainer(Size size, context,
                         height: size.height * .02,
                         alertMessage:
                             'Are You Sure to cancel your Appointment ?',
-                        confirmText: 'Confirm',
-                        onPressedConfirm: () {});
+                        confirmText: 'Confirm', onPressedConfirm: () {
+                      appointmentProvider.deleteAppointment(appointment.id!);
+                    });
                   },
                   child: poppinsHeadText(
                     text: 'Cancel Booking',

@@ -14,7 +14,7 @@ import 'package:medheal/model/appointment_model.dart';
 
 class DoctorDetailScreen extends StatelessWidget {
   final DoctorModel? doctors;
-  final AdminProvider value;
+  final DoctorProvider value;
   final String userId;
 
   const DoctorDetailScreen(
