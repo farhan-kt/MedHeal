@@ -1,5 +1,9 @@
-import 'package:firebase_auth/firebase_auth.dart';
+import 'dart:developer';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
+import 'package:medheal/controller/appointment_provider.dart';
+import 'package:medheal/model/appointment_model.dart';
+import 'package:medheal/model/doctor_model.dart';
 import 'package:provider/provider.dart';
 import 'package:medheal/widgets/text_widgets.dart';
 import 'package:medheal/controller/admin_provider.dart';
@@ -16,6 +20,8 @@ class UserHomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     Provider.of<DoctorProvider>(context, listen: false).getAllDoctors();
+    Provider.of<AppointmentProvider>(context, listen: false)
+        .getAllAppointments();
     double circleAvatarRadius = size.shortestSide * circleAvatarRadiusFraction;
 
     final bottomProvider = Provider.of<BottomProvider>(context, listen: false);
@@ -31,12 +37,47 @@ class UserHomeScreen extends StatelessWidget {
                 Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
               homeAppBar(size, context),
               SizedBox(height: size.height * .02),
-              ListView.builder(
-                shrinkWrap: true,
-                itemCount: 1,
-                physics: const NeverScrollableScrollPhysics(),
-                itemBuilder: (context, index) {
-                  return homeUpcomingAppointment(size, context);
+              Consumer<AppointmentProvider>(
+                builder: (context, appointmentProvider, child) {
+                  final upcomingAppointments = appointmentProvider
+                      .allAppointmentList
+                      .where(
+                          (appointment) => isUpcomingAppointment(appointment))
+                      .toList();
+                  if (upcomingAppointments.isEmpty) {
+                    return SizedBox(
+                      height: size.height * .19,
+                      width: size.width * .88,
+                      child: Center(
+                        child: poppinsHeadText(
+                            text: 'No Upcoming Appointments',
+                            color: Color(0xFF1995AD),
+                            fontSize: 18),
+                      ),
+                    );
+                  } else {
+                    final upcomingAppointment = upcomingAppointments.first;
+                    return FutureBuilder<DoctorModel?>(
+                      future:
+                          Provider.of<DoctorProvider>(context, listen: false)
+                              .getDoctorById(upcomingAppointment.docId!),
+                      builder: (context, doctorSnapshot) {
+                        if (doctorSnapshot.connectionState ==
+                            ConnectionState.waiting) {
+                          return const CircularProgressIndicator();
+                        } else if (doctorSnapshot.hasError) {
+                          return Text('Error: ${doctorSnapshot.error}');
+                        } else if (doctorSnapshot.hasData &&
+                            doctorSnapshot.data != null) {
+                          final doctor = doctorSnapshot.data!;
+                          return homeUpcomingAppointment(
+                              size, context, upcomingAppointment, doctor);
+                        } else {
+                          return const Text('Doctor not found');
+                        }
+                      },
+                    );
+                  }
                 },
               ),
               SizedBox(height: size.height * .02),
@@ -101,5 +142,18 @@ class UserHomeScreen extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  bool isUpcomingAppointment(AppointmentModel appointment) {
+    final dateFormat = DateFormat('dd/MM/yyyy hh:mm a');
+    try {
+      String dateTimeStr = '${appointment.date!} ${appointment.time!}';
+      dateTimeStr = dateTimeStr.replaceAll('\u202F', ' ');
+      final appointmentDateTime = dateFormat.parse(dateTimeStr);
+      return appointmentDateTime.isAfter(DateTime.now());
+    } catch (e) {
+      log('Error parsing date and time: $e');
+      return false;
+    }
   }
 }

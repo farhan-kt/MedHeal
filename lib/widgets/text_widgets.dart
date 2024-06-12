@@ -21,7 +21,6 @@ poppinsHeadText({text, textAlign, double? fontSize, color}) {
 poppinsSmallText({text, color, fontWeight, textAlign}) {
   return Text(text,
       // overflow: TextOverflow.ellipsis,
-
       textAlign: textAlign,
       style: GoogleFonts.poppins(
           color: color ?? const Color(0xFF101828),

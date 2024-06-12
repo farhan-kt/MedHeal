@@ -2,6 +2,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:enefty_icons/enefty_icons.dart';
 import 'package:medheal/controller/authentication_provider.dart';
+import 'package:medheal/model/appointment_model.dart';
+import 'package:medheal/model/doctor_model.dart';
 import 'package:medheal/view/user/home/category.dart';
 import 'package:medheal/widgets/text_widgets.dart';
 import 'package:medheal/widgets/normal_widgets.dart';
@@ -191,7 +193,8 @@ Widget homeAppBar(Size size, context) {
   ]);
 }
 
-Widget homeUpcomingAppointment(Size size, context) {
+Widget homeUpcomingAppointment(
+    Size size, context, AppointmentModel appointment, DoctorModel doctor) {
   return Container(
     height: size.height * .19,
     width: size.width * .88,
@@ -208,26 +211,38 @@ Widget homeUpcomingAppointment(Size size, context) {
       child:
           Column(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
         ListTile(
-          leading: const CircleAvatar(
+          leading: CircleAvatar(
             radius: 30,
-            backgroundColor: Color(0xFFFFFFFF),
-            backgroundImage: AssetImage('assets/avatar-removebg-preview.png'),
+            backgroundColor: const Color(0xFFFFFFFF),
+            backgroundImage: doctor.image != null
+                ? NetworkImage(doctor.image!)
+                : const AssetImage('assets/avatar-removebg-preview.png')
+                    as ImageProvider,
           ),
-          title: poppinsHeadText(
-            text: 'DR Farhan',
+          title: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              poppinsHeadText(
+                text: 'Dr ${doctor.fullName}',
+                color: const Color(0xFFFFFFFF),
+                fontSize: 14,
+              ),
+              Row(children: [
+                poppinsSmallText(
+                  text: '${doctor.age} | ',
+                  color: const Color(0xFFFFFFFF),
+                ),
+                poppinsSmallText(
+                  text: '${doctor.category} ',
+                  color: const Color(0xFFFFFFFF),
+                ),
+              ]),
+            ],
+          ),
+          subtitle: poppinsSmallText(
+            text: doctor.position,
             color: const Color(0xFFFFFFFF),
-            fontSize: 14,
           ),
-          subtitle: Row(children: [
-            poppinsSmallText(
-              text: 'Dentist | ',
-              color: const Color(0xFFFFFFFF),
-            ),
-            poppinsSmallText(
-              text: 'BDS',
-              color: const Color(0xFFFFFFFF),
-            ),
-          ]),
           trailing: PopupMenuButton(
               icon: const Icon(
                 Icons.more_vert_outlined,
@@ -287,7 +302,7 @@ Widget homeUpcomingAppointment(Size size, context) {
                 Image.asset('assets/home calendar.png'),
                 SizedBox(width: size.width * .002),
                 poppinsText(
-                  text: 'Sep 10, 2023',
+                  text: appointment.date,
                   overflow: TextOverflow.ellipsis,
                   fontSize: 10,
                   fontWeight: FontWeight.w700,
@@ -316,7 +331,7 @@ Widget homeUpcomingAppointment(Size size, context) {
                     width: size.width * .06,
                   ),
                   poppinsText(
-                      text: '05:00 PM',
+                      text: appointment.time,
                       fontSize: 12,
                       fontWeight: FontWeight.w600,
                       color: const Color(0xFFFFFFFF))

@@ -129,36 +129,6 @@ class DoctorDetailScreen extends StatelessWidget {
                 text: 'Select Hour',
               ),
               SizedBox(height: size.height * .02),
-              // SizedBox(child: Consumer<AppointmentProvider>(
-              //   builder: (context, value, child) {
-              //     return GridView.builder(
-              //       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-              //         childAspectRatio: 1 / .4,
-              //         crossAxisCount: 3,
-              //         crossAxisSpacing: size.width * 0.02,
-              //         mainAxisSpacing: size.height * .01,
-              //       ),
-              //       shrinkWrap: true,
-              //       physics: const NeverScrollableScrollPhysics(),
-              //       itemCount: times.length,
-              //       itemBuilder: (BuildContext context, int index) {
-              //         String time = times[index];
-              //         bool isSelected = value.selectedTime == time;
-              //         return SizedBox(
-              //           height: size.height * .0007,
-              //           width: size.width * .5,
-              //           child: doctorDetailsTimeButton(
-              //             onPressed: () {
-              //               value.setSelectedTime(time);
-              //             },
-              //             isSelected: isSelected,
-              //             time: time,
-              //           ),
-              //         );
-              //       },
-              //     );
-              //   },
-              // )),
               SizedBox(
                 child: Consumer<AppointmentProvider>(
                   builder: (context, value, child) {
