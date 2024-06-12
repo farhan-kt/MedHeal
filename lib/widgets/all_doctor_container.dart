@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:medheal/widgets/snackbar_widget.dart';
 import 'package:provider/provider.dart';
 import 'package:medheal/model/doctor_model.dart';
 import 'package:medheal/widgets/text_widgets.dart';
@@ -79,7 +80,13 @@ class AllDoctorsContainer extends StatelessWidget {
                         alertMessage: 'Confirm to delete the doctor',
                         confirmText: 'Delete',
                         onPressedConfirm: () {
-                          adminProvider.deleteDoctor(doctors!.id!);
+                          adminProvider.deleteDoctor(
+                            doctors!.id!,
+                            (success) {
+                              SnackBarWidget()
+                                  .showSuccessSnackbar(context, success);
+                            },
+                          );
                           Navigator.pop(context);
                         },
                       );

@@ -1,5 +1,5 @@
-import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:medheal/widgets/user_bottom_bar.dart';
 import 'package:medheal/controller/authentication_provider.dart';
@@ -44,19 +44,14 @@ class _SplashScreenState extends State<SplashScreen> {
 
   Future<void> goToLoginType(context) async {
     User? currentUser = FirebaseAuth.instance.currentUser;
-    final UserProvider =
+    final userProvider =
         Provider.of<AuthenticationProvider>(context, listen: false);
-    // await Future.delayed(const Duration(seconds: 2));
-    // Navigator.push(
-    //   context,
-    //   MaterialPageRoute(builder: (context) => const AuthenticationNavigate()),
-    // );
     if (currentUser == null) {
       await Future.delayed(const Duration(seconds: 2));
       Navigator.pushReplacement(context,
           MaterialPageRoute(builder: (context) => const LoginTypeScreen()));
     } else {
-      await UserProvider.getUser();
+      await userProvider.getUser();
       await Future.delayed(const Duration(seconds: 2));
       Navigator.pushReplacement(context,
           MaterialPageRoute(builder: (context) => const UserBottomBar()));

@@ -226,16 +226,16 @@ Widget showBottom(Size size, context,
     throw const FormatException('Invalid time format');
   }
 
-  Future<List<bool>> _checkTimeSlots(AppointmentProvider provider,
-      List<String> times, String docId, String date) async {
-    List<bool> isBooked = [];
-    for (String time in times) {
-      bool booked = await provider.appointmentService
-          .isTimeSlotAvailable(docId, date, time);
-      isBooked.add(!booked);
-    }
-    return isBooked;
-  }
+  // Future<List<bool>> _checkTimeSlots(AppointmentProvider provider,
+  //     List<String> times, String docId, String date) async {
+  //   List<bool> isBooked = [];
+  //   for (String time in times) {
+  //     bool booked = await provider.appointmentService
+  //         .isTimeSlotAvailable(docId, date, time);
+  //     isBooked.add(!booked);
+  //   }
+  //   return isBooked;
+  // }
 
   String _formatTime(DateTime time) {
     final format = DateFormat.jm();
@@ -321,36 +321,36 @@ Widget showBottom(Size size, context,
                 text: 'Select Hour',
               ),
               SizedBox(height: size.height * .02),
-              SizedBox(child: Consumer<AppointmentProvider>(
-                builder: (context, value, child) {
-                  return GridView.builder(
-                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                      childAspectRatio: 1 / .4,
-                      crossAxisCount: 3,
-                      crossAxisSpacing: size.width * 0.02,
-                      mainAxisSpacing: size.height * .01,
-                    ),
-                    shrinkWrap: true,
-                    physics: const NeverScrollableScrollPhysics(),
-                    itemCount: times.length,
-                    itemBuilder: (BuildContext context, int index) {
-                      String time = times[index];
-                      bool isSelected = value.selectedTime == time;
-                      return SizedBox(
-                        height: size.height * .0007,
-                        width: size.width * .5,
-                        child: doctorDetailsTimeButton(
-                          onPressed: () {
-                            value.setSelectedTime(time);
-                          },
-                          isSelected: isSelected,
-                          time: time,
-                        ),
-                      );
-                    },
-                  );
-                },
-              )),
+              // SizedBox(child: Consumer<AppointmentProvider>(
+              //   builder: (context, value, child) {
+              //     return GridView.builder(
+              //       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+              //         childAspectRatio: 1 / .4,
+              //         crossAxisCount: 3,
+              //         crossAxisSpacing: size.width * 0.02,
+              //         mainAxisSpacing: size.height * .01,
+              //       ),
+              //       shrinkWrap: true,
+              //       physics: const NeverScrollableScrollPhysics(),
+              //       itemCount: times.length,
+              //       itemBuilder: (BuildContext context, int index) {
+              //         String time = times[index];
+              //         bool isSelected = value.selectedTime == time;
+              //         return SizedBox(
+              //           height: size.height * .0007,
+              //           width: size.width * .5,
+              //           child: doctorDetailsTimeButton(
+              //             onPressed: () {
+              //               value.setSelectedTime(time);
+              //             },
+              //             isSelected: isSelected,
+              //             time: time,
+              //           ),
+              //         );
+              //       },
+              //     );
+              //   },
+              // )),
               SizedBox(height: size.height * .02),
             ],
           ),
@@ -391,6 +391,7 @@ Widget showBottom(Size size, context,
 
               await appointmentProvider.updateAppointment(
                   appointment.id!, resheduledAppointment);
+              Navigator.pop(context);
 
               successDialogBox(context, size,
                   userProvider: appointmentProvider,
@@ -402,8 +403,9 @@ Widget showBottom(Size size, context,
                   width: size.width * .8,
                   dialogheight: size.height * .45,
                   dialogWidth: size.width * .2,
+                  image: doctor.image,
                   subText:
-                      'Your appointment with ${doctor.fullName} was Resheduled');
+                      'Your appointment with Dr.${doctor.fullName} was Resheduled to $selectedDate at $selectedTime');
               appointmentProvider.clearAppointmentControllers();
             },
           ),

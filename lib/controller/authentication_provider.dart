@@ -152,7 +152,7 @@ class AuthenticationProvider extends ChangeNotifier {
     await authenticationService.logOut();
   }
 
-  void googleSignIn(BuildContext context) async {
+  void googleSignIn(context) async {
     try {
       final user = await authenticationService.googleSignIn();
       if (user != null) {
@@ -189,26 +189,12 @@ class AuthenticationProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  // Future<void> forgotPassword(context, {email, Function? success}) async {
-  //   authenticationService.passwordReset(
-  //       email: email, context: context, snackBarSuccess: success);
-  // }
-
-  Future<void> forgotPassword(
-    BuildContext context, {
-    required String email,
-    // required Function snackBarSuccess,
-  }) async {
+  Future<void> forgotPassword(context,
+      {email,
+      required Function(String) onError,
+      required Function(String) success}) async {
     authenticationService.passwordReset(
-      email: email,
-      context: context,
-      // snackBarSuccess: snackBarSuccess,
-      showSnackbar: (message) => ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(message),
-        ),
-      ),
-    );
+        email: email, context: context, onError: onError, success: success);
   }
 
   addUser() async {

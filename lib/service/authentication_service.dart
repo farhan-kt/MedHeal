@@ -1,11 +1,11 @@
 import 'dart:developer';
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:medheal/model/authentication_model.dart';
 import 'package:medheal/widgets/user_bottom_bar.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_storage/firebase_storage.dart';
+import 'package:medheal/model/authentication_model.dart';
 
 class AuthenticationService {
   String collection = 'user';
@@ -34,7 +34,7 @@ class AuthenticationService {
     try {
       await users.doc(firebaseAuth.currentUser!.uid).set(data);
     } catch (e) {
-      log('Error adding post :$e');
+      log('error during adding user data:$e');
     }
   }
 
@@ -58,10 +58,9 @@ class AuthenticationService {
       UserCredential userCredential = await firebaseAuth
           .createUserWithEmailAndPassword(email: email, password: password);
       log('Account created');
-
       return userCredential;
     } catch (error) {
-      log('error got in creating account $error ');
+      log('error during creating account :$error ');
       rethrow;
     }
   }
@@ -70,7 +69,7 @@ class AuthenticationService {
     try {
       UserCredential userCredential = await firebaseAuth
           .signInWithEmailAndPassword(email: email, password: password);
-      log('Signed In');
+      log('signed in');
       return userCredential;
     } on FirebaseAuthMultiFactorException catch (error) {
       throw Exception(error.code);
@@ -80,33 +79,6 @@ class AuthenticationService {
   Future<void> logOut() async {
     await firebaseAuth.signOut();
   }
-
-  // googleSignIn() async {
-  //   try {
-  //     final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
-  //     final GoogleSignInAuthentication? googleAuth =
-  //         await googleUser?.authentication;
-
-  //     if (googleAuth == null) {
-  //       log('Google authentication failed');
-  //       throw Exception('Google authentication failed');
-  //     }
-
-  //     final credential = GoogleAuthProvider.credential(
-  //       accessToken: googleAuth.accessToken,
-  //       idToken: googleAuth.idToken,
-  //     );
-
-  //     final UserCredential userCredential =
-  //         await FirebaseAuth.instance.signInWithCredential(credential);
-
-  //     final User? guser = userCredential.user;
-  //     log("${guser?.displayName}");
-  //   } catch (error) {
-  //     log('Google SignIn error : $error');
-  //     rethrow;
-  //   }
-  // }
 
   Future<UserModel?> googleSignIn() async {
     try {
@@ -175,7 +147,7 @@ class AuthenticationService {
         timeout: const Duration(seconds: 60),
       );
     } catch (e) {
-      log("sign in error : $e");
+      log("error during generating otp: $e");
     }
   }
 
@@ -194,52 +166,24 @@ class AuthenticationService {
           (route) => false);
     } catch (e) {
       snackBarError;
-      log("verify otp error $e");
+      log("otp verification error $e");
       return null;
     }
     return null;
   }
 
-  // void passwordReset(
-  //     {required String email, context, Function? snackBarSuccess}) async {
-  //   try {
-
-  //     await firebaseAuth.sendPasswordResetEmail(email: email);
-  //     log('success');
-
-  //     snackBarSuccess;
-  //   } on FirebaseAuthException catch (e) {
-  //     log('error occure');
-  //     ScaffoldMessenger.of(context).showSnackBar(
-  //       SnackBar(
-  //         content: Text(
-  //           e.message.toString(),
-  //         ),
-  //       ),
-  //     );
-  //   }
-  // }
-
-  void passwordReset({
-    required String email,
-    required BuildContext context,
-    // required Function snackBarSuccess,
-    required Function(String message) showSnackbar,
-  }) async {
+  void passwordReset(
+      {required String email,
+      context,
+      required Function(String) onError,
+      required Function(String) success}) async {
     try {
       await firebaseAuth.sendPasswordResetEmail(email: email);
-      log('Password reseted');
-      showSnackbar('Password reset link sent to your Email');
-      // snackBarSuccess(); // Call the success callback
+      log('password reset link sent');
+      success('password reset link is sent to email');
     } on FirebaseAuthException catch (e) {
-      log('error occure');
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(
-            e.message.toString(),
-          ),
-        ),
-      );
+      log('error occured during reset password');
+      onError(e.message.toString());
     }
   }
 
@@ -249,7 +193,7 @@ class AuthenticationService {
             data.toJson(),
           );
     } catch (e) {
-      log("error in updating product : $e");
+      log("error in updating user :$e");
     }
   }
 
@@ -277,8 +221,8 @@ class AuthenticationService {
           .toList();
       return data;
     } catch (e) {
-      log('get error: $e');
-      throw e;
+      log('getAllUser error: $e');
+      rethrow;
     }
   }
 }

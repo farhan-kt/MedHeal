@@ -25,7 +25,8 @@ class DoctorDetailScreen extends StatelessWidget {
     Size size = MediaQuery.of(context).size;
     final appointmentProvider =
         Provider.of<AppointmentProvider>(context, listen: false);
-
+    Provider.of<AppointmentProvider>(context, listen: false)
+        .getAllAppointments();
     List<String> times = _generateTimeSlots(
         doctors?.startTime?.trim() ?? '09:00 AM',
         doctors?.endTime?.trim() ?? '05:00 PM');
@@ -36,6 +37,7 @@ class DoctorDetailScreen extends StatelessWidget {
         leading: IconButton(
           onPressed: () {
             Navigator.pop(context);
+            appointmentProvider.clearAppointmentControllers();
           },
           icon: const Icon(
             Icons.arrow_back_ios,
@@ -127,36 +129,73 @@ class DoctorDetailScreen extends StatelessWidget {
                 text: 'Select Hour',
               ),
               SizedBox(height: size.height * .02),
-              SizedBox(child: Consumer<AppointmentProvider>(
-                builder: (context, value, child) {
-                  return GridView.builder(
-                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                      childAspectRatio: 1 / .4,
-                      crossAxisCount: 3,
-                      crossAxisSpacing: size.width * 0.02,
-                      mainAxisSpacing: size.height * .01,
-                    ),
-                    shrinkWrap: true,
-                    physics: const NeverScrollableScrollPhysics(),
-                    itemCount: times.length,
-                    itemBuilder: (BuildContext context, int index) {
-                      String time = times[index];
-                      bool isSelected = value.selectedTime == time;
-                      return SizedBox(
-                        height: size.height * .0007,
-                        width: size.width * .5,
-                        child: doctorDetailsTimeButton(
-                          onPressed: () {
-                            value.setSelectedTime(time);
-                          },
-                          isSelected: isSelected,
-                          time: time,
-                        ),
-                      );
-                    },
-                  );
-                },
-              )),
+              // SizedBox(child: Consumer<AppointmentProvider>(
+              //   builder: (context, value, child) {
+              //     return GridView.builder(
+              //       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+              //         childAspectRatio: 1 / .4,
+              //         crossAxisCount: 3,
+              //         crossAxisSpacing: size.width * 0.02,
+              //         mainAxisSpacing: size.height * .01,
+              //       ),
+              //       shrinkWrap: true,
+              //       physics: const NeverScrollableScrollPhysics(),
+              //       itemCount: times.length,
+              //       itemBuilder: (BuildContext context, int index) {
+              //         String time = times[index];
+              //         bool isSelected = value.selectedTime == time;
+              //         return SizedBox(
+              //           height: size.height * .0007,
+              //           width: size.width * .5,
+              //           child: doctorDetailsTimeButton(
+              //             onPressed: () {
+              //               value.setSelectedTime(time);
+              //             },
+              //             isSelected: isSelected,
+              //             time: time,
+              //           ),
+              //         );
+              //       },
+              //     );
+              //   },
+              // )),
+              SizedBox(
+                child: Consumer<AppointmentProvider>(
+                  builder: (context, value, child) {
+                    return GridView.builder(
+                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                        childAspectRatio: 1 / .4,
+                        crossAxisCount: 3,
+                        crossAxisSpacing: size.width * 0.02,
+                        mainAxisSpacing: size.height * .01,
+                      ),
+                      shrinkWrap: true,
+                      physics: const NeverScrollableScrollPhysics(),
+                      itemCount: times.length,
+                      itemBuilder: (BuildContext context, int index) {
+                        String time = times[index];
+                        bool isSelected = value.selectedTime == time;
+                        bool isBooked = _isTimeSlotBooked(
+                            time, value.allAppointmentList, value.selectedDate);
+                        return SizedBox(
+                          height: size.height * .0007,
+                          width: size.width * .5,
+                          child: doctorDetailsTimeButton(
+                            onPressed: () {
+                              if (!isBooked) {
+                                value.setSelectedTime(time);
+                              }
+                            },
+                            isSelected: isSelected,
+                            isBooked: isBooked,
+                            time: time,
+                          ),
+                        );
+                      },
+                    );
+                  },
+                ),
+              ),
               SizedBox(height: size.height * .02),
               elevatedButtonWidget(
                   buttonHeight: size.height * .06,
@@ -234,15 +273,10 @@ class DoctorDetailScreen extends StatelessWidget {
     return timeSlots;
   }
 
-  Future<List<bool>> _checkTimeSlots(AppointmentProvider provider,
-      List<String> times, String docId, String date) async {
-    List<bool> isBooked = [];
-    for (String time in times) {
-      bool booked = await provider.appointmentService
-          .isTimeSlotAvailable(docId, date, time);
-      isBooked.add(!booked);
-    }
-    return isBooked;
+  bool _isTimeSlotBooked(
+      String time, List<AppointmentModel> appointments, String? selectedDate) {
+    return appointments.any((appointment) =>
+        appointment.time == time && appointment.date == selectedDate);
   }
 
   DateTime _parseTime(String time) {

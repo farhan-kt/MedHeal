@@ -1,5 +1,4 @@
 import 'dart:io';
-import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:image_picker/image_picker.dart';
@@ -161,7 +160,7 @@ class DoctorAddingScreen extends StatelessWidget {
       final image = await adminProvider.uploadImage(
           File(pickedImage.path), adminProvider.imageName);
 
-      final cars = DoctorModel(
+      final newDoctor = DoctorModel(
         image: image,
         fullName: adminProvider.doctorNameController.text,
         age: adminProvider.doctorAgeController.text,
@@ -177,15 +176,14 @@ class DoctorAddingScreen extends StatelessWidget {
         wishList: [],
       );
 
-      await adminProvider.addDoctor(cars);
+      await adminProvider.addDoctor(newDoctor);
       adminProvider.clearDoctorAddingControllers();
 
       SnackBarWidget()
           .showSuccessSnackbar(context, 'Doctor Added Successfully');
     } else {
       SnackBarWidget()
-          .showSuccessSnackbar(context, 'Failed to Add try once more');
-      log('Error: pickedImage is null');
+          .showErrorSnackbar(context, 'failed to add, try one more');
     }
     adminProvider.setLoading(false);
   }

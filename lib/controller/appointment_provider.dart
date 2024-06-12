@@ -104,16 +104,15 @@ class AppointmentProvider extends ChangeNotifier {
 
   List<AppointmentModel> canceledAppointmentList = [];
 
-  Future<void> cancelAppointment(String id, context) async {
+  Future<void> cancelAppointment(String id, Function(String) onError) async {
     try {
       AppointmentModel appointment =
           allAppointmentList.firstWhere((app) => app.id == id);
       appointment.status = 'canceled';
       await appointmentService.updateAppointment(id, appointment);
       await getAllAppointments();
-
       canceledAppointmentList.add(appointment);
-      Navigator.pop(context);
+      onError('Appointment cancelled');
     } catch (error) {
       log('Error during canceling appointment: $error');
     }

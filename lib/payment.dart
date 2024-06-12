@@ -1,5 +1,4 @@
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:medheal/widgets/snackbar_widget.dart';
 import 'package:razorpay_flutter/razorpay_flutter.dart';
 
 class RazorPay {

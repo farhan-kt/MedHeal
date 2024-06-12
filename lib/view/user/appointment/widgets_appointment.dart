@@ -3,6 +3,7 @@ import 'package:medheal/controller/appointment_provider.dart';
 import 'package:medheal/model/appointment_model.dart';
 import 'package:medheal/model/doctor_model.dart';
 import 'package:medheal/widgets/normal_widgets.dart';
+import 'package:medheal/widgets/snackbar_widget.dart';
 import 'package:medheal/widgets/text_widgets.dart';
 import 'package:provider/provider.dart';
 
@@ -89,12 +90,16 @@ Widget appointmentScheduledContainer(Size size, context,
                         dialogWidth: size.width * .6,
                         dialogheight: size.height * .16,
                         height: size.height * .02,
-                        alertMessage:
-                            'Are You Sure to cancel your Appointment ?',
+                        alertMessage: 'Proceed to cancel Your Appointment ?',
                         confirmText: 'Confirm', onPressedConfirm: () async {
                       await appointmentProvider.cancelAppointment(
-                          appointment.id!, context);
+                        appointment.id!,
+                        (error) {
+                          SnackBarWidget().showErrorSnackbar(context, error);
+                        },
+                      );
                       appointmentProvider.deleteAppointment(appointment.id!);
+                      Navigator.pop(context);
                     });
                   },
                   child: poppinsHeadText(

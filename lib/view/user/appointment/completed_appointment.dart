@@ -103,7 +103,7 @@ class CompletedAppointments extends StatelessWidget {
     }
 
     DateTime now = DateTime.now();
-    DateTime currentDate = DateTime(now.year, now.month, now.day);
+    // DateTime currentDate = DateTime(now.year, now.month, now.day);
     DateTime appointmentDateTime = DateTime.parse(formattedDate)
         .add(Duration(hours: appointmentHour, minutes: appointmentMinute));
 

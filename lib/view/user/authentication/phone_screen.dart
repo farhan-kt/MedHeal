@@ -80,7 +80,7 @@ class PhoneScreen extends StatelessWidget {
                   ),
                 ),
                 elevatedButtonWidget(
-                  shape: MaterialStateProperty.all(
+                  shape: WidgetStateProperty.all(
                     BeveledRectangleBorder(
                       borderRadius: BorderRadius.circular(3),
                     ),
@@ -133,7 +133,7 @@ class PhoneScreen extends StatelessWidget {
                           Expanded(
                             child: elevatedButtonWidget(
                               buttonHeight: size.height * .065,
-                              shape: MaterialStateProperty.all(
+                              shape: WidgetStateProperty.all(
                                 BeveledRectangleBorder(
                                   borderRadius: BorderRadius.circular(3),
                                 ),

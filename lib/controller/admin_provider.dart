@@ -93,10 +93,9 @@ class DoctorProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  void deleteDoctor(String id) async {
-    log('start deleting');
+  void deleteDoctor(String id, Function(String) onSuccess) async {
     await doctorService.deleteDoctor(id);
-    log('end deleting');
+    onSuccess('doctor deleted');
     getAllDoctors();
   }
 

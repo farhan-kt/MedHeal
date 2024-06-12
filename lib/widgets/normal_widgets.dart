@@ -17,7 +17,7 @@ Widget elevatedButtonWidget(
     child: ElevatedButton(
       style: ButtonStyle(
         shape: shape,
-        backgroundColor: MaterialStateProperty.all(
+        backgroundColor: WidgetStateProperty.all(
           bgColor ?? const Color(0xFF1995AD),
         ),
       ),
@@ -254,7 +254,7 @@ confirmationDialog(
               children: [
                 SizedBox(height: height),
                 poppinsText(
-                  textAlign: TextAlign.center,
+                  // textAlign: TextAlign.center,
                   fontSize: 17,
                   fontWeight: FontWeight.w500,
                   text: alertMessage,

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:medheal/widgets/snackbar_widget.dart';
 import 'package:provider/provider.dart';
 import 'package:medheal/widgets/text_widgets.dart';
 import 'package:medheal/widgets/normal_widgets.dart';
@@ -61,7 +62,7 @@ class ForgotPasswordScreen extends StatelessWidget {
                 height: size.height * .02,
               ),
               elevatedButtonWidget(
-                  shape: MaterialStateProperty.all(
+                  shape: WidgetStateProperty.all(
                     BeveledRectangleBorder(
                       borderRadius: BorderRadius.circular(3),
                     ),
@@ -72,9 +73,17 @@ class ForgotPasswordScreen extends StatelessWidget {
                   onPressed: () {
                     if (authProvider.forgotPasswordFormkey.currentState!
                         .validate()) {
-                      authProvider.forgotPassword(context,
-                          email:
-                              authProvider.signInEmailController.text.trim());
+                      authProvider.forgotPassword(
+                        context,
+                        email: authProvider.signInEmailController.text.trim(),
+                        onError: (error) {
+                          SnackBarWidget().showErrorSnackbar(context, error);
+                        },
+                        success: (success) {
+                          SnackBarWidget()
+                              .showSuccessSnackbar(context, success);
+                        },
+                      );
                     }
                   })
             ],

@@ -332,11 +332,16 @@ Widget doctorDetailsTimeButton({
   VoidCallback? onPressed,
   time,
   required bool isSelected,
+  required bool isBooked,
 }) {
-  Color buttonColor = isSelected ? Colors.black : Color(0xFF1995AD);
+  // Color buttonColor = isSelected ? Colors.black : const Color(0xFF1995AD);
+  Color buttonColor = isBooked
+      ? Colors.red
+      : (isSelected ? Colors.black : const Color(0xFF1995AD));
+
   return OutlinedButton(
     style: ButtonStyle(
-      side: MaterialStateProperty.all(
+      side: WidgetStateProperty.all(
         BorderSide(color: buttonColor, width: 1.2),
       ),
     ),

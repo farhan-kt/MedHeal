@@ -120,7 +120,7 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
             ),
             SizedBox(height: size.height * .02),
             elevatedButtonWidget(
-                shape: MaterialStateProperty.all(
+                shape: WidgetStateProperty.all(
                   BeveledRectangleBorder(
                     borderRadius: BorderRadius.circular(3),
                   ),

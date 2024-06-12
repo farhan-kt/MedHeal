@@ -14,12 +14,14 @@ class UpcomingAppointments extends StatelessWidget {
   const UpcomingAppointments({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    Size size = MediaQuery.of(context).size;
+  // ignore: avoid_renaming_method_parameters
+  Widget build(BuildContext localContext) {
+    Size size = MediaQuery.of(localContext).size;
     double circleAvatarRadius = size.shortestSide * circleAvatarRadiusFraction;
-    Provider.of<AppointmentProvider>(context, listen: false)
+    Provider.of<AppointmentProvider>(localContext, listen: false)
         .getUserAppointments();
-    final doctorProvider = Provider.of<DoctorProvider>(context, listen: false);
+    final doctorProvider =
+        Provider.of<DoctorProvider>(localContext, listen: false);
 
     return Scaffold(
       backgroundColor: const Color(0xFFF5F5F5),
@@ -61,15 +63,15 @@ class UpcomingAppointments extends StatelessWidget {
                       final doctor = snapshot.data;
                       return Column(
                         children: [
-                          appointmentScheduledContainer(size, context,
+                          appointmentScheduledContainer(size, localContext,
                               circleAvatarRadius: circleAvatarRadius,
                               appointment: appointment,
                               doctor: doctor!,
                               isUpcoming: true, onPressed: () {
                             showBottomSheet(
-                              context: context,
+                              context: localContext,
                               builder: (context) {
-                                return showBottom(size, context,
+                                return showBottom(size, localContext,
                                     appointment: appointment, doctor: doctor);
                               },
                             );

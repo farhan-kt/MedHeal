@@ -33,8 +33,10 @@ class FavouriteDoctorsScreen extends StatelessWidget {
             final favouriteItems = checkUser(doctorValue);
             if (favouriteItems.isEmpty) {
               return Center(
-                child: Image.asset('assets/no doctors available.png'),
-              );
+                  child: poppinsHeadText(
+                      text: 'No Favourite Doctors Added !',
+                      color: const Color(0xFF1995AD),
+                      fontSize: 18));
             } else {
               return ListView.builder(
                 itemCount: favouriteItems.length,
