@@ -1,11 +1,10 @@
 // ignore_for_file: use_build_context_synchronously
 
 import 'dart:io';
-
 import 'package:flutter/material.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 import 'package:enefty_icons/enefty_icons.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:medheal/widgets/text_widgets.dart';
 import 'package:medheal/widgets/normal_widgets.dart';
@@ -46,7 +45,7 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
     } else {
       _imageProvider = widget.imageProvider;
     }
-    widget.value.selectedGender = widget.value.currentUser?.gender ?? '';
+    widget.value.selectedGender = widget.value.currentUser?.gender ?? 'Male';
   }
 
   @override

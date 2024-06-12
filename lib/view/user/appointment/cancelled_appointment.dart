@@ -1,46 +1,12 @@
-// import 'package:flutter/material.dart';
-// import 'package:medheal/view/user/appointment/widgets_appointment.dart';
-
-// const double circleAvatarRadiusFraction = 0.1;
-
-// class CancelledAppointments extends StatelessWidget {
-//   const CancelledAppointments({super.key});
-
-//   @override
-//   Widget build(BuildContext context) {
-//     Size size = MediaQuery.of(context).size;
-//     double circleAvatarRadius = size.shortestSide * circleAvatarRadiusFraction;
-
-//     return Scaffold(
-//       backgroundColor: const Color(0xFFF5F5F5),
-//       body: Padding(
-//         padding: EdgeInsets.symmetric(
-//             horizontal: size.width * .03, vertical: size.height * .02),
-//         child: ListView.builder(
-//           itemCount: 5,
-//           itemBuilder: (context, index) {
-//             return Column(
-//               children: [
-//                 // appointmentScheduledContainer(size, context,
-//                 //     circleAvatarRadius: circleAvatarRadius, isUpcoming: false),
-//                 SizedBox(height: size.height * .02),
-//               ],
-//             );
-//           },
-//         ),
-//       ),
-//     );
-//   }
-// }
-
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:medheal/model/appointment_model.dart';
 import 'package:medheal/model/doctor_model.dart';
-import 'package:medheal/controller/appointment_provider.dart';
-import 'package:medheal/controller/admin_provider.dart';
-import 'package:medheal/view/user/appointment/widgets_appointment.dart';
 import 'package:medheal/widgets/text_widgets.dart';
+import 'package:medheal/model/appointment_model.dart';
+import 'package:medheal/controller/admin_provider.dart';
+import 'package:medheal/controller/appointment_provider.dart';
+import 'package:medheal/view/user/home/doctor_detail_screen.dart';
+import 'package:medheal/view/user/appointment/widgets_appointment.dart';
 
 const double circleAvatarRadiusFraction = 0.1;
 
@@ -103,11 +69,14 @@ class CancelledAppointments extends StatelessWidget {
                             doctor: doctor!,
                             isUpcoming: false,
                             onPressed: () {
-                              // Navigator.push(
-                              //     context,
-                              //     MaterialPageRoute(
-                              //         builder: (context) => DoctorDetailScreen(
-                              //             value: value, userId: userId)));
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => DoctorDetailScreen(
+                                            value: doctorProvider,
+                                            userId: appointment.uId!,
+                                            doctors: doctor,
+                                          )));
                             },
                           ),
                           SizedBox(height: size.height * .02),

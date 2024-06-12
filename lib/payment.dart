@@ -1,4 +1,5 @@
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:medheal/widgets/snackbar_widget.dart';
 import 'package:razorpay_flutter/razorpay_flutter.dart';
 
 class RazorPay {
@@ -18,7 +19,7 @@ class RazorPay {
     _razorpay.open(options);
   }
 
-  void _handlePaymentSuccess(PaymentSuccessResponse response) async {
+  void _handlePaymentSuccess(PaymentSuccessResponse response, context) async {
     Fluttertoast.showToast(
         msg: "Success Payment :${response.paymentId}", timeInSecForIosWeb: 4);
   }

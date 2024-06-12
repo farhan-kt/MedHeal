@@ -4,7 +4,6 @@ import 'package:enefty_icons/enefty_icons.dart';
 import 'package:medheal/controller/authentication_provider.dart';
 import 'package:medheal/view/user/home/category.dart';
 import 'package:medheal/widgets/text_widgets.dart';
-import 'package:medheal/view/user/user_widgets.dart';
 import 'package:medheal/widgets/normal_widgets.dart';
 import 'package:medheal/view/user/profile/favourite_doctors.dart';
 import 'package:provider/provider.dart';

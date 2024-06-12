@@ -1,5 +1,4 @@
 import 'dart:developer';
-
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:medheal/model/appointment_model.dart';
@@ -86,21 +85,6 @@ class AppointmentProvider extends ChangeNotifier {
 
   final DoctorService doctorService = DoctorService();
 
-  // Future<void> getUserAppointments() async {
-  //   setLoading(true);
-  //   try {
-  //     String userId = FirebaseAuth.instance.currentUser!.uid;
-  //     allAppointmentList = await appointmentService.getUserAppointments(userId);
-  //     for (var appointment in allAppointmentList) {
-  //       appointment.doctor =
-  //           await doctorService.getDoctorById(appointment.docId!);
-  //     }
-  //   } catch (error) {
-  //     log('Error fetching user appointments: $error');
-  //   }
-  //   setLoading(false);
-  // }
-
   Future<void> getUserAppointments() async {
     setLoading(true);
     try {
@@ -120,7 +104,7 @@ class AppointmentProvider extends ChangeNotifier {
 
   List<AppointmentModel> canceledAppointmentList = [];
 
-  Future<void> cancelAppointment(String id) async {
+  Future<void> cancelAppointment(String id, context) async {
     try {
       AppointmentModel appointment =
           allAppointmentList.firstWhere((app) => app.id == id);
@@ -129,6 +113,7 @@ class AppointmentProvider extends ChangeNotifier {
       await getAllAppointments();
 
       canceledAppointmentList.add(appointment);
+      Navigator.pop(context);
     } catch (error) {
       log('Error during canceling appointment: $error');
     }

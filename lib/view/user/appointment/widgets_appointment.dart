@@ -92,7 +92,8 @@ Widget appointmentScheduledContainer(Size size, context,
                         alertMessage:
                             'Are You Sure to cancel your Appointment ?',
                         confirmText: 'Confirm', onPressedConfirm: () async {
-                      appointmentProvider.cancelAppointment(appointment.id!);
+                      await appointmentProvider.cancelAppointment(
+                          appointment.id!, context);
                       appointmentProvider.deleteAppointment(appointment.id!);
                     });
                   },

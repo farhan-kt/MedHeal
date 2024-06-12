@@ -14,13 +14,16 @@ import 'package:medheal/widgets/normal_widgets.dart';
 import 'package:medheal/controller/appointment_provider.dart';
 import 'package:medheal/widgets/textformfield_widget.dart';
 
-successDialogBox(context, Size size,
+successDialogBox(localContext, Size size,
     {elevatedButtonHeight,
     elevatedButtonWidth,
     height,
     width,
+    image,
+    fees,
     doctorName,
     bookingTime,
+    bookingDate,
     dialogheight,
     dialogWidth,
     headMessage,
@@ -29,7 +32,7 @@ successDialogBox(context, Size size,
     AppointmentProvider? userProvider,
     required bool? isAppointment}) {
   return showDialog(
-    context: context,
+    context: localContext,
     builder: (context) {
       return AlertDialog(
         title: SizedBox(
@@ -41,11 +44,12 @@ successDialogBox(context, Size size,
               children: [
                 SizedBox(height: height),
                 CircleAvatar(
-                  radius: size.width * .15,
-                  backgroundColor: const Color(0xFF1995AD),
-                  backgroundImage:
-                      const AssetImage('assets/avatar-removebg-preview.png'),
-                ),
+                    radius: size.width * .15,
+                    backgroundColor: const Color(0xFF1995AD),
+                    backgroundImage: image != null
+                        ? NetworkImage(image)
+                        : const AssetImage('assets/avatar-removebg-preview.png')
+                            as ImageProvider),
                 SizedBox(height: height),
                 poppinsHeadText(
                   textAlign: TextAlign.center,
@@ -53,21 +57,19 @@ successDialogBox(context, Size size,
                   fontSize: 20,
                   color: const Color(0xFF1995AD),
                 ),
-                if (!isAppointment!) ...[
-                  SizedBox(height: height),
-                  SizedBox(
-                    width: width,
-                    child: poppinsText(
-                      textAlign: TextAlign.center,
-                      text: subText,
-                      fontSize: 14,
-                      fontWeight: FontWeight.w400,
-                      color: const Color(0xFF101828),
-                    ),
-                  ),
-                ],
                 SizedBox(height: height),
-                isAppointment
+                SizedBox(
+                  width: width,
+                  child: poppinsText(
+                    textAlign: TextAlign.center,
+                    text: subText,
+                    fontSize: 14,
+                    fontWeight: FontWeight.w400,
+                    color: const Color(0xFF101828),
+                  ),
+                ),
+                SizedBox(height: height),
+                isAppointment!
                     ? Column(
                         children: [
                           elevatedButtonWidget(
@@ -79,20 +81,22 @@ successDialogBox(context, Size size,
                                   appointment!,
                                   (error) {
                                     SnackBarWidget()
-                                        .showErrorSnackbar(context, error);
+                                        .showErrorSnackbar(localContext, error);
                                   },
                                 );
-
+                                Navigator.pop(localContext);
                                 if (success) {
-                                  appointmentDialogBox(context, size,
+                                  appointmentDialogBox(localContext, size,
                                       doctorName: doctorName,
-                                      bookingTime: bookingTime);
+                                      bookingTime: bookingTime,
+                                      bookingDate: bookingDate,
+                                      doctorImage: image);
                                 } else {
-                                  Navigator.pop(context);
+                                  Navigator.pop(localContext);
                                   userProvider.selectedTime = null;
                                 }
                               },
-                              buttonText: 'Direct Pay'),
+                              buttonText: 'Pay at Clinic'),
                           SizedBox(
                             height: size.height * .02,
                           ),
@@ -104,15 +108,27 @@ successDialogBox(context, Size size,
                                 RazorPay razorPayInstance = RazorPay();
                                 await razorPayInstance
                                     .razorPay(amount.toString());
-                                userProvider!.addAppointment(
+                                bool success =
+                                    await userProvider!.addAppointment(
                                   appointment!,
                                   (error) {
                                     SnackBarWidget()
-                                        .showErrorSnackbar(context, error);
+                                        .showErrorSnackbar(localContext, error);
                                   },
                                 );
+                                Navigator.pop(localContext);
+                                if (success) {
+                                  appointmentDialogBox(localContext, size,
+                                      doctorName: doctorName,
+                                      bookingTime: bookingTime,
+                                      bookingDate: bookingDate,
+                                      doctorImage: image);
+                                } else {
+                                  Navigator.pop(localContext);
+                                  userProvider.selectedTime = null;
+                                }
                               },
-                              buttonText: 'Payment'),
+                              buttonText: 'Pay Online'),
                         ],
                       )
                     : elevatedButtonWidget(
@@ -120,7 +136,7 @@ successDialogBox(context, Size size,
                         buttonText: 'OK',
                         buttonWidth: size.width * .5,
                         onPressed: () {
-                          Navigator.pop(context);
+                          Navigator.pop(localContext);
                         },
                       )
               ],
@@ -132,7 +148,8 @@ successDialogBox(context, Size size,
   );
 }
 
-appointmentDialogBox(routeContext, Size size, {doctorName, bookingTime}) {
+appointmentDialogBox(routeContext, Size size,
+    {doctorName, bookingTime, bookingDate, doctorImage}) {
   return showDialog(
     context: routeContext,
     builder: (context) {
@@ -148,13 +165,15 @@ appointmentDialogBox(routeContext, Size size, {doctorName, bookingTime}) {
                 CircleAvatar(
                   radius: size.width * .15,
                   backgroundColor: const Color(0xFF1995AD),
-                  backgroundImage:
-                      const AssetImage('assets/avatar-removebg-preview.png'),
+                  backgroundImage: doctorImage != null
+                      ? NetworkImage(doctorImage)
+                      : const AssetImage('assets/avatar-removebg-preview.png')
+                          as ImageProvider,
                 ),
                 SizedBox(height: size.height * .02),
                 poppinsHeadText(
                   textAlign: TextAlign.center,
-                  text: 'Your Appointment Has Been Confirmed',
+                  text: 'Appointment Success',
                   fontSize: 20,
                   color: const Color(0xFF1995AD),
                 ),
@@ -164,7 +183,7 @@ appointmentDialogBox(routeContext, Size size, {doctorName, bookingTime}) {
                   child: poppinsText(
                     textAlign: TextAlign.center,
                     text:
-                        'Your appointment with Dr. $doctorName on Wednesday, August 17, 2023 at $bookingTime  ',
+                        'Your appointment with Dr. $doctorName on $bookingDate at $bookingTime has been confirmed  ',
                     fontSize: 14,
                     fontWeight: FontWeight.w400,
                     color: const Color(0xFF101828),
@@ -385,6 +404,7 @@ Widget showBottom(Size size, context,
                   dialogWidth: size.width * .2,
                   subText:
                       'Your appointment with ${doctor.fullName} was Resheduled');
+              appointmentProvider.clearAppointmentControllers();
             },
           ),
         ],

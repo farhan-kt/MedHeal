@@ -171,20 +171,24 @@ class DoctorDetailScreen extends StatelessWidget {
                           docId: doctors!.id,
                           date: selectedDate,
                           time: selectedTime);
-                      // userProvider.addAppointment(appointment);
                       successDialogBox(context, size,
                           userProvider: appointmentProvider,
                           appointment: appointment,
                           isAppointment: true,
-                          headMessage: 'Appointment Booked Successfully',
+                          headMessage: 'Choose Your Payment',
+                          fees: doctors!.patients,
+                          subText:
+                              'Please select a payment method to proceed appointment with Dr.${doctors!.fullName}.',
                           elevatedButtonHeight: size.height * .05,
                           elevatedButtonWidth: size.width * .7,
                           height: size.height * .02,
                           width: size.width * .8,
-                          dialogheight: size.height * .43,
+                          dialogheight: size.height * .48,
                           dialogWidth: size.width * .2,
                           bookingTime: selectedTime,
-                          doctorName: doctors!.fullName);
+                          bookingDate: selectedDate,
+                          doctorName: doctors!.fullName,
+                          image: doctors!.image);
                     } else {
                       showDialog(
                         context: context,

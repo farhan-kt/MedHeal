@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:medheal/view/user/home/doctor_detail_screen.dart';
 import 'package:provider/provider.dart';
 import 'package:medheal/model/doctor_model.dart';
 import 'package:medheal/widgets/text_widgets.dart';
@@ -63,11 +64,14 @@ class CompletedAppointments extends StatelessWidget {
                               appointment: appointments,
                               doctor: doctor!,
                               isUpcoming: false, onPressed: () {
-                            // Navigator.push(
-                            //     context,
-                            //     MaterialPageRoute(
-                            //         builder: (context) => DoctorDetailScreen(
-                            //             value: value, userId: userId)));
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => DoctorDetailScreen(
+                                          value: doctorProvider,
+                                          userId: appointments.uId!,
+                                          doctors: doctor,
+                                        )));
                           }),
                           SizedBox(height: size.height * .02),
                         ],
