@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:enefty_icons/enefty_icons.dart';
 import 'package:medheal/view/user/home/doctor_detail_screen.dart';
 import 'package:medheal/widgets/text_widgets.dart';
+import 'package:shimmer/shimmer.dart';
 
 Widget elevatedButtonWidget(
     {onPressed,
@@ -250,11 +251,10 @@ confirmationDialog(
           width: dialogWidth,
           child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              crossAxisAlignment: CrossAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 SizedBox(height: height),
                 poppinsText(
-                  // textAlign: TextAlign.center,
                   fontSize: 17,
                   fontWeight: FontWeight.w500,
                   text: alertMessage,

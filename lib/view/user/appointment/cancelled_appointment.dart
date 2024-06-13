@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:medheal/helper/loading_indicator.dart';
 import 'package:medheal/view/user/appointment/widgets_appointment.dart';
 import 'package:medheal/view/user/home/doctor_detail_screen.dart';
 import 'package:provider/provider.dart';
@@ -41,7 +42,9 @@ class _CancelledAppointmentsState extends State<CancelledAppointments> {
           builder: (context, appointmentProvider, child) {
             if (appointmentProvider.isLoading) {
               return const Center(
-                  child: CircularProgressIndicator(color: Color(0xFF1995AD)));
+                  child: CircularProgressIndicator(
+                color: Color(0xFF1995AD),
+              ));
             }
 
             List<AppointmentModel> canceledAppointments =
@@ -66,8 +69,9 @@ class _CancelledAppointmentsState extends State<CancelledAppointments> {
                   future: doctorProvider.getDoctorById(appointment.docId!),
                   builder: (context, snapshot) {
                     if (snapshot.connectionState == ConnectionState.waiting) {
-                      return const CircularProgressIndicator(
-                          color: Color(0xFF1995AD));
+                      return loadingIndicator(size,
+                          circleHeight: size.height * .15,
+                          circleWidth: size.width * .3);
                     }
                     if (!snapshot.hasData) {
                       return const SizedBox.shrink();

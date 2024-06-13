@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:medheal/helper/loading_indicator.dart';
 import 'package:medheal/view/user/home/doctor_detail_screen.dart';
+import 'package:medheal/widgets/normal_widgets.dart';
 import 'package:provider/provider.dart';
 import 'package:medheal/model/doctor_model.dart';
 import 'package:medheal/widgets/text_widgets.dart';
@@ -51,8 +53,9 @@ class CompletedAppointments extends StatelessWidget {
                   future: doctorProvider.getDoctorById(appointments.docId!),
                   builder: (context, snapshot) {
                     if (snapshot.connectionState == ConnectionState.waiting) {
-                      return const CircularProgressIndicator(
-                          color: Color(0xFF1995AD));
+                      return loadingIndicator(size,
+                          circleHeight: size.height * .15,
+                          circleWidth: size.width * .3);
                     } else if (snapshot.hasError) {
                       return Text('Error: ${snapshot.error}');
                     } else {

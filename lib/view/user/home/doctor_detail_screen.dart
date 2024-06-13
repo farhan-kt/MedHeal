@@ -246,7 +246,10 @@ class DoctorDetailScreen extends StatelessWidget {
   bool _isTimeSlotBooked(
       String time, List<AppointmentModel> appointments, String? selectedDate) {
     return appointments.any((appointment) =>
-        appointment.time == time && appointment.date == selectedDate);
+        appointment.time == time &&
+        appointment.date == selectedDate &&
+        appointment.status == null &&
+        appointment.status != 'canceled');
   }
 
   DateTime _parseTime(String time) {

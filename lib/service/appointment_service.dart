@@ -19,16 +19,6 @@ class AppointmentService {
     });
   }
 
-  Future<bool> isTimeSlotAvailable(
-      String docId, String date, String time) async {
-    final querySnapshot = await appointment
-        .where('docId', isEqualTo: docId)
-        .where('date', isEqualTo: date)
-        .where('time', isEqualTo: time)
-        .get();
-    return querySnapshot.docs.isEmpty;
-  }
-
   Future<List<AppointmentModel>> getUserAppointments(String userId) async {
     final querySnapshot =
         await appointment.where('userId', isEqualTo: userId).get();
@@ -37,15 +27,9 @@ class AppointmentService {
 
   Future<void> addAppointment(AppointmentModel data) async {
     try {
-      final isAvailable =
-          await isTimeSlotAvailable(data.docId!, data.date!, data.time!);
-      if (isAvailable) {
-        DocumentReference docRef = await appointment.add(data);
-        data.id = docRef.id;
-        await docRef.set(data);
-      } else {
-        throw Exception("Time slot is already booked");
-      }
+      DocumentReference docRef = await appointment.add(data);
+      data.id = docRef.id;
+      await docRef.set(data);
     } catch (error) {
       log('Error during adding appointment: $error');
       throw error;

@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 import 'package:medheal/model/doctor_model.dart';
 import 'package:medheal/widgets/text_widgets.dart';
 import 'package:medheal/model/appointment_model.dart';
+import 'package:medheal/helper/loading_indicator.dart';
 import 'package:medheal/controller/admin_provider.dart';
 import 'package:medheal/view/user/home/home_widgets.dart';
 import 'package:medheal/widgets/all_doctor_container.dart';
@@ -21,6 +22,7 @@ class UserHomeScreen extends StatefulWidget {
 }
 
 class _UserHomeScreenState extends State<UserHomeScreen> {
+  @override
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -53,8 +55,10 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
                     final allAppointments =
                         appointmentProvider.allAppointmentList;
                     final upcomingAppointments = allAppointments
-                        .where(
-                            (appointment) => isUpcomingAppointment(appointment))
+                        .where((appointment) =>
+                            isUpcomingAppointment(appointment) &&
+                            (appointment.status == null ||
+                                appointment.status != 'canceled'))
                         .toList();
                     upcomingAppointments.sort((a, b) {
                       final aDateTime = parseDateTime(a.date!, a.time!);
@@ -83,7 +87,9 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
                         builder: (context, doctorSnapshot) {
                           if (doctorSnapshot.connectionState ==
                               ConnectionState.waiting) {
-                            return const CircularProgressIndicator();
+                            return loadingIndicator(size,
+                                circleHeight: size.height * .15,
+                                circleWidth: size.width * .3);
                           } else if (doctorSnapshot.hasError) {
                             return Text('Error: ${doctorSnapshot.error}');
                           } else if (doctorSnapshot.hasData &&

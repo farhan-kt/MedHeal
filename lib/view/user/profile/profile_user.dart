@@ -77,7 +77,7 @@ class UserProfileScreen extends StatelessWidget {
                   isAdmin: false,
                   onTap: () {
                     confirmationDialog(context, size,
-                        dialogWidth: size.width * .4,
+                        dialogWidth: size.width * .2,
                         height: size.height * .015,
                         alertMessage: 'Are you sure to Log out ?',
                         confirmText: 'Log Out', onPressedConfirm: () {
