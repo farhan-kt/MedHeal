@@ -25,8 +25,8 @@ class DoctorDetailScreen extends StatelessWidget {
     Size size = MediaQuery.of(context).size;
     final appointmentProvider =
         Provider.of<AppointmentProvider>(context, listen: false);
-    Provider.of<AppointmentProvider>(context, listen: false)
-        .getAllAppointments();
+    // Provider.of<AppointmentProvider>(context, listen: false)
+    //     .getAllAppointments();
     List<String> times = _generateTimeSlots(
         doctors?.startTime?.trim() ?? '09:00 AM',
         doctors?.endTime?.trim() ?? '05:00 PM');

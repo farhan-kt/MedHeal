@@ -1,7 +1,6 @@
 import 'dart:developer';
-
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:medheal/model/appointment_model.dart';
 
 class AppointmentService {
@@ -74,5 +73,13 @@ class AppointmentService {
     } catch (e) {
       log("error in updating appointment : $e");
     }
+  }
+
+  Future<List<AppointmentModel>> getCanceledAppointments(String userId) async {
+    final querySnapshot = await appointment
+        .where('userId', isEqualTo: userId)
+        .where('status', isEqualTo: 'canceled')
+        .get();
+    return querySnapshot.docs.map((doc) => doc.data()).toList();
   }
 }

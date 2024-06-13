@@ -19,7 +19,7 @@ class CompletedAppointments extends StatelessWidget {
     double circleAvatarRadius = size.shortestSide * circleAvatarRadiusFraction;
     final doctorProvider = Provider.of<DoctorProvider>(context, listen: false);
     return Scaffold(
-      backgroundColor: const Color(0xFFF5F5F5),
+      backgroundColor: const Color.fromARGB(255, 238, 237, 237),
       body: Padding(
         padding: EdgeInsets.symmetric(
             horizontal: size.width * .03, vertical: size.height * .02),

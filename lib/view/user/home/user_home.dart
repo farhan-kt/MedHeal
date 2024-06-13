@@ -1,29 +1,39 @@
 import 'dart:developer';
-import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:medheal/controller/appointment_provider.dart';
-import 'package:medheal/model/appointment_model.dart';
-import 'package:medheal/model/doctor_model.dart';
+import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:medheal/model/doctor_model.dart';
 import 'package:medheal/widgets/text_widgets.dart';
+import 'package:medheal/model/appointment_model.dart';
 import 'package:medheal/controller/admin_provider.dart';
 import 'package:medheal/view/user/home/home_widgets.dart';
 import 'package:medheal/widgets/all_doctor_container.dart';
 import 'package:medheal/controller/bottom_bar_provider.dart';
+import 'package:medheal/controller/appointment_provider.dart';
 
 const double circleAvatarRadiusFraction = 0.091;
 
-class UserHomeScreen extends StatelessWidget {
+class UserHomeScreen extends StatefulWidget {
   const UserHomeScreen({super.key});
+
+  @override
+  State<UserHomeScreen> createState() => _UserHomeScreenState();
+}
+
+class _UserHomeScreenState extends State<UserHomeScreen> {
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      Provider.of<AppointmentProvider>(context, listen: false)
+          .getAllAppointments();
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     Provider.of<DoctorProvider>(context, listen: false).getAllDoctors();
-    Provider.of<AppointmentProvider>(context, listen: false)
-        .getAllAppointments();
     double circleAvatarRadius = size.shortestSide * circleAvatarRadiusFraction;
-
     final bottomProvider = Provider.of<BottomProvider>(context, listen: false);
     return SafeArea(
       child: Scaffold(
@@ -58,7 +68,7 @@ class UserHomeScreen extends StatelessWidget {
                         child: Center(
                           child: poppinsHeadText(
                             text: 'No Upcoming Appointments',
-                            color: Color(0xFF1995AD),
+                            color: const Color(0xFF1995AD),
                             fontSize: 18,
                           ),
                         ),

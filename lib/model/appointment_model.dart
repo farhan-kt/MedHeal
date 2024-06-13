@@ -40,4 +40,8 @@ class AppointmentModel {
       'status': status,
     };
   }
+
+  bool isCanceled() {
+    return status == 'canceled';
+  }
 }

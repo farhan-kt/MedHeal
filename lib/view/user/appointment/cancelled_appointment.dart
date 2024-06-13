@@ -1,17 +1,30 @@
 import 'package:flutter/material.dart';
+import 'package:medheal/view/user/appointment/widgets_appointment.dart';
+import 'package:medheal/view/user/home/doctor_detail_screen.dart';
 import 'package:provider/provider.dart';
 import 'package:medheal/model/doctor_model.dart';
 import 'package:medheal/widgets/text_widgets.dart';
 import 'package:medheal/model/appointment_model.dart';
 import 'package:medheal/controller/admin_provider.dart';
 import 'package:medheal/controller/appointment_provider.dart';
-import 'package:medheal/view/user/home/doctor_detail_screen.dart';
-import 'package:medheal/view/user/appointment/widgets_appointment.dart';
 
-const double circleAvatarRadiusFraction = 0.1;
+const double circleAvatarRadiusFraction = 0.12;
 
-class CancelledAppointments extends StatelessWidget {
+class CancelledAppointments extends StatefulWidget {
   const CancelledAppointments({super.key});
+
+  @override
+  State<CancelledAppointments> createState() => _CancelledAppointmentsState();
+}
+
+class _CancelledAppointmentsState extends State<CancelledAppointments> {
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      Provider.of<AppointmentProvider>(context, listen: false)
+          .getUserCanceledAppointments();
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -20,7 +33,7 @@ class CancelledAppointments extends StatelessWidget {
     double circleAvatarRadius = size.shortestSide * circleAvatarRadiusFraction;
 
     return Scaffold(
-      backgroundColor: const Color(0xFFF5F5F5),
+      backgroundColor: const Color.fromARGB(255, 238, 237, 237),
       body: Padding(
         padding: EdgeInsets.symmetric(
             horizontal: size.width * .03, vertical: size.height * .02),
@@ -55,34 +68,34 @@ class CancelledAppointments extends StatelessWidget {
                     if (snapshot.connectionState == ConnectionState.waiting) {
                       return const CircularProgressIndicator(
                           color: Color(0xFF1995AD));
-                    } else if (snapshot.hasError) {
-                      return Text('Error: ${snapshot.error}');
-                    } else {
-                      final doctor = snapshot.data;
-                      return Column(
-                        children: [
-                          appointmentScheduledContainer(
-                            size,
-                            context,
-                            circleAvatarRadius: circleAvatarRadius,
-                            appointment: appointment,
-                            doctor: doctor!,
-                            isUpcoming: false,
-                            onPressed: () {
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => DoctorDetailScreen(
-                                            value: doctorProvider,
-                                            userId: appointment.uId!,
-                                            doctors: doctor,
-                                          )));
-                            },
-                          ),
-                          SizedBox(height: size.height * .02),
-                        ],
-                      );
                     }
+                    if (!snapshot.hasData) {
+                      return const SizedBox.shrink();
+                    }
+                    final doctor = snapshot.data!;
+                    return Column(
+                      children: [
+                        appointmentScheduledContainer(
+                          size,
+                          context,
+                          circleAvatarRadius: circleAvatarRadius,
+                          appointment: appointment,
+                          doctor: doctor,
+                          isUpcoming: false,
+                          onPressed: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => DoctorDetailScreen(
+                                          value: doctorProvider,
+                                          userId: appointment.uId!,
+                                          doctors: doctor,
+                                        )));
+                          },
+                        ),
+                        SizedBox(height: size.height * .02),
+                      ],
+                    );
                   },
                 );
               },

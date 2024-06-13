@@ -28,6 +28,7 @@ Widget appointmentScheduledContainer(Size size, context,
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
           Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               CircleAvatar(
                 radius: circleAvatarRadius,
@@ -40,7 +41,7 @@ Widget appointmentScheduledContainer(Size size, context,
                 width: size.width * .035,
               ),
               SizedBox(
-                height: size.height * .085,
+                height: size.height * .115,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -48,25 +49,17 @@ Widget appointmentScheduledContainer(Size size, context,
                     poppinsHeadText(
                       text: 'Dr. ${doctor.fullName}',
                       color: const Color(0xFF1D1617),
+                    ),
+                    poppinsText(
+                      text: 'Specialty: ${doctor.category}',
                       fontSize: 14,
                     ),
-                    poppinsSmallText(
-                      text: doctor.category ?? 'unknown',
-                      color: const Color(0xFF7B6F72),
+                    poppinsText(
+                      text:
+                          'Date: ${appointment.date}  Time: ${appointment.time}',
+                      fontSize: 14,
                     ),
-                    Row(
-                      children: [
-                        poppinsSmallText(
-                          text: '${appointment.date} | ',
-                          color: const Color(0xFF7B6F72),
-                        ),
-                        poppinsText(
-                          text: appointment.time,
-                          color: const Color(0xFF7B6F72),
-                          fontSize: 12,
-                        ),
-                      ],
-                    ),
+                    SizedBox(height: size.height * .01),
                   ],
                 ),
               ),
@@ -98,7 +91,7 @@ Widget appointmentScheduledContainer(Size size, context,
                           SnackBarWidget().showErrorSnackbar(context, error);
                         },
                       );
-                      appointmentProvider.deleteAppointment(appointment.id!);
+                      // appointmentProvider.deleteAppointment(appointment.id!);
                       Navigator.pop(context);
                     });
                   },

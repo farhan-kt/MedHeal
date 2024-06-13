@@ -8,23 +8,34 @@ import 'package:medheal/controller/admin_provider.dart';
 import 'package:medheal/controller/appointment_provider.dart';
 import 'package:medheal/view/user/appointment/widgets_appointment.dart';
 
-const double circleAvatarRadiusFraction = 0.1;
+const double circleAvatarRadiusFraction = 0.117;
 
-class UpcomingAppointments extends StatelessWidget {
+class UpcomingAppointments extends StatefulWidget {
   const UpcomingAppointments({super.key});
+
+  @override
+  State<UpcomingAppointments> createState() => _UpcomingAppointmentsState();
+}
+
+class _UpcomingAppointmentsState extends State<UpcomingAppointments> {
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      Provider.of<AppointmentProvider>(context, listen: false)
+          .getUserAppointments();
+    });
+  }
 
   @override
   // ignore: avoid_renaming_method_parameters
   Widget build(BuildContext localContext) {
     Size size = MediaQuery.of(localContext).size;
     double circleAvatarRadius = size.shortestSide * circleAvatarRadiusFraction;
-    Provider.of<AppointmentProvider>(localContext, listen: false)
-        .getUserAppointments();
     final doctorProvider =
         Provider.of<DoctorProvider>(localContext, listen: false);
 
     return Scaffold(
-      backgroundColor: const Color(0xFFF5F5F5),
+      backgroundColor: const Color.fromARGB(255, 238, 237, 237),
       body: Padding(
         padding: EdgeInsets.symmetric(
             horizontal: size.width * .03, vertical: size.height * .02),
@@ -37,7 +48,10 @@ class UpcomingAppointments extends StatelessWidget {
             List<AppointmentModel> upcomingAppointments = appointmentProvider
                 .allAppointmentList
                 .where((appointment) =>
-                    isAppointmentUpcoming(appointment.date!, appointment.time!))
+                    isAppointmentUpcoming(
+                        appointment.date!, appointment.time!) &&
+                    (appointment.status == null ||
+                        appointment.status != 'canceled'))
                 .toList();
 
             if (upcomingAppointments.isEmpty) {

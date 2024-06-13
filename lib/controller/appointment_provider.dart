@@ -85,23 +85,6 @@ class AppointmentProvider extends ChangeNotifier {
 
   final DoctorService doctorService = DoctorService();
 
-  // Future<void> getUserAppointments() async {
-  //   setLoading(true);
-  //   try {
-  //     String userId = FirebaseAuth.instance.currentUser!.uid;
-  //     List<AppointmentModel> allAppointments =
-  //         await appointmentService.getAllAppointments();
-  //     List<AppointmentModel> userAppointments = allAppointments
-  //         .where((appointment) => appointment.uId == userId)
-  //         .toList();
-
-  //     allAppointmentList = userAppointments;
-  //   } catch (error) {
-  //     log('Error fetching user appointments: $error');
-  //   }
-  //   setLoading(false);
-  // }
-
   Future<List<AppointmentModel>> getUserAppointments() async {
     setLoading(true);
     try {
@@ -117,7 +100,21 @@ class AppointmentProvider extends ChangeNotifier {
     } catch (error) {
       setLoading(false);
       log('Error fetching user appointments: $error');
-      throw error; // Rethrow the error to handle it in the UI
+      throw error;
+    }
+  }
+
+  Future<void> getUserCanceledAppointments() async {
+    setLoading(true);
+    try {
+      String userId = FirebaseAuth.instance.currentUser!.uid;
+      canceledAppointmentList =
+          await appointmentService.getCanceledAppointments(userId);
+      setLoading(false);
+    } catch (error) {
+      setLoading(false);
+      log('Error fetching user canceled appointments: $error');
+      throw error;
     }
   }
 
