@@ -2,13 +2,14 @@
 
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:medheal/view/user/user_widgets.dart';
+import 'package:medheal/widgets/snackbar_widget.dart';
 import 'package:provider/provider.dart';
 import 'package:enefty_icons/enefty_icons.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:medheal/widgets/text_widgets.dart';
 import 'package:medheal/widgets/normal_widgets.dart';
-import 'package:medheal/view/user/user_widgets.dart';
 import 'package:medheal/model/authentication_model.dart';
 import 'package:medheal/controller/authentication_provider.dart';
 import 'package:medheal/view/user/authentication/auth_widgets.dart';
@@ -132,16 +133,8 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
                   if (authProvider.fillAccountFormkey.currentState!
                       .validate()) {
                     await updateUser(context, widget.user, authProvider);
-
-                    successDialogBox(context, size,
-                        isAppointment: false,
-                        headMessage: 'Profile Updated!',
-                        height: size.height * .02,
-                        width: size.width * .8,
-                        dialogheight: size.height * .4,
-                        dialogWidth: size.width * .2,
-                        subText:
-                            '${widget.user.userName ?? ''}, your profile has been updated. You can also edit your profile in My Profile.');
+                    SnackBarWidget().showSuccessSnackbar(context,
+                        ' ${widget.user.userName ?? ''} profile has been updated');
                   }
                 })
           ]),

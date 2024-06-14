@@ -1,4 +1,5 @@
 import 'dart:developer';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -27,7 +28,7 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       Provider.of<AppointmentProvider>(context, listen: false)
-          .getAllAppointments();
+          .getUserAppointments();
     });
   }
 

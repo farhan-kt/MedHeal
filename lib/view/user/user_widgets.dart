@@ -212,7 +212,12 @@ Widget showBottom(Size size, context,
   final appointmentProvider =
       Provider.of<AppointmentProvider>(context, listen: false);
 
-  DateTime _parseTime(String time) {
+  void refreshAppointments() {
+    Provider.of<AppointmentProvider>(context, listen: false)
+        .getUserAppointments();
+  }
+
+  DateTime parseTime(String time) {
     final trimmedTime = time.trim();
     final components = trimmedTime.split(' ');
     final hourMinute = components[0].split(':');
@@ -226,18 +231,16 @@ Widget showBottom(Size size, context,
     throw const FormatException('Invalid time format');
   }
 
-  // Future<List<bool>> _checkTimeSlots(AppointmentProvider provider,
-  //     List<String> times, String docId, String date) async {
-  //   List<bool> isBooked = [];
-  //   for (String time in times) {
-  //     bool booked = await provider.appointmentService
-  //         .isTimeSlotAvailable(docId, date, time);
-  //     isBooked.add(!booked);
-  //   }
-  //   return isBooked;
-  // }
+  bool isTimeSlotBooked(
+      String time, List<AppointmentModel> appointments, String? selectedDate) {
+    return appointments.any((appointment) =>
+        appointment.time == time &&
+        appointment.date == selectedDate &&
+        appointment.status == null &&
+        appointment.status != 'canceled');
+  }
 
-  String _formatTime(DateTime time) {
+  String formatTime(DateTime time) {
     final format = DateFormat.jm();
     return format.format(time);
   }
@@ -246,11 +249,11 @@ Widget showBottom(Size size, context,
     List<String> timeSlots = [];
 
     try {
-      DateTime start = _parseTime(startTime);
-      DateTime end = _parseTime(endTime);
+      DateTime start = parseTime(startTime);
+      DateTime end = parseTime(endTime);
 
       while (start.isBefore(end)) {
-        timeSlots.add(_formatTime(start));
+        timeSlots.add(formatTime(start));
         start = start.add(const Duration(minutes: 30));
       }
     } catch (e) {
@@ -321,36 +324,43 @@ Widget showBottom(Size size, context,
                 text: 'Select Hour',
               ),
               SizedBox(height: size.height * .02),
-              // SizedBox(child: Consumer<AppointmentProvider>(
-              //   builder: (context, value, child) {
-              //     return GridView.builder(
-              //       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-              //         childAspectRatio: 1 / .4,
-              //         crossAxisCount: 3,
-              //         crossAxisSpacing: size.width * 0.02,
-              //         mainAxisSpacing: size.height * .01,
-              //       ),
-              //       shrinkWrap: true,
-              //       physics: const NeverScrollableScrollPhysics(),
-              //       itemCount: times.length,
-              //       itemBuilder: (BuildContext context, int index) {
-              //         String time = times[index];
-              //         bool isSelected = value.selectedTime == time;
-              //         return SizedBox(
-              //           height: size.height * .0007,
-              //           width: size.width * .5,
-              //           child: doctorDetailsTimeButton(
-              //             onPressed: () {
-              //               value.setSelectedTime(time);
-              //             },
-              //             isSelected: isSelected,
-              //             time: time,
-              //           ),
-              //         );
-              //       },
-              //     );
-              //   },
-              // )),
+              SizedBox(
+                child: Consumer<AppointmentProvider>(
+                  builder: (context, value, child) {
+                    return GridView.builder(
+                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                        childAspectRatio: 1 / .4,
+                        crossAxisCount: 3,
+                        crossAxisSpacing: size.width * 0.02,
+                        mainAxisSpacing: size.height * .01,
+                      ),
+                      shrinkWrap: true,
+                      physics: const NeverScrollableScrollPhysics(),
+                      itemCount: times.length,
+                      itemBuilder: (BuildContext context, int index) {
+                        String time = times[index];
+                        bool isSelected = value.selectedTime == time;
+                        bool isBooked = isTimeSlotBooked(
+                            time, value.allAppointmentList, value.selectedDate);
+                        return SizedBox(
+                          height: size.height * .0007,
+                          width: size.width * .5,
+                          child: doctorDetailsTimeButton(
+                            onPressed: () {
+                              if (!isBooked) {
+                                value.setSelectedTime(time);
+                              }
+                            },
+                            isSelected: isSelected,
+                            isBooked: isBooked,
+                            time: time,
+                          ),
+                        );
+                      },
+                    );
+                  },
+                ),
+              ),
               SizedBox(height: size.height * .02),
             ],
           ),
@@ -391,8 +401,9 @@ Widget showBottom(Size size, context,
 
               await appointmentProvider.updateAppointment(
                   appointment.id!, resheduledAppointment);
-              Navigator.pop(context);
 
+              Navigator.pop(context);
+              refreshAppointments();
               successDialogBox(context, size,
                   userProvider: appointmentProvider,
                   isAppointment: false,

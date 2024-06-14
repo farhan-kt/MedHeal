@@ -142,6 +142,8 @@ class AuthenticationProvider extends ChangeNotifier {
 
   Future<void> logOut() async {
     await authenticationService.logOut();
+    currentUser = null;
+    notifyListeners();
   }
 
   void googleSignIn(context) async {
@@ -168,6 +170,7 @@ class AuthenticationProvider extends ChangeNotifier {
 
   Future<void> googleSignOut() async {
     await authenticationService.googleSignOut();
+    currentUser = null;
     notifyListeners();
   }
 

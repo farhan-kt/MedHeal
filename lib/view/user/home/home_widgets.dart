@@ -176,7 +176,7 @@ Widget homeAppBar(Size size, context) {
         IconButton(
           onPressed: () {},
           icon: Icon(
-            EneftyIcons.notification_bing_bold,
+            EneftyIcons.notification_bing_outline,
             color: Colors.orange[500],
             size: 25,
           ),
