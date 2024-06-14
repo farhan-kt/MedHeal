@@ -66,14 +66,26 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
                       return aDateTime.compareTo(bDateTime);
                     });
                     if (upcomingAppointments.isEmpty) {
-                      return SizedBox(
-                        height: size.height * .19,
-                        width: size.width * .88,
-                        child: Center(
-                          child: poppinsHeadText(
-                            text: 'No Upcoming Appointments',
-                            color: const Color(0xFF1995AD),
-                            fontSize: 18,
+                      return Padding(
+                        padding: EdgeInsets.only(left: size.width * .01),
+                        child: SizedBox(
+                          height: size.height * .19,
+                          width: size.width * .88,
+                          child: Container(
+                            decoration: BoxDecoration(
+                              color: const Color(0xFFFFFFFF),
+                              border: Border.all(
+                                color: const Color(0xFFFFFFFF),
+                              ),
+                              borderRadius: BorderRadius.circular(18),
+                            ),
+                            child: Center(
+                              child: poppinsHeadText(
+                                text: 'No Upcoming Appointments',
+                                color: const Color(0xFF1995AD),
+                                fontSize: 18,
+                              ),
+                            ),
                           ),
                         ),
                       );

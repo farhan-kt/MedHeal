@@ -97,14 +97,14 @@ class CreateAccountScreen extends StatelessWidget {
                         return;
                       }
                       try {
-                        if (authProvider.emailController.text ==
+                        if (authProvider.createAccountEmailController.text ==
                             'medHeal@gmail.com') {
                           SnackBarWidget().showErrorSnackbar(context,
                               'Email address already exists or is invalid');
                         } else if (authProvider.passwordController.text ==
                             authProvider.confirmPasswordController.text) {
                           await authProvider.accountCreate(
-                              authProvider.emailController.text,
+                              authProvider.createAccountEmailController.text,
                               authProvider.passwordController.text);
                           authProvider.addUser();
                           Navigator.pushAndRemoveUntil(

@@ -11,19 +11,15 @@ import 'package:medheal/widgets/admin_bottom_bar.dart';
 import 'package:medheal/service/authentication_service.dart';
 
 class AuthenticationProvider extends ChangeNotifier {
-  TextEditingController userNameController = TextEditingController();
-  TextEditingController emailController = TextEditingController();
+  TextEditingController createAccountUserNameController =
+      TextEditingController();
+  TextEditingController createAccountEmailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
   TextEditingController confirmPasswordController = TextEditingController();
 
   TextEditingController signInEmailController = TextEditingController();
   TextEditingController signInPasswordController = TextEditingController();
 
-  TextEditingController fullNameController = TextEditingController();
-  TextEditingController ageController = TextEditingController();
-  TextEditingController profileEmailController = TextEditingController();
-  TextEditingController phoneNumberController = TextEditingController();
-  TextEditingController genderController = TextEditingController();
   TextEditingController phoneController = TextEditingController();
   TextEditingController otpController = TextEditingController();
 
@@ -98,6 +94,7 @@ class AuthenticationProvider extends ChangeNotifier {
       } else {
         await emailSignIn(
             signInEmailController.text, signInPasswordController.text);
+        await getUser();
         Navigator.pushAndRemoveUntil(
             context,
             MaterialPageRoute(builder: (context) => const UserBottomBar()),
@@ -110,7 +107,7 @@ class AuthenticationProvider extends ChangeNotifier {
   }
 
   void deniedAdminKey() {
-    emailController.text == 'medheal';
+    createAccountEmailController.text == 'medheal';
   }
 
   void clearSignInControllers() {
@@ -119,20 +116,15 @@ class AuthenticationProvider extends ChangeNotifier {
   }
 
   void clearCreateAccountControllers() {
-    userNameController.clear();
-    emailController.clear();
+    createAccountUserNameController.clear();
+    createAccountEmailController.clear();
     passwordController.clear();
     confirmPasswordController.clear();
   }
 
   void clearFillProfileControllers() {
-    userNameController.clear();
-    ageController.clear();
-    emailController.clear();
-    phoneNumberController.clear();
-    genderController.clear();
+    createAccountEmailController.clear();
     profileImage = null;
-    // selectedGender = null;
   }
 
   void clearPhoneVerificationController() {
@@ -199,11 +191,8 @@ class AuthenticationProvider extends ChangeNotifier {
 
   addUser() async {
     final user = UserModel(
-      email: emailController.text,
-      phoneNumber: phoneController.text,
-      userName: userNameController.text,
-      age: ageController.text,
-      gender: selectedGender,
+      email: createAccountEmailController.text,
+      userName: createAccountUserNameController.text,
       uId: firebaseAuth.currentUser!.uid,
     );
     await authenticationService.addUser(user);
@@ -212,7 +201,6 @@ class AuthenticationProvider extends ChangeNotifier {
 
   getUser() async {
     currentUser = await authenticationService.getCurrentUser();
-    log(currentUser?.phoneNumber ?? "");
     notifyListeners();
   }
 

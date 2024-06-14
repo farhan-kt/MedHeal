@@ -1,11 +1,11 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:medheal/controller/authentication_provider.dart';
 import 'package:provider/provider.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:medheal/widgets/text_widgets.dart';
 import 'package:medheal/widgets/normal_widgets.dart';
 import 'package:medheal/controller/bottom_bar_provider.dart';
 import 'package:medheal/view/user/profile/widget_profile.dart';
+import 'package:medheal/controller/authentication_provider.dart';
 import 'package:medheal/view/user/authentication/login_type.dart';
 
 const double circleAvatarRadiusFraction = 0.15;
@@ -90,6 +90,7 @@ class UserProfileScreen extends StatelessWidget {
                       bottomProvider.userOnTap(0);
                       authenticationProvider.logOut();
                       authenticationProvider.googleSignOut();
+                      // authenticationProvider.currentUser = null;
                     });
                   },
                 ),

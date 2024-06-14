@@ -11,7 +11,6 @@ const double circleAvatarRadiusFraction = 0.18;
 
 class ProfileDetailsScreen extends StatelessWidget {
   final AuthenticationProvider value;
-
   final imageProvider;
   const ProfileDetailsScreen({
     super.key,

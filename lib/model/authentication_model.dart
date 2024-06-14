@@ -9,9 +9,9 @@ class UserModel {
 
   UserModel(
       {required this.uId,
-      required this.userName,
-      required this.email,
-      required this.phoneNumber,
+      this.userName,
+      this.email,
+      this.phoneNumber,
       this.image,
       this.age,
       this.gender});

@@ -37,15 +37,15 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
   @override
   void initState() {
     super.initState();
-    userNameEditController.text = widget.value.currentUser?.userName ?? '';
-    ageEditController.text = widget.value.currentUser?.age ?? '';
-    phoneEditController.text = widget.value.currentUser?.phoneNumber ?? '';
-    if (widget.value.currentUser?.image != null) {
-      _imageProvider = NetworkImage(widget.value.currentUser?.image ?? '');
+    userNameEditController.text = widget.user.userName ?? '';
+    ageEditController.text = widget.user.age ?? '';
+    phoneEditController.text = widget.user.phoneNumber ?? '';
+    if (widget.user.image != null) {
+      _imageProvider = NetworkImage(widget.user.image ?? '');
     } else {
       _imageProvider = widget.imageProvider;
     }
-    widget.value.selectedGender = widget.value.currentUser?.gender ?? 'Male';
+    widget.value.selectedGender = widget.user.gender ?? 'Male';
   }
 
   @override
@@ -112,7 +112,7 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
               height: size.height * .45,
               child: Form(
                 key: authProvider.fillAccountFormkey,
-                child: profileFillFields(size, authProvider,
+                child: editProfileFields(size, authProvider,
                     userNameController: userNameEditController,
                     ageController: ageEditController,
                     phoneController: phoneEditController),
@@ -132,8 +132,7 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
                   if (authProvider.fillAccountFormkey.currentState!
                       .validate()) {
                     await updateUser(context, widget.user, authProvider);
-                    authProvider.clearFillProfileControllers();
-                    Navigator.pop(context);
+
                     successDialogBox(context, size,
                         isAppointment: false,
                         headMessage: 'Profile Updated!',
@@ -142,7 +141,7 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
                         dialogheight: size.height * .4,
                         dialogWidth: size.width * .2,
                         subText:
-                            '${widget.value.currentUser?.userName ?? ''}, your profile has been updated. You can also edit your profile in My Profile.');
+                            '${widget.user.userName ?? ''}, your profile has been updated. You can also edit your profile in My Profile.');
                   }
                 })
           ]),
@@ -154,23 +153,23 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
   updateUser(
       context, UserModel user, AuthenticationProvider authProvider) async {
     final pickedImage = authProvider.profileImage;
+    String? imageUrl;
     if (pickedImage != null) {
       authProvider.setLoading(true);
-      final image = await authProvider.uploadImage(
+      imageUrl = await authProvider.uploadImage(
           File(pickedImage.path), authProvider.imageName);
-
-      // final authProvider =
-      //     Provider.of<AuthenticationProvider>(context, listen: false);
-      user.userName = userNameEditController.text;
-      user.age = ageEditController.text;
-      user.phoneNumber = phoneEditController.text;
-      user.gender = authProvider.selectedGender;
-      user.image = image;
-      await authProvider.updateUser(
-          FirebaseAuth.instance.currentUser!.uid, user);
-
-      Navigator.pop(context);
     }
+
+    user.userName = userNameEditController.text;
+    user.age = ageEditController.text;
+    user.phoneNumber = phoneEditController.text;
+    user.gender = authProvider.selectedGender;
+    if (imageUrl != null) {
+      user.image = imageUrl;
+    }
+    await authProvider.updateUser(FirebaseAuth.instance.currentUser!.uid, user);
+
+    Navigator.pop(context);
   }
 
   Future<void> pickImage(BuildContext context) async {

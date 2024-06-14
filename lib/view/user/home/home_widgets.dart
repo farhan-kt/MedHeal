@@ -175,7 +175,11 @@ Widget homeAppBar(Size size, context) {
       child: Row(children: [
         IconButton(
           onPressed: () {},
-          icon: const Icon(EneftyIcons.notification_bing_outline),
+          icon: Icon(
+            EneftyIcons.notification_bing_bold,
+            color: Colors.orange[500],
+            size: 25,
+          ),
         ),
         IconButton(
           onPressed: () {
@@ -186,7 +190,7 @@ Widget homeAppBar(Size size, context) {
               ),
             );
           },
-          icon: const Icon(EneftyIcons.heart_outline),
+          icon: const Icon(EneftyIcons.heart_outline, color: Colors.red),
         ),
       ]),
     ),

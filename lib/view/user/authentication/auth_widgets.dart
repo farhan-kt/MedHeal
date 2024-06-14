@@ -38,7 +38,7 @@ Widget loginTypeOutlinedButton(Size size, {text, onPressed}) {
   );
 }
 
-Widget profileFillFields(size, AuthenticationProvider authProvider,
+Widget editProfileFields(size, AuthenticationProvider authProvider,
     {userNameController, ageController, phoneController}) {
   return Column(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
     CustomTextFormField(
@@ -131,12 +131,12 @@ Widget createAccountTextFormFields(
     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
     children: [
       CustomTextFormField(
-        controller: authProvider.userNameController,
+        controller: authProvider.createAccountUserNameController,
         hintText: 'User Name',
         validateMessage: 'Enter User Name',
       ),
       CustomTextFormField(
-        controller: authProvider.emailController,
+        controller: authProvider.createAccountEmailController,
         hintText: 'Email',
         validateMessage: 'Enter Email',
         keyboardType: TextInputType.emailAddress,

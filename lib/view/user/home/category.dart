@@ -43,12 +43,6 @@ class CategoryScreen extends StatelessWidget {
             fontSize: 18,
             fontWeight: FontWeight.bold),
         centerTitle: true,
-        actions: [
-          IconButton(
-            onPressed: () {},
-            icon: const Icon(EneftyIcons.heart_outline),
-          )
-        ],
       ),
       body: Padding(
         padding: const EdgeInsets.all(10),
