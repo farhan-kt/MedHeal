@@ -89,7 +89,9 @@ class _UpcomingAppointmentsState extends State<UpcomingAppointments> {
                               context: localContext,
                               builder: (context) {
                                 return showBottom(size, localContext,
-                                    appointment: appointment, doctor: doctor);
+                                    appointment: appointment,
+                                    doctor: doctor,
+                                    home: false);
                               },
                             );
                           }),

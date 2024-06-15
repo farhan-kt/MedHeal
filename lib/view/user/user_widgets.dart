@@ -208,7 +208,9 @@ appointmentDialogBox(routeContext, Size size,
 }
 
 Widget showBottom(Size size, context,
-    {required DoctorModel? doctor, required AppointmentModel? appointment}) {
+    {required DoctorModel? doctor,
+    required AppointmentModel? appointment,
+    bool? home}) {
   final appointmentProvider =
       Provider.of<AppointmentProvider>(context, listen: false);
 
@@ -396,28 +398,33 @@ Widget showBottom(Size size, context,
                   id: appointment!.id,
                   docId: appointment.docId,
                   uId: appointment.uId,
-                  date: selectedDate,
-                  time: selectedTime);
+                  date: selectedDate ?? appointment.date,
+                  time: selectedTime ?? appointment.time);
 
               await appointmentProvider.updateAppointment(
                   appointment.id!, resheduledAppointment);
 
               Navigator.pop(context);
               refreshAppointments();
-              successDialogBox(context, size,
-                  userProvider: appointmentProvider,
-                  isAppointment: false,
-                  headMessage: 'Your Appointment Has Been Resheduled',
-                  elevatedButtonHeight: size.height * .05,
-                  elevatedButtonWidth: size.width * .7,
-                  height: size.height * .02,
-                  width: size.width * .8,
-                  dialogheight: size.height * .45,
-                  dialogWidth: size.width * .2,
-                  image: doctor.image,
-                  subText:
-                      'Your appointment with Dr.${doctor.fullName} was Resheduled to $selectedDate at $selectedTime');
-              appointmentProvider.clearAppointmentControllers();
+              if (home == false) {
+                successDialogBox(context, size,
+                    userProvider: appointmentProvider,
+                    isAppointment: false,
+                    headMessage: 'Your Appointment Has Been Resheduled',
+                    elevatedButtonHeight: size.height * .05,
+                    elevatedButtonWidth: size.width * .7,
+                    height: size.height * .02,
+                    width: size.width * .8,
+                    dialogheight: size.height * .45,
+                    dialogWidth: size.width * .2,
+                    image: doctor.image,
+                    subText:
+                        'Your appointment with Dr.${doctor.fullName} was Resheduled to $selectedDate at $selectedTime');
+                appointmentProvider.clearAppointmentControllers();
+              } else {
+                SnackBarWidget().showSuccessSnackbar(context,
+                    'Appointmet with Dr.${doctor.fullName} Resheduled');
+              }
             },
           ),
         ],

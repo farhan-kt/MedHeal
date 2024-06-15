@@ -1,10 +1,13 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:enefty_icons/enefty_icons.dart';
+import 'package:medheal/controller/appointment_provider.dart';
 import 'package:medheal/controller/authentication_provider.dart';
 import 'package:medheal/model/appointment_model.dart';
 import 'package:medheal/model/doctor_model.dart';
 import 'package:medheal/view/user/home/category.dart';
+import 'package:medheal/view/user/user_widgets.dart';
+import 'package:medheal/widgets/snackbar_widget.dart';
 import 'package:medheal/widgets/text_widgets.dart';
 import 'package:medheal/widgets/normal_widgets.dart';
 import 'package:medheal/view/user/profile/favourite_doctors.dart';
@@ -199,6 +202,8 @@ Widget homeAppBar(Size size, context) {
 
 Widget homeUpcomingAppointment(
     Size size, context, AppointmentModel appointment, DoctorModel doctor) {
+  final appointmentProvider =
+      Provider.of<AppointmentProvider>(context, listen: false);
   return Container(
     height: size.height * .19,
     width: size.width * .88,
@@ -255,33 +260,41 @@ Widget homeUpcomingAppointment(
               color: const Color(0xFFA1D6E2),
               onSelected: (value) {
                 if (value == 'reshedule') {
-                } else if (value == 'cancel') {}
+                  showBottomSheet(
+                    context: context,
+                    builder: (context) {
+                      return showBottom(
+                        size,
+                        context,
+                        appointment: appointment,
+                        doctor: doctor,
+                      );
+                    },
+                  );
+                } else if (value == 'cancel') {
+                  confirmationDialog(context, size,
+                      dialogWidth: size.width * .6,
+                      dialogheight: size.height * .16,
+                      height: size.height * .02,
+                      alertMessage: 'Proceed to cancel Your Appointment ?',
+                      confirmText: 'Confirm', onPressedConfirm: () async {
+                    await appointmentProvider.cancelAppointment(
+                      appointment.id!,
+                      (error) {
+                        SnackBarWidget().showErrorSnackbar(context, error);
+                      },
+                    );
+                    Navigator.pop(context);
+                  });
+                }
               },
               itemBuilder: (context) {
                 return [
                   PopupMenuItem(
-                      onTap: () {
-                        // showBottomSheet(
-                        //   context: context,
-                        //   builder: (context) {
-                        //     return showBottom(size, context);
-                        //   },
-                        // );
-                      },
                       child:
                           poppinsText(text: 'Reshedule', color: Colors.black),
                       value: 'reshedule'),
                   PopupMenuItem(
-                      onTap: () {
-                        confirmationDialog(context, size,
-                            dialogWidth: size.width * .6,
-                            dialogheight: size.height * .16,
-                            height: size.height * .02,
-                            alertMessage:
-                                'Are You Sure to cancel your Appointment ?',
-                            confirmText: 'Confirm',
-                            onPressedConfirm: () {});
-                      },
                       child: poppinsText(
                           text: 'Cancel Booking', color: Colors.black),
                       value: 'cancel'),
