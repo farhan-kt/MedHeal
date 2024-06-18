@@ -5,8 +5,8 @@ import 'package:medheal/model/appointment_model.dart';
 
 class AppointmentService {
   String appointments = 'appointment';
-  late CollectionReference<AppointmentModel> appointment;
   FirebaseAuth firebaseAuth = FirebaseAuth.instance;
+  late CollectionReference<AppointmentModel> appointment;
   FirebaseFirestore firebaseFirestore = FirebaseFirestore.instance;
 
   AppointmentService() {

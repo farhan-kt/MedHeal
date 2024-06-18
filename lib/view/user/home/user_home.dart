@@ -1,7 +1,7 @@
 import 'dart:developer';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
+import 'package:medheal/controller/notification_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:medheal/model/doctor_model.dart';
 import 'package:medheal/widgets/text_widgets.dart';
@@ -29,6 +29,8 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       Provider.of<AppointmentProvider>(context, listen: false)
           .getUserAppointments();
+      Provider.of<NotificationProvider>(context, listen: false)
+          .checkAppointmentsForNotification(context);
     });
   }
 
