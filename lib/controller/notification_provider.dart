@@ -21,8 +21,16 @@ class NotificationProvider extends ChangeNotifier {
   }
 
   Future<void> checkAppointmentsForNotification(context) async {
-    final notificationService = NotificationService();
     await notificationService.checkAndNotifyUpcomingAppointments(context);
+  }
+
+  Future<void> checkForNotification(context) async {
+    if (hasUnreadNotifications()) {
+      await notificationService.showNotification(
+        title: 'You have unread notifications',
+        body: 'Check your notifications for updates.',
+      );
+    }
   }
 
   void getAllNotification() async {

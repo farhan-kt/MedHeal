@@ -31,6 +31,10 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
           .getUserAppointments();
       Provider.of<NotificationProvider>(context, listen: false)
           .checkAppointmentsForNotification(context);
+      Provider.of<NotificationProvider>(context, listen: false)
+          .checkForNotification(context);
+      Provider.of<NotificationProvider>(context, listen: false)
+          .getAllNotification();
     });
   }
 
