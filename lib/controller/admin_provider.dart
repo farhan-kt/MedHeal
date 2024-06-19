@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:medheal/model/doctor_model.dart';
 import 'package:medheal/service/doctor_service.dart';
+import 'package:medheal/service/notification_service.dart';
 
 class DoctorProvider extends ChangeNotifier {
   DoctorService doctorService = DoctorService();
@@ -89,7 +90,6 @@ class DoctorProvider extends ChangeNotifier {
   Future<void> addDoctor(DoctorModel data) async {
     await doctorService.addDoctor(data);
     getAllDoctors();
-
     notifyListeners();
   }
 

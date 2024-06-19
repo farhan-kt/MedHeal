@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -7,6 +9,7 @@ import 'package:medheal/model/doctor_model.dart';
 import 'package:medheal/widgets/text_widgets.dart';
 import 'package:medheal/widgets/normal_widgets.dart';
 import 'package:medheal/widgets/snackbar_widget.dart';
+import 'package:medheal/controller/notification_provider.dart';
 import 'package:medheal/view/admin/admin_widgets.dart';
 import 'package:medheal/controller/admin_provider.dart';
 import 'package:medheal/controller/authentication_provider.dart';
@@ -82,7 +85,7 @@ class DoctorAddingScreen extends StatelessWidget {
                   buttonHeight: size.height * .058,
                   buttonWidth: size.width * .9,
                   buttonText: 'Add Doctor',
-                  onPressed: () {
+                  onPressed: () async {
                     if (authProvider.doctorAddFormKey.currentState!
                         .validate()) {
                       int rating =
@@ -92,7 +95,16 @@ class DoctorAddingScreen extends StatelessWidget {
                         SnackBarWidget().showErrorSnackbar(
                             context, 'Rating should be 5 or less');
                       } else {
-                        addData(context, adminProvider);
+                        await addData(context, adminProvider);
+
+                        await Provider.of<NotificationProvider>(context,
+                                listen: false)
+                            .addNotification(
+                                doctorName:
+                                    adminProvider.doctorNameController.text,
+                                category: adminProvider.selectedCategory!);
+
+                        adminProvider.clearDoctorAddingControllers();
                       }
                     }
                   },
@@ -177,7 +189,6 @@ class DoctorAddingScreen extends StatelessWidget {
       );
 
       await adminProvider.addDoctor(newDoctor);
-      adminProvider.clearDoctorAddingControllers();
 
       SnackBarWidget()
           .showSuccessSnackbar(context, 'Doctor Added Successfully');

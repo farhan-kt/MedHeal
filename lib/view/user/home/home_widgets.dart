@@ -3,9 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:enefty_icons/enefty_icons.dart';
 import 'package:medheal/controller/appointment_provider.dart';
 import 'package:medheal/controller/authentication_provider.dart';
+import 'package:medheal/controller/notification_provider.dart';
 import 'package:medheal/model/appointment_model.dart';
 import 'package:medheal/model/doctor_model.dart';
 import 'package:medheal/view/user/home/category.dart';
+import 'package:medheal/view/user/home/notification_screen.dart';
 import 'package:medheal/view/user/user_widgets.dart';
 import 'package:medheal/widgets/snackbar_widget.dart';
 import 'package:medheal/widgets/text_widgets.dart';
@@ -139,6 +141,7 @@ Widget homeCategory(
 
 Widget homeAppBar(Size size, context) {
   final firebaseauth = FirebaseAuth.instance.currentUser;
+
   ImageProvider? imageprovider;
   if (firebaseauth != null && firebaseauth.photoURL != null) {
     imageprovider = NetworkImage(firebaseauth.photoURL.toString());
@@ -176,14 +179,24 @@ Widget homeAppBar(Size size, context) {
     ),
     SizedBox(
       child: Row(children: [
-        IconButton(
-          onPressed: () {},
-          icon: Icon(
-            EneftyIcons.notification_bing_outline,
-            color: Colors.orange[500],
-            size: 25,
-          ),
-        ),
+        Consumer<NotificationProvider>(
+            builder: (context, notificationProvider, child) {
+          return IconButton(
+            onPressed: () {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => NotificationScreen()));
+            },
+            icon: Image.asset(
+              notificationProvider.hasUnreadNotifications()
+                  ? 'assets/notification.png'
+                  : 'assets/no_notification.png',
+              height: notificationProvider.hasUnreadNotifications() ? 23 : 22,
+              width: 25,
+            ),
+          );
+        }),
         IconButton(
           onPressed: () {
             Navigator.push(

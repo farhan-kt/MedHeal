@@ -28,18 +28,44 @@ class NotificationProvider extends ChangeNotifier {
 
   void getAllNotification() async {
     allNotification = await notificationService.getAllNotification();
-
     notifyListeners();
   }
 
-  Future<void> addNotification(NotificationModel data) async {
-    setLoading(true);
+  void deleteNotification(notificationId) async {
+    await notificationService.deleteNotification(notificationId);
+    notifyListeners();
+  }
+
+  Future<void> updateNotificationReadStatus(
+      String notificationId, bool read) async {
     try {
-      await notificationService.addNotification(data);
+      await notificationService.updateNotificationReadStatus(
+          notificationId, read);
       getAllNotification();
     } catch (error) {
-      log('Error during adding notification: $error');
+      log('Error updating read status for notification: $error');
+    }
+  }
+
+  Future<void> addNotification({
+    required String category,
+    required String doctorName,
+  }) async {
+    setLoading(true);
+    try {
+      await notificationService.notifyAllUsers(
+        doctorName: doctorName,
+        category: category,
+      );
+      getAllNotification();
+    } catch (error) {
+      log('Error during adding doctor and notifying users: $error');
     }
     setLoading(false);
+  }
+
+  bool hasUnreadNotifications() {
+    return allNotification.any((notification) =>
+        notification.recieverId == user?.uid && notification.read == false);
   }
 }

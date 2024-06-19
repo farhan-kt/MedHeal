@@ -1,12 +1,11 @@
 import 'dart:developer';
-
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'package:medheal/controller/admin_provider.dart';
-import 'package:medheal/model/notification_model.dart';
-import 'package:medheal/service/appointment_service.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:provider/provider.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:medheal/model/notification_model.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:medheal/controller/admin_provider.dart';
+import 'package:medheal/service/appointment_service.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
 class NotificationService {
   FirebaseFirestore firestore = FirebaseFirestore.instance;
@@ -61,7 +60,7 @@ class NotificationService {
       id,
       title,
       body,
-      await notificationDetails(),
+      notificationDetails(),
       payload: payload,
     );
   }
@@ -128,6 +127,27 @@ class NotificationService {
     });
   }
 
+  Future<void> notifyAllUsers({
+    required String doctorName,
+    required String category,
+  }) async {
+    final usersSnapshot = await firebaseFirestore.collection('user').get();
+    for (var userDoc in usersSnapshot.docs) {
+      String userId = userDoc.id;
+      NotificationModel notification = NotificationModel(
+        recieverId: userId,
+        title: 'New Doctor Appointed',
+        body: 'Dr.$doctorName is appointed for $category',
+      );
+      await addNotification(notification);
+      // await showNotification(
+      //   id: notification.hashCode,
+      //   title: 'New Doctor Appointed',
+      //   body: 'Dr.$doctorName is appointed for $category',
+      // );
+    }
+  }
+
   Future<void> addNotification(NotificationModel data) async {
     try {
       DocumentReference docRef = await notification.add(data);
@@ -142,5 +162,24 @@ class NotificationService {
   Future<List<NotificationModel>> getAllNotification() async {
     final snapshot = await notification.get();
     return snapshot.docs.map((doc) => doc.data()).toList();
+  }
+
+  Future<void> deleteNotification(String notificationId) async {
+    try {
+      await notification.doc(notificationId).delete();
+    } catch (error) {
+      log('Error deleting notification with id $notificationId: $error');
+      rethrow;
+    }
+  }
+
+  Future<void> updateNotificationReadStatus(
+      String notificationId, bool read) async {
+    try {
+      await notification.doc(notificationId).update({'read': read});
+    } catch (error) {
+      log('Error updating read status for notification with id $notificationId: $error');
+      rethrow;
+    }
   }
 }
