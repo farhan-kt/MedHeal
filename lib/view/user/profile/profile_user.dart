@@ -90,7 +90,6 @@ class UserProfileScreen extends StatelessWidget {
                       bottomProvider.userOnTap(0);
                       authenticationProvider.logOut();
                       authenticationProvider.googleSignOut();
-                      // authenticationProvider.currentUser = null;
                     });
                   },
                 ),

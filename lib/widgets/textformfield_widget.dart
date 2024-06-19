@@ -175,7 +175,7 @@ Widget bookingDateTextFormField(
   final DateTime now = DateTime.now();
   final DateTime tomorrow = now.add(const Duration(days: 1));
 
-  Future<void> _selectDate(BuildContext context) async {
+  Future<void> selectDate(BuildContext context) async {
     final DateTime? picked = await showDatePicker(
       context: context,
       initialDate: tomorrow,
@@ -193,7 +193,7 @@ Widget bookingDateTextFormField(
   return GestureDetector(
     onTap: () {
       if (keyboardType == TextInputType.datetime) {
-        _selectDate(context);
+        selectDate(context);
       }
     },
     child: AbsorbPointer(

@@ -1,8 +1,8 @@
 import 'dart:developer';
 import 'package:provider/provider.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:medheal/model/notification_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:medheal/model/notification_model.dart';
 import 'package:medheal/controller/admin_provider.dart';
 import 'package:medheal/service/appointment_service.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
@@ -140,11 +140,6 @@ class NotificationService {
         body: 'Dr.$doctorName is appointed for $category',
       );
       await addNotification(notification);
-      // await showNotification(
-      //   id: notification.hashCode,
-      //   title: 'New Doctor Appointed',
-      //   body: 'Dr.$doctorName is appointed for $category',
-      // );
     }
   }
 

@@ -1,10 +1,9 @@
-import 'package:enefty_icons/enefty_icons.dart';
 import 'package:flutter/material.dart';
-import 'package:medheal/controller/admin_provider.dart';
-import 'package:medheal/controller/bottom_bar_provider.dart';
-import 'package:medheal/widgets/all_doctor_container.dart';
-import 'package:medheal/widgets/text_widgets.dart';
 import 'package:provider/provider.dart';
+import 'package:medheal/widgets/text_widgets.dart';
+import 'package:medheal/controller/admin_provider.dart';
+import 'package:medheal/widgets/all_doctor_container.dart';
+import 'package:medheal/controller/bottom_bar_provider.dart';
 
 const double circleAvatarRadiusFraction = 0.1;
 

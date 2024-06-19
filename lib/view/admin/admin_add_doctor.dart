@@ -9,9 +9,9 @@ import 'package:medheal/model/doctor_model.dart';
 import 'package:medheal/widgets/text_widgets.dart';
 import 'package:medheal/widgets/normal_widgets.dart';
 import 'package:medheal/widgets/snackbar_widget.dart';
-import 'package:medheal/controller/notification_provider.dart';
 import 'package:medheal/view/admin/admin_widgets.dart';
 import 'package:medheal/controller/admin_provider.dart';
+import 'package:medheal/controller/notification_provider.dart';
 import 'package:medheal/controller/authentication_provider.dart';
 
 class DoctorAddingScreen extends StatelessWidget {
@@ -88,36 +88,25 @@ class DoctorAddingScreen extends StatelessWidget {
                   onPressed: () async {
                     if (authProvider.doctorAddFormKey.currentState!
                         .validate()) {
-                      if (adminProvider.selectedGender == null) {
-                        SnackBarWidget()
-                            .showErrorSnackbar(context, 'Select your gender');
-                      } else if (adminProvider.selectedCategory == null) {
-                        SnackBarWidget()
-                            .showErrorSnackbar(context, 'Select category');
-                      } else if (adminProvider.selectedPosition == null) {
-                        SnackBarWidget()
-                            .showErrorSnackbar(context, 'Select position');
+                      int rating =
+                          int.parse(adminProvider.doctorRatingController.text);
+
+                      if (rating > 5) {
+                        SnackBarWidget().showErrorSnackbar(
+                            context, 'Rating should be 5 or less');
                       } else {
-                        int rating = int.parse(
-                            adminProvider.doctorRatingController.text);
+                        await addData(context, adminProvider);
 
-                        if (rating > 5) {
-                          SnackBarWidget().showErrorSnackbar(
-                              context, 'Rating should be 5 or less');
-                        } else {
-                          await addData(context, adminProvider);
+                        await Provider.of<NotificationProvider>(context,
+                                listen: false)
+                            .addNotification(
+                                doctorName:
+                                    adminProvider.doctorNameController.text,
+                                category: adminProvider.selectedCategory!);
 
-                          await Provider.of<NotificationProvider>(context,
-                                  listen: false)
-                              .addNotification(
-                                  doctorName:
-                                      adminProvider.doctorNameController.text,
-                                  category: adminProvider.selectedCategory!);
-
-                          adminProvider.setLoading(false);
-                          authProvider.doctorAddFormKey.currentState!.reset();
-                          adminProvider.clearDoctorAddingControllers();
-                        }
+                        adminProvider.setLoading(false);
+                        authProvider.doctorAddFormKey.currentState!.reset();
+                        adminProvider.clearDoctorAddingControllers();
                       }
                     }
                   },

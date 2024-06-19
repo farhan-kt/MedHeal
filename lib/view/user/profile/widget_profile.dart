@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:enefty_icons/enefty_icons.dart';
-import 'package:medheal/view/user/profile/my_profile.dart';
-import 'package:medheal/widgets/normal_widgets.dart';
 import 'package:medheal/widgets/text_widgets.dart';
+import 'package:medheal/widgets/normal_widgets.dart';
+import 'package:medheal/view/user/profile/my_profile.dart';
 import 'package:medheal/view/user/profile/favourite_doctors.dart';
 
 Widget userProfileScreenContainer(size, context,

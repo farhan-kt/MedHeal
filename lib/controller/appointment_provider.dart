@@ -1,9 +1,9 @@
 import 'dart:developer';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:medheal/service/doctor_service.dart';
 import 'package:medheal/model/appointment_model.dart';
 import 'package:medheal/service/appointment_service.dart';
-import 'package:medheal/service/doctor_service.dart';
 
 class AppointmentProvider extends ChangeNotifier {
   TextEditingController userBookingDateController = TextEditingController();

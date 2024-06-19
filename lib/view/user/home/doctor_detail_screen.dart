@@ -1,16 +1,16 @@
-import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:enefty_icons/enefty_icons.dart';
 import 'package:medheal/model/doctor_model.dart';
 import 'package:medheal/widgets/text_widgets.dart';
 import 'package:medheal/view/user/user_widgets.dart';
 import 'package:medheal/widgets/normal_widgets.dart';
+import 'package:medheal/model/appointment_model.dart';
 import 'package:medheal/controller/admin_provider.dart';
 import 'package:medheal/view/user/home/home_widgets.dart';
 import 'package:medheal/widgets/textformfield_widget.dart';
 import 'package:medheal/controller/appointment_provider.dart';
-import 'package:medheal/model/appointment_model.dart';
 
 class DoctorDetailScreen extends StatelessWidget {
   final DoctorModel? doctors;
@@ -25,8 +25,6 @@ class DoctorDetailScreen extends StatelessWidget {
     Size size = MediaQuery.of(context).size;
     final appointmentProvider =
         Provider.of<AppointmentProvider>(context, listen: false);
-    // Provider.of<AppointmentProvider>(context, listen: false)
-    //     .getAllAppointments();
     List<String> times = _generateTimeSlots(
         doctors?.startTime?.trim() ?? '09:00 AM',
         doctors?.endTime?.trim() ?? '05:00 PM');

@@ -32,7 +32,7 @@ class AppointmentService {
       await docRef.set(data);
     } catch (error) {
       log('Error during adding appointment: $error');
-      throw error;
+      rethrow;
     }
   }
 

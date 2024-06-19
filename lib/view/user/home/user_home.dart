@@ -1,7 +1,6 @@
 import 'dart:developer';
 import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
-import 'package:medheal/controller/notification_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:medheal/model/doctor_model.dart';
 import 'package:medheal/widgets/text_widgets.dart';
@@ -12,6 +11,7 @@ import 'package:medheal/view/user/home/home_widgets.dart';
 import 'package:medheal/widgets/all_doctor_container.dart';
 import 'package:medheal/controller/bottom_bar_provider.dart';
 import 'package:medheal/controller/appointment_provider.dart';
+import 'package:medheal/controller/notification_provider.dart';
 
 const double circleAvatarRadiusFraction = 0.091;
 

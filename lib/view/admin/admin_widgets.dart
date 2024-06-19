@@ -39,36 +39,20 @@ Widget adminDoctorAddFields(
           ),
           const SizedBox(width: 20),
           Expanded(
-            // child: dropDownTextFormField(
-            //     hintText: 'Gender',
-            //     value: adminProvider.selectedGender,
-            //     items: adminProvider.genders.map((gender) {
-            //       return DropdownMenuItem(
-            //           value: gender,
-            //           child: interSubText(
-            //             text: gender,
-            //           ));
-            //     }).toList(),
-            //     onChanged: (value) {
-            //       adminProvider.selectedGender = value.toString();
-            //     },
-            //     validateMessage: 'select your gender'),
             child: dropDownTextFormField(
-              hintText: 'Gender',
-              value: adminProvider.selectedGender,
-              items: adminProvider.genders.map((gender) {
-                return DropdownMenuItem(
-                  value: gender,
-                  child: interSubText(
-                    text: gender,
-                  ),
-                );
-              }).toList(),
-              onChanged: (value) {
-                adminProvider.selectedGender = value.toString();
-              },
-              validateMessage: 'Select your gender',
-            ),
+                hintText: 'Gender',
+                value: adminProvider.selectedGender,
+                items: adminProvider.genders.map((gender) {
+                  return DropdownMenuItem(
+                      value: gender,
+                      child: interSubText(
+                        text: gender,
+                      ));
+                }).toList(),
+                onChanged: (value) {
+                  adminProvider.selectedGender = value.toString();
+                },
+                validateMessage: 'select your gender'),
           )
         ],
       ),

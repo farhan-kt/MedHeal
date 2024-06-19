@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:medheal/controller/appointment_provider.dart';
-import 'package:medheal/model/appointment_model.dart';
+import 'package:provider/provider.dart';
 import 'package:medheal/model/doctor_model.dart';
+import 'package:medheal/widgets/text_widgets.dart';
 import 'package:medheal/widgets/normal_widgets.dart';
 import 'package:medheal/widgets/snackbar_widget.dart';
-import 'package:medheal/widgets/text_widgets.dart';
-import 'package:provider/provider.dart';
+import 'package:medheal/model/appointment_model.dart';
+import 'package:medheal/controller/appointment_provider.dart';
 
 Widget appointmentScheduledContainer(Size size, context,
     {circleAvatarRadius,
@@ -91,7 +91,6 @@ Widget appointmentScheduledContainer(Size size, context,
                           SnackBarWidget().showErrorSnackbar(context, error);
                         },
                       );
-                      // appointmentProvider.deleteAppointment(appointment.id!);
                       Navigator.pop(context);
                     });
                   },

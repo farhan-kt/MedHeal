@@ -1,11 +1,11 @@
 // ignore_for_file: prefer_typing_uninitialized_variables
 
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:medheal/widgets/text_widgets.dart';
+import 'package:medheal/view/user/profile/edit_profile.dart';
 import 'package:medheal/view/user/profile/widget_profile.dart';
 import 'package:medheal/controller/authentication_provider.dart';
-import 'package:medheal/view/user/profile/edit_profile.dart';
 
 const double circleAvatarRadiusFraction = 0.18;
 

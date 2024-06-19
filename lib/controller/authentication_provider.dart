@@ -1,13 +1,13 @@
 import 'dart:io';
 import 'dart:developer';
-import 'package:country_picker/country_picker.dart';
 import 'package:flutter/material.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:medheal/model/authentication_model.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:country_picker/country_picker.dart';
 import 'package:medheal/widgets/snackbar_widget.dart';
 import 'package:medheal/widgets/user_bottom_bar.dart';
 import 'package:medheal/widgets/admin_bottom_bar.dart';
+import 'package:medheal/model/authentication_model.dart';
 import 'package:medheal/service/authentication_service.dart';
 
 class AuthenticationProvider extends ChangeNotifier {

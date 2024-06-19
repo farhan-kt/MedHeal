@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:medheal/helper/loading_indicator.dart';
-import 'package:medheal/view/user/appointment/widgets_appointment.dart';
-import 'package:medheal/view/user/home/doctor_detail_screen.dart';
 import 'package:provider/provider.dart';
 import 'package:medheal/model/doctor_model.dart';
 import 'package:medheal/widgets/text_widgets.dart';
 import 'package:medheal/model/appointment_model.dart';
+import 'package:medheal/helper/loading_indicator.dart';
 import 'package:medheal/controller/admin_provider.dart';
 import 'package:medheal/controller/appointment_provider.dart';
+import 'package:medheal/view/user/home/doctor_detail_screen.dart';
+import 'package:medheal/view/user/appointment/widgets_appointment.dart';
 
 const double circleAvatarRadiusFraction = 0.12;
 
@@ -19,6 +19,7 @@ class CancelledAppointments extends StatefulWidget {
 }
 
 class _CancelledAppointmentsState extends State<CancelledAppointments> {
+  @override
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {

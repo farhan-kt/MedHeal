@@ -1,11 +1,10 @@
 import 'dart:io';
 import 'dart:developer';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:medheal/model/doctor_model.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:medheal/service/doctor_service.dart';
-import 'package:medheal/service/notification_service.dart';
 
 class DoctorProvider extends ChangeNotifier {
   DoctorService doctorService = DoctorService();
@@ -168,15 +167,6 @@ class DoctorProvider extends ChangeNotifier {
       return true;
     }
   }
-
-  // DoctorModel? selectedDoctor;
-
-  // Future<void> fetchDoctorDetails(String docId) async {
-  //   setLoading(true);
-  //   selectedDoctor = await doctorService.getDoctorById(docId);
-  //   setLoading(false);
-  //   notifyListeners();
-  // }
 
   Future<DoctorModel?> getDoctorById(String id) async {
     try {

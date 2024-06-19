@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:medheal/widgets/snackbar_widget.dart';
 import 'package:provider/provider.dart';
 import 'package:medheal/widgets/text_widgets.dart';
 import 'package:medheal/widgets/normal_widgets.dart';
+import 'package:medheal/widgets/snackbar_widget.dart';
 import 'package:medheal/widgets/textformfield_widget.dart';
 import 'package:medheal/controller/authentication_provider.dart';
 

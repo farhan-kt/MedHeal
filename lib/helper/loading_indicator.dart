@@ -1,5 +1,5 @@
-import 'package:flutter/material.dart';
 import 'package:shimmer/shimmer.dart';
+import 'package:flutter/material.dart';
 
 Shimmer loadingIndicator(Size size, {circleWidth, circleHeight}) {
   return Shimmer.fromColors(

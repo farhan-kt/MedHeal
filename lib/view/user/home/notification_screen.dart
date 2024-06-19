@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:medheal/widgets/text_widgets.dart';
-import 'package:provider/provider.dart';
 import 'package:medheal/controller/notification_provider.dart';
 
 class NotificationScreen extends StatelessWidget {
+  const NotificationScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
     final user = FirebaseAuth.instance.currentUser;
@@ -95,7 +97,7 @@ class NotificationScreen extends StatelessWidget {
                           ],
                         )),
                   ),
-                  Row(
+                  const Row(
                     children: [
                       Divider(),
                     ],
