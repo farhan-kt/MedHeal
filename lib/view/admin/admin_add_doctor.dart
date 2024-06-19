@@ -88,23 +88,36 @@ class DoctorAddingScreen extends StatelessWidget {
                   onPressed: () async {
                     if (authProvider.doctorAddFormKey.currentState!
                         .validate()) {
-                      int rating =
-                          int.parse(adminProvider.doctorRatingController.text);
-
-                      if (rating > 5) {
-                        SnackBarWidget().showErrorSnackbar(
-                            context, 'Rating should be 5 or less');
+                      if (adminProvider.selectedGender == null) {
+                        SnackBarWidget()
+                            .showErrorSnackbar(context, 'Select your gender');
+                      } else if (adminProvider.selectedCategory == null) {
+                        SnackBarWidget()
+                            .showErrorSnackbar(context, 'Select category');
+                      } else if (adminProvider.selectedPosition == null) {
+                        SnackBarWidget()
+                            .showErrorSnackbar(context, 'Select position');
                       } else {
-                        await addData(context, adminProvider);
+                        int rating = int.parse(
+                            adminProvider.doctorRatingController.text);
 
-                        await Provider.of<NotificationProvider>(context,
-                                listen: false)
-                            .addNotification(
-                                doctorName:
-                                    adminProvider.doctorNameController.text,
-                                category: adminProvider.selectedCategory!);
+                        if (rating > 5) {
+                          SnackBarWidget().showErrorSnackbar(
+                              context, 'Rating should be 5 or less');
+                        } else {
+                          await addData(context, adminProvider);
 
-                        adminProvider.clearDoctorAddingControllers();
+                          await Provider.of<NotificationProvider>(context,
+                                  listen: false)
+                              .addNotification(
+                                  doctorName:
+                                      adminProvider.doctorNameController.text,
+                                  category: adminProvider.selectedCategory!);
+
+                          adminProvider.setLoading(false);
+                          authProvider.doctorAddFormKey.currentState!.reset();
+                          adminProvider.clearDoctorAddingControllers();
+                        }
                       }
                     }
                   },
@@ -120,8 +133,21 @@ class DoctorAddingScreen extends StatelessWidget {
                 ? Container(
                     color: Colors.black.withOpacity(0.5),
                     child: const Center(
-                      child: CircularProgressIndicator(
-                        color: Color(0xFF1995AD),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          CircularProgressIndicator(
+                            color: Colors.white,
+                          ),
+                          SizedBox(height: 10),
+                          Text(
+                            'ADDING DOCTOR PLEASE WAIT... ',
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 20,
+                                fontWeight: FontWeight.w600),
+                          )
+                        ],
                       ),
                     ),
                   )
@@ -196,6 +222,5 @@ class DoctorAddingScreen extends StatelessWidget {
       SnackBarWidget()
           .showErrorSnackbar(context, 'failed to add, try one more');
     }
-    adminProvider.setLoading(false);
   }
 }
