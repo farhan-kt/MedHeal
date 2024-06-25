@@ -68,7 +68,7 @@ class FavouriteDoctorsScreen extends StatelessWidget {
     final user = currentUser.email ?? currentUser.phoneNumber;
     List<DoctorModel> myDoctors = [];
     for (var car in adminProvider.allDoctorList) {
-      if (car.wishList.contains(user)) {
+      if (car.wishList!.contains(user)) {
         myDoctors.add(car);
       }
     }

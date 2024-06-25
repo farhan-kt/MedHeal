@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-poppinsText({text, color, fontWeight, double? fontSize, textAlign, overflow}) {
+poppinsText(
+    {text, color, fontWeight, double? fontSize, textAlign, overflow, maxLine}) {
   return Text(text,
       overflow: overflow,
+      maxLines: maxLine,
       textAlign: textAlign,
       style: GoogleFonts.poppins(
           color: color, fontWeight: fontWeight, fontSize: fontSize));
@@ -18,8 +20,10 @@ poppinsHeadText({text, textAlign, double? fontSize, color}) {
           fontSize: fontSize ?? 16));
 }
 
-poppinsSmallText({text, color, fontWeight, textAlign}) {
+poppinsSmallText({text, color, fontWeight, textAlign, softWrap, maxLine}) {
   return Text(text,
+      softWrap: softWrap,
+      maxLines: maxLine,
       textAlign: textAlign,
       style: GoogleFonts.poppins(
           color: color ?? const Color(0xFF101828),

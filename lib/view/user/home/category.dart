@@ -39,7 +39,7 @@ class CategoryScreen extends StatelessWidget {
         title: poppinsText(
             text: category,
             color: const Color(0xFF1A1A1A),
-            fontSize: 18,
+            fontSize: 20,
             fontWeight: FontWeight.bold),
         centerTitle: true,
       ),

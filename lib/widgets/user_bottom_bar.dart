@@ -37,8 +37,11 @@ class UserBottomBar extends StatelessWidget {
                 items: [
                   BottomNavigationBarItem(
                     icon: value.userCurrentIndex == 0
-                        ? const Icon(EneftyIcons.home_3_bold)
-                        : const Icon(EneftyIcons.home_3_outline),
+                        ? const Icon(Icons.home)
+                        : const Icon(
+                            Icons.home_outlined,
+                            size: 26,
+                          ),
                     label: poppinsText(
                       text: 'Home',
                       color: const Color(0xFF98A3B3),

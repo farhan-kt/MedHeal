@@ -50,22 +50,24 @@ class DoctorDetailScreen extends StatelessWidget {
             fontWeight: FontWeight.bold),
         centerTitle: true,
         actions: [
-          IconButton(
-            onPressed: () {
-              final wish = value.wishListCheck(doctors!);
-              value.wishlistClicked(doctors!.id!, wish);
-            },
-            icon: value.wishListCheck(doctors!)
-                ? const Icon(
-                    Icons.favorite_border_rounded,
-                    size: 30,
-                    color: Colors.red,
-                  )
-                : const Icon(
-                    Icons.favorite_rounded,
-                    size: 30,
-                    color: Colors.red,
-                  ),
+          Consumer<DoctorProvider>(
+            builder: (context, value, child) => IconButton(
+              onPressed: () {
+                final wish = value.wishListCheck(doctors!);
+                value.wishlistClicked(doctors!.id!, wish);
+              },
+              icon: value.wishListCheck(doctors!)
+                  ? const Icon(
+                      Icons.favorite_border_rounded,
+                      size: 30,
+                      color: Colors.red,
+                    )
+                  : const Icon(
+                      Icons.favorite_rounded,
+                      size: 30,
+                      color: Colors.red,
+                    ),
+            ),
           ),
         ],
       ),

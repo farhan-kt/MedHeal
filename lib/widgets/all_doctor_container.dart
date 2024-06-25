@@ -46,31 +46,34 @@ class AllDoctorsContainer extends StatelessWidget {
                 children: [
                   CircleAvatar(
                       radius: circleAvatarRadius,
-                      backgroundColor: Colors.white,
+                      backgroundColor: const Color.fromARGB(255, 116, 155, 179),
                       backgroundImage: NetworkImage(doctors!.image!)),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: [
-                      poppinsHeadText(
-                        text: 'Dr. ${doctors?.fullName}',
-                        color: const Color(0xFF1D1617),
-                        fontSize: 14,
-                      ),
-                      Row(children: [
-                        poppinsSmallText(
-                          text: '${doctors?.category} | ',
+                  const SizedBox(width: 10),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        poppinsHeadText(
+                          text: 'Dr. ${doctors?.fullName}',
+                          color: const Color(0xFF1D1617),
+                          fontSize: 14,
                         ),
+                        Row(children: [
+                          poppinsSmallText(
+                            text: '${doctors?.category} | ',
+                          ),
+                          poppinsSmallText(
+                              text: doctors?.position,
+                              softWrap: true,
+                              maxLine: 1)
+                        ]),
                         poppinsSmallText(
-                          text: doctors?.position,
+                          text: '${doctors?.experience}Yrs Experience',
                         )
-                      ]),
-                      poppinsSmallText(
-                        text: '${doctors?.experience}Yrs Experience',
-                      )
-                    ],
+                      ],
+                    ),
                   ),
-                  SizedBox(width: size.width * .1),
                   IconButton(
                     onPressed: () {
                       confirmationDialog(
@@ -132,28 +135,32 @@ class AllDoctorsContainer extends StatelessWidget {
                         backgroundColor:
                             const Color.fromARGB(255, 243, 242, 242),
                         backgroundImage: NetworkImage(doctors!.image!)),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: [
-                        poppinsHeadText(
-                          text: 'Dr. ${doctors?.fullName}',
-                          color: const Color(0xFF1D1617),
-                          fontSize: 14,
-                        ),
-                        Row(children: [
-                          poppinsSmallText(
-                            text: '${doctors?.category} | ',
-                          ),
-                          poppinsSmallText(
-                            text: doctors?.position,
-                          )
-                        ]),
-                        poppinsSmallText(
-                            text: '${doctors?.experience} Yrs Experience')
-                      ],
+                    const SizedBox(
+                      width: 10,
                     ),
-                    SizedBox(width: size.width * .1),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: [
+                          poppinsHeadText(
+                            text: 'Dr. ${doctors?.fullName}',
+                            color: const Color(0xFF1D1617),
+                            fontSize: 14,
+                          ),
+                          Row(children: [
+                            poppinsSmallText(
+                              text: '${doctors?.category} | ',
+                            ),
+                            poppinsSmallText(
+                              text: doctors?.position,
+                            )
+                          ]),
+                          poppinsSmallText(
+                              text: '${doctors?.experience} Yrs Experience')
+                        ],
+                      ),
+                    ),
                     IconButton(
                       onPressed: () {
                         final wish = value.wishListCheck(doctors!);

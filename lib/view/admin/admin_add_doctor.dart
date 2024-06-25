@@ -103,6 +103,8 @@ class DoctorAddingScreen extends StatelessWidget {
                                 doctorName:
                                     adminProvider.doctorNameController.text,
                                 category: adminProvider.selectedCategory!);
+                        SnackBarWidget().showSuccessSnackbar(
+                            context, 'Doctor Added Successfully');
 
                         adminProvider.setLoading(false);
                         authProvider.doctorAddFormKey.currentState!.reset();
@@ -204,9 +206,6 @@ class DoctorAddingScreen extends StatelessWidget {
       );
 
       await adminProvider.addDoctor(newDoctor);
-
-      SnackBarWidget()
-          .showSuccessSnackbar(context, 'Doctor Added Successfully');
     } else {
       SnackBarWidget()
           .showErrorSnackbar(context, 'failed to add, try one more');

@@ -14,6 +14,7 @@ import 'package:medheal/controller/appointment_provider.dart';
 import 'package:medheal/controller/notification_provider.dart';
 
 const double circleAvatarRadiusFraction = 0.091;
+const double upcomingCircleAvatarRadiusFraction = 0.081;
 
 class UserHomeScreen extends StatefulWidget {
   const UserHomeScreen({super.key});
@@ -43,6 +44,8 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
     Size size = MediaQuery.of(context).size;
     Provider.of<DoctorProvider>(context, listen: false).getAllDoctors();
     double circleAvatarRadius = size.shortestSide * circleAvatarRadiusFraction;
+    double upcomingAvatarRadius =
+        size.shortestSide * upcomingCircleAvatarRadiusFraction;
     final bottomProvider = Provider.of<BottomProvider>(context, listen: false);
     return SafeArea(
       child: Scaffold(
@@ -115,7 +118,11 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
                               doctorSnapshot.data != null) {
                             final doctor = doctorSnapshot.data!;
                             return homeUpcomingAppointment(
-                                size, context, nextUpcomingAppointment, doctor);
+                                size,
+                                context,
+                                nextUpcomingAppointment,
+                                doctor,
+                                upcomingAvatarRadius);
                           } else {
                             return const Text('Doctor not found');
                           }

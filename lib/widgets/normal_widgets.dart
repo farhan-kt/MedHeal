@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:enefty_icons/enefty_icons.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:medheal/view/user/profile/about_us.dart';
+import 'package:medheal/view/user/profile/chat.dart';
 import 'package:medheal/view/user/profile/customer_service.dart';
 import 'package:medheal/widgets/text_widgets.dart';
 import 'package:medheal/view/user/home/doctor_detail_screen.dart';
@@ -81,6 +82,21 @@ Widget profileScreenContainer(context,
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
         poppinsHeadText(text: 'Others'),
+        isAdmin!
+            ? const SizedBox()
+            : profileContainerListTile(
+                context,
+                onTap: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const UserChatScreen()));
+                },
+                title: 'Chat',
+                suffixIcon: true,
+                icon: Icons.chat,
+                iconColor: const Color(0xFF1995AD),
+              ),
         profileContainerListTile(
           context,
           onTap: () {
@@ -92,7 +108,7 @@ Widget profileScreenContainer(context,
           icon: EneftyIcons.info_circle_outline,
           iconColor: const Color(0xFF1995AD),
         ),
-        isAdmin!
+        isAdmin
             ? const SizedBox()
             : profileContainerListTile(
                 context,

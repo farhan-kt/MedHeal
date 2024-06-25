@@ -7,7 +7,7 @@ import 'package:medheal/service/appointment_service.dart';
 
 class AppointmentProvider extends ChangeNotifier {
   TextEditingController userBookingDateController = TextEditingController();
-  TextEditingController userBookingResheduledController =
+  TextEditingController userBookingResheduleController =
       TextEditingController();
 
   AppointmentService appointmentService = AppointmentService();
@@ -78,7 +78,6 @@ class AppointmentProvider extends ChangeNotifier {
 
   void clearAppointmentControllers() {
     userBookingDateController.clear();
-    userBookingResheduledController.clear();
     selectedTime = null;
     notifyListeners();
   }

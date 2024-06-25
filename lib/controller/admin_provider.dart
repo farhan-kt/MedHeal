@@ -156,7 +156,7 @@ class DoctorProvider extends ChangeNotifier {
     final currentUser = FirebaseAuth.instance.currentUser;
     if (currentUser != null) {
       final user = currentUser.email ?? currentUser.phoneNumber;
-      if (doctor.wishList.contains(user)) {
+      if (doctor.wishList!.contains(user)) {
         getAllDoctors();
         return false;
       } else {

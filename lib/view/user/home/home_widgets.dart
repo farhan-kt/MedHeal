@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:enefty_icons/enefty_icons.dart';
 import 'package:medheal/model/doctor_model.dart';
@@ -14,6 +15,13 @@ import 'package:medheal/controller/notification_provider.dart';
 import 'package:medheal/controller/authentication_provider.dart';
 import 'package:medheal/view/user/home/notification_screen.dart';
 import 'package:medheal/view/user/profile/favourite_doctors.dart';
+
+String formatDate(String date) {
+  DateFormat inputFormat = DateFormat('dd/MM/yyyy');
+  DateFormat outputFormat = DateFormat('MMMM dd, yyyy');
+  DateTime parsedDate = inputFormat.parse(date);
+  return outputFormat.format(parsedDate);
+}
 
 Widget homeCategoryAvatar(context, imagePath, {category, circleRadius}) {
   return GestureDetector(
@@ -213,188 +221,257 @@ Widget homeAppBar(Size size, context) {
   ]);
 }
 
-Widget homeUpcomingAppointment(
-    Size size, context, AppointmentModel appointment, DoctorModel doctor) {
+Widget homeUpcomingAppointment(Size size, context, AppointmentModel appointment,
+    DoctorModel doctor, circleAvatarFraction) {
+  final formattedDate = formatDate(appointment.date ?? '');
   final appointmentProvider =
       Provider.of<AppointmentProvider>(context, listen: false);
-  return Container(
-    height: size.height * .19,
-    width: size.width * .88,
-    decoration: BoxDecoration(
-        color: const Color(0xFF1995AD),
-        border: Border.all(color: const Color.fromARGB(255, 199, 212, 226)),
-        borderRadius: BorderRadius.circular(18)),
-    child: Padding(
-      padding: EdgeInsets.only(
-        top: size.height * .01,
-        bottom: size.height * .01,
-        left: size.width * .014,
-      ),
-      child:
-          Column(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
-        ListTile(
-          leading: CircleAvatar(
-            radius: 30,
-            backgroundColor: const Color(0xFFFFFFFF),
-            backgroundImage: doctor.image != null
-                ? NetworkImage(doctor.image!)
-                : const AssetImage('assets/avatar-removebg-preview.png')
-                    as ImageProvider,
-          ),
-          title: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              poppinsHeadText(
-                text: 'Dr ${doctor.fullName}',
-                color: const Color(0xFFFFFFFF),
-                fontSize: 14,
-              ),
-              Row(children: [
+  return Center(
+    child: Container(
+      height: size.height * .19,
+      width: size.width * .9,
+      decoration: BoxDecoration(
+          color: const Color(0xFF1995AD),
+          border: Border.all(color: const Color.fromARGB(255, 199, 212, 226)),
+          borderRadius: BorderRadius.circular(18)),
+      child: Padding(
+        padding: EdgeInsets.only(
+          top: size.height * .01,
+          bottom: size.height * .01,
+          left: size.width * .014,
+        ),
+        child:
+            Column(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
+          ListTile(
+            leading: CircleAvatar(
+              radius: circleAvatarFraction,
+              backgroundColor: const Color(0xFFFFFFFF),
+              backgroundImage: doctor.image != null
+                  ? NetworkImage(doctor.image!)
+                  : const AssetImage('assets/avatar-removebg-preview.png')
+                      as ImageProvider,
+            ),
+            title: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                poppinsHeadText(
+                  text: 'Dr ${doctor.fullName}',
+                  color: const Color(0xFFFFFFFF),
+                  fontSize: 14,
+                ),
+                Row(children: [
+                  poppinsSmallText(
+                    text: '${doctor.age} | ',
+                    color: const Color(0xFFFFFFFF),
+                  ),
+                  poppinsSmallText(
+                    text: '${doctor.gender} ',
+                    color: const Color(0xFFFFFFFF),
+                  ),
+                ]),
+              ],
+            ),
+            subtitle: Row(
+              children: [
                 poppinsSmallText(
-                  text: '${doctor.age} | ',
+                  text: '${doctor.category} | ',
                   color: const Color(0xFFFFFFFF),
                 ),
-                poppinsSmallText(
-                  text: '${doctor.category} ',
-                  color: const Color(0xFFFFFFFF),
+                Flexible(
+                  child: poppinsSmallText(
+                      text: '${doctor.position} ',
+                      color: const Color(0xFFFFFFFF),
+                      maxLine: 1,
+                      softWrap: true),
+                )
+              ],
+            ),
+            trailing: PopupMenuButton(
+                icon: const Icon(
+                  Icons.more_vert_outlined,
+                  color: Colors.white,
                 ),
-              ]),
-            ],
-          ),
-          subtitle: poppinsSmallText(
-            text: doctor.position,
-            color: const Color(0xFFFFFFFF),
-          ),
-          trailing: PopupMenuButton(
-              icon: const Icon(
-                Icons.more_vert_outlined,
-                color: Colors.white,
-              ),
-              color: const Color(0xFFA1D6E2),
-              onSelected: (value) {
-                if (value == 'reshedule') {
-                  showBottomSheet(
-                    context: context,
-                    builder: (context) {
-                      return showBottom(
-                        size,
-                        context,
-                        appointment: appointment,
-                        doctor: doctor,
-                      );
-                    },
-                  );
-                } else if (value == 'cancel') {
-                  confirmationDialog(context, size,
-                      dialogWidth: size.width * .6,
-                      dialogheight: size.height * .16,
-                      height: size.height * .02,
-                      alertMessage: 'Proceed to cancel Your Appointment ?',
-                      confirmText: 'Confirm', onPressedConfirm: () async {
-                    await appointmentProvider.cancelAppointment(
-                      appointment.id!,
-                      (error) {
-                        SnackBarWidget().showErrorSnackbar(context, error);
+                color: const Color.fromARGB(255, 235, 233, 233),
+                onSelected: (value) {
+                  if (value == 'reshedule') {
+                    appointmentProvider.clearAppointmentControllers();
+                    showBottomSheet(
+                      context: context,
+                      builder: (context) {
+                        return showBottom(
+                          size,
+                          context,
+                          appointment: appointment,
+                          doctor: doctor,
+                        );
                       },
                     );
-                    Navigator.pop(context);
-                  });
-                }
-              },
-              itemBuilder: (context) {
-                return [
-                  PopupMenuItem(
-                      child:
-                          poppinsText(text: 'Reshedule', color: Colors.black),
-                      value: 'reshedule'),
-                  PopupMenuItem(
-                      child: poppinsText(
-                          text: 'Cancel Booking', color: Colors.black),
-                      value: 'cancel'),
-                ];
-              }),
-        ),
-        Row(children: [
+                  } else if (value == 'cancel') {
+                    confirmationDialog(context, size,
+                        dialogWidth: size.width * .6,
+                        dialogheight: size.height * .16,
+                        height: size.height * .02,
+                        alertMessage: 'Proceed to cancel Your Appointment ?',
+                        confirmText: 'Confirm', onPressedConfirm: () async {
+                      await appointmentProvider.cancelAppointment(
+                        appointment.id!,
+                        (error) {
+                          SnackBarWidget().showErrorSnackbar(context, error);
+                        },
+                      );
+                      Navigator.pop(context);
+                    });
+                  }
+                },
+                itemBuilder: (context) {
+                  return [
+                    PopupMenuItem(
+                        child: poppinsText(
+                            fontWeight: FontWeight.w500,
+                            fontSize: 16,
+                            text: 'Reshedule',
+                            color: const Color(0xFF1995AD)),
+                        value: 'reshedule'),
+                    PopupMenuItem(
+                        child: poppinsText(
+                            fontWeight: FontWeight.w500,
+                            fontSize: 15,
+                            text: 'Cancel Booking',
+                            color: Colors.red),
+                        value: 'cancel'),
+                  ];
+                }),
+          ),
           Padding(
-            padding: EdgeInsets.only(left: size.width * .02),
-            child: Container(
-              height: size.height * .055,
-              width: size.width * .35,
-              decoration: BoxDecoration(
-                border: Border.all(
+            padding: const EdgeInsets.symmetric(horizontal: 12),
+            child: Row(children: [
+              Container(
+                padding: const EdgeInsets.only(right: 10),
+                decoration: BoxDecoration(
+                  border: Border.all(
+                    color: const Color.fromARGB(255, 24, 130, 151),
+                  ),
+                  borderRadius: BorderRadius.circular(18),
                   color: const Color.fromARGB(255, 24, 130, 151),
                 ),
-                borderRadius: BorderRadius.circular(18),
-                color: const Color.fromARGB(255, 24, 130, 151),
+                child:
+                    Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+                  Image.asset(
+                    'assets/home calendar.png',
+                    width: size.width * .1,
+                    height: size.height * .055,
+                  ),
+                  SizedBox(width: size.width * .002),
+                  poppinsText(
+                    text: formattedDate,
+                    overflow: TextOverflow.ellipsis,
+                    fontSize: 12,
+                    fontWeight: FontWeight.w700,
+                    color: const Color(0xFFFFFFFF),
+                  )
+                ]),
               ),
-              child: Row(children: [
-                SizedBox(width: size.width * .02),
-                Image.asset('assets/home calendar.png'),
-                SizedBox(width: size.width * .002),
-                poppinsText(
-                  text: appointment.date,
-                  overflow: TextOverflow.ellipsis,
-                  fontSize: 10,
-                  fontWeight: FontWeight.w700,
-                  color: const Color(0xFFFFFFFF),
-                )
-              ]),
-            ),
-          ),
-          SizedBox(width: size.width * .05),
-          Container(
-            height: size.height * .055,
-            width: size.width * .28,
-            decoration: BoxDecoration(
-              border: Border.all(
-                color: const Color.fromARGB(255, 24, 130, 151),
-              ),
-              borderRadius: BorderRadius.circular(18),
-              color: const Color.fromARGB(255, 24, 130, 151),
-            ),
-            child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
+              SizedBox(width: size.width * .05),
+              Container(
+                padding: EdgeInsets.symmetric(
+                  horizontal: size.width * .04,
+                ),
+                decoration: BoxDecoration(
+                  border: Border.all(
+                    color: const Color.fromARGB(255, 24, 130, 151),
+                  ),
+                  borderRadius: BorderRadius.circular(18),
+                  color: const Color.fromARGB(255, 24, 130, 151),
+                ),
+                child:
+                    Row(mainAxisAlignment: MainAxisAlignment.center, children: [
                   Image.asset(
                     'assets/home time.png',
-                    height: size.width * .06,
-                    width: size.width * .06,
+                    width: size.width * .07,
+                    height: size.height * .055,
                   ),
+                  SizedBox(width: size.width * .015),
                   poppinsText(
                       text: appointment.time,
-                      fontSize: 12,
+                      fontSize: 13,
                       fontWeight: FontWeight.w600,
                       color: const Color(0xFFFFFFFF))
                 ]),
-          ),
-        ])
-      ]),
+              ),
+            ]),
+          )
+        ]),
+      ),
     ),
   );
 }
 
+// Widget doctorDetailsTimeButton({
+//   VoidCallback? onPressed,
+//   time,
+//   required bool isSelected,
+//   required bool isBooked,
+// }) {
+//   Color buttonColor = isBooked
+//       ? Colors.red
+//       : (isSelected ? const Color(0xFF1995AD) : Colors.transparent);
+//   Color borderColor = isBooked ? Colors.red.shade300 : Color(0xFF1995AD);
+//   return OutlinedButton(
+//     style: ButtonStyle(
+//       side: WidgetStateProperty.all(
+//         BorderSide(color: borderColor, width: 1.2),
+//       ),
+//       backgroundColor: WidgetStateProperty.resolveWith<Color>((states) {
+//         if (states.contains(WidgetState.pressed)) {
+//           return buttonColor.withOpacity(0.8);
+//         } else {
+//           return buttonColor;
+//         }
+//       }),
+//     ),
+//     onPressed: onPressed,
+//     child: poppinsHeadText(
+//       textAlign: TextAlign.center,
+//       text: time,
+//       color: isBooked
+//           ? Colors.white
+//           : (isSelected ? Colors.white : Color(0xFF1995AD)),
+//       fontSize: 14,
+//     ),
+//   );
+// }
+
 Widget doctorDetailsTimeButton({
   VoidCallback? onPressed,
-  time,
+  required String time,
   required bool isSelected,
   required bool isBooked,
 }) {
-  // Color buttonColor = isSelected ? Colors.black : const Color(0xFF1995AD);
   Color buttonColor = isBooked
       ? Colors.red
-      : (isSelected ? Colors.black : const Color(0xFF1995AD));
+      : (isSelected ? const Color(0xFF1995AD) : Colors.transparent);
+  Color borderColor = isBooked ? Colors.red.shade300 : Color(0xFF1995AD);
 
   return OutlinedButton(
     style: ButtonStyle(
       side: WidgetStateProperty.all(
-        BorderSide(color: buttonColor, width: 1.2),
+        BorderSide(color: borderColor, width: 1.2),
       ),
+      backgroundColor: WidgetStateProperty.resolveWith<Color>((states) {
+        if (states.contains(WidgetState.pressed)) {
+          return buttonColor.withOpacity(0.8);
+        } else {
+          return buttonColor;
+        }
+      }),
     ),
     onPressed: onPressed,
     child: poppinsHeadText(
       textAlign: TextAlign.center,
       text: time,
-      color: buttonColor,
+      color: isBooked
+          ? Colors.white
+          : (isSelected ? Colors.white : Color(0xFF1995AD)),
       fontSize: 14,
     ),
   );

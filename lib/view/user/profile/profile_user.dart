@@ -31,8 +31,8 @@ class UserProfileScreen extends StatelessWidget {
     return Scaffold(
       backgroundColor: const Color(0xFFF5F5F5),
       body: Padding(
-        padding: EdgeInsets.symmetric(
-            vertical: size.height * 0.1, horizontal: size.width * .03),
+        padding: EdgeInsets.fromLTRB(size.width * .03, size.height * 0.1,
+            size.width * .03, size.height * 0.05),
         child:
             Consumer<AuthenticationProvider>(builder: (context, value, child) {
           return Column(
@@ -72,7 +72,7 @@ class UserProfileScreen extends StatelessWidget {
               Expanded(
                 child: profileScreenContainer(
                   context,
-                  containerHeight: size.height * .25,
+                  containerHeight: size.height * .1,
                   containerWidth: size.width * .9,
                   isAdmin: false,
                   onTap: () {

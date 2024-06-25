@@ -269,6 +269,8 @@ Widget showBottom(Size size, context,
       doctor?.startTime?.trim() ?? '09:00 AM',
       doctor?.endTime?.trim() ?? '05:00 PM');
 
+  appointmentProvider.userBookingDateController.text = appointment!.date!;
+
   return Stack(children: [
     Container(
       height: size.height * .6,
@@ -382,6 +384,7 @@ Widget showBottom(Size size, context,
               buttonText: 'Back',
               onPressed: () {
                 Navigator.pop(context);
+                appointmentProvider.clearAppointmentControllers();
               }),
           SizedBox(
             width: size.width * .02,
@@ -395,7 +398,7 @@ Widget showBottom(Size size, context,
               final selectedDate = appointmentProvider.selectedDate;
               final selectedTime = appointmentProvider.selectedTime;
               final resheduledAppointment = AppointmentModel(
-                  id: appointment!.id,
+                  id: appointment.id,
                   docId: appointment.docId,
                   uId: appointment.uId,
                   date: selectedDate ?? appointment.date,
@@ -406,6 +409,7 @@ Widget showBottom(Size size, context,
 
               Navigator.pop(context);
               refreshAppointments();
+              appointmentProvider.clearAppointmentControllers();
               if (home == false) {
                 successDialogBox(context, size,
                     userProvider: appointmentProvider,
@@ -419,7 +423,7 @@ Widget showBottom(Size size, context,
                     dialogWidth: size.width * .2,
                     image: doctor.image,
                     subText:
-                        'Your appointment with Dr.${doctor.fullName} was Resheduled to $selectedDate at $selectedTime');
+                        'Your appointment with Dr.${doctor.fullName} was Resheduled to ${selectedDate ?? appointment.date} at ${selectedTime ?? appointment.time}');
                 appointmentProvider.clearAppointmentControllers();
               } else {
                 SnackBarWidget().showSuccessSnackbar(context,

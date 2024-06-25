@@ -162,6 +162,7 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
     await authProvider.updateUser(FirebaseAuth.instance.currentUser!.uid, user);
 
     Navigator.pop(context);
+    Navigator.pop(context);
   }
 
   Future<void> pickImage(BuildContext context) async {

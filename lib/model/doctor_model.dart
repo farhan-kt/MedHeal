@@ -12,23 +12,23 @@ class DoctorModel {
   String? patients;
   String? experience;
   int? rating;
-  List wishList;
+  List? wishList;
 
   DoctorModel({
     this.id,
     this.image,
-    required this.fullName,
-    required this.age,
-    required this.gender,
-    required this.category,
-    required this.position,
-    required this.startTime,
-    required this.endTime,
+    this.fullName,
+    this.age,
+    this.gender,
+    this.category,
+    this.position,
+    this.startTime,
+    this.endTime,
     this.aboutDoctor,
     this.patients,
     this.experience,
     this.rating,
-    required this.wishList,
+    this.wishList,
   });
 
   factory DoctorModel.fromJson(String id, Map<String, dynamic> json) {

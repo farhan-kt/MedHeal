@@ -85,3 +85,47 @@ Widget userProfileDetailsListTile(context, {titleText, required valueText}) {
     ),
   );
 }
+
+Widget chatBubble(Size size, {isSend, message, time}) {
+  return Padding(
+    padding: EdgeInsets.only(
+        bottom: size.height * .01, top: size.height * .01, left: 10, right: 10),
+    child: Align(
+      alignment: isSend ? Alignment.centerRight : Alignment.centerLeft,
+      child: Container(
+        padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 10),
+        decoration: BoxDecoration(
+            color: isSend ? const Color(0xFF1995AD) : const Color(0xFFEEEEEE),
+            borderRadius: BorderRadius.only(
+              topLeft: const Radius.circular(20),
+              topRight:
+                  isSend ? const Radius.circular(0) : const Radius.circular(20),
+              bottomLeft:
+                  isSend ? const Radius.circular(20) : const Radius.circular(0),
+              bottomRight: isSend
+                  ? const Radius.circular(20)
+                  : const Radius.circular(20),
+            )),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.end,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            poppinsText(
+                text: message,
+                fontSize: 15,
+                fontWeight: FontWeight.w500,
+                color: isSend ? Colors.white : Colors.black,
+                textAlign: TextAlign.justify),
+            const SizedBox(
+              height: 3,
+            ),
+            poppinsText(
+              text: time,
+              color: isSend ? Colors.white : Colors.black,
+            )
+          ],
+        ),
+      ),
+    ),
+  );
+}

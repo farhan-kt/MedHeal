@@ -33,8 +33,7 @@ class AdminProfileScreen extends StatelessWidget {
             CircleAvatar(
               radius: circleAvatarRadius,
               backgroundColor: const Color(0xFFA1D6E2),
-              backgroundImage:
-                  const AssetImage('assets/avatar-removebg-preview.png'),
+              backgroundImage: const AssetImage('assets/Medheal logo.jpg0'),
             ),
             SizedBox(height: size.height * .001),
             poppinsHeadText(
