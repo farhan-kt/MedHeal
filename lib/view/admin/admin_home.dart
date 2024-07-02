@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:medheal/widgets/text_widgets.dart';
 import 'package:provider/provider.dart';
 import 'package:enefty_icons/enefty_icons.dart';
 import 'package:medheal/controller/admin_provider.dart';
@@ -51,8 +52,10 @@ class AdminHomeScreen extends StatelessWidget {
                 child: SingleChildScrollView(
                   scrollDirection: Axis.vertical,
                   child: Center(
-                      child: Image.asset(
-                          'assets/searched doctor unavailable.png')),
+                      child: poppinsHeadText(
+                          text: 'NO DOCTOR FOUND..!',
+                          color: const Color(0xFF1995AD),
+                          fontSize: 20)),
                 ),
               ));
             } else if (doctorValue.searchList.isEmpty) {
@@ -78,7 +81,10 @@ class AdminHomeScreen extends StatelessWidget {
                 );
               } else {
                 return Center(
-                    child: Image.asset('assets/no doctors available.png'));
+                    child: poppinsHeadText(
+                        text: "NO DOCTOR'S ADDED !",
+                        color: const Color(0xFF1995AD),
+                        fontSize: 20));
               }
             } else {
               return ListView.builder(

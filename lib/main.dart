@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:medheal/controller/chat_provider.dart';
 import 'package:medheal/controller/notification_provider.dart';
 import 'package:medheal/service/notification_service.dart';
 import 'package:provider/provider.dart';
@@ -24,11 +25,12 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        ChangeNotifierProvider(create: (context) => AppointmentProvider()),
+        ChangeNotifierProvider(create: (context) => ChatProvider()),
         ChangeNotifierProvider(create: (context) => DoctorProvider()),
         ChangeNotifierProvider(create: (context) => BottomProvider()),
-        ChangeNotifierProvider(create: (context) => AuthenticationProvider()),
+        ChangeNotifierProvider(create: (context) => AppointmentProvider()),
         ChangeNotifierProvider(create: (context) => NotificationProvider()),
+        ChangeNotifierProvider(create: (context) => AuthenticationProvider()),
       ],
       child: const MaterialApp(
         debugShowCheckedModeBanner: false,

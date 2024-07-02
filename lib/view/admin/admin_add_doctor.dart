@@ -26,7 +26,7 @@ class DoctorAddingScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: interHeadText(
-          text: 'Add Doctors',
+          text: 'ADD DOCTOR',
         ),
         centerTitle: true,
       ),
@@ -82,6 +82,11 @@ class DoctorAddingScreen extends StatelessWidget {
                   ),
                 ),
                 elevatedButtonWidget(
+                  shape: WidgetStateProperty.all(
+                    BeveledRectangleBorder(
+                      borderRadius: BorderRadius.circular(3),
+                    ),
+                  ),
                   buttonHeight: size.height * .058,
                   buttonWidth: size.width * .9,
                   buttonText: 'Add Doctor',

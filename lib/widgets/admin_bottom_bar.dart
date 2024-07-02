@@ -38,19 +38,53 @@ class AdminBottomBar extends StatelessWidget {
                 items: [
                   BottomNavigationBarItem(
                     icon: value.adminCurrentIndex == 0
-                        ? const Icon(EneftyIcons.home_3_bold)
-                        : const Icon(EneftyIcons.home_3_outline),
+                        ? Image.asset(
+                            'assets/home_selected.png',
+                            height: 25,
+                            width: 30,
+                          )
+                        : Image.asset(
+                            'assets/home.png',
+                            height: 25,
+                            width: 30,
+                          ),
                     label: poppinsText(
                       text: 'Home',
+                      color: const Color(0xFF98A3B3),
+                      fontWeight: FontWeight.bold,
+                    ).data,
+                  ),
+                  BottomNavigationBarItem(
+                    icon: value.adminCurrentIndex == 1
+                        ? Image.asset(
+                            'assets/chat_selected.png',
+                            height: 25,
+                            width: 30,
+                          )
+                        : Image.asset(
+                            'assets/chat.png',
+                            height: 25,
+                            width: 30,
+                          ),
+                    label: poppinsText(
+                      text: 'Chats',
                       color: const Color(0xFF98A3B3),
                       fontSize: 8,
                       fontWeight: FontWeight.bold,
                     ).data,
                   ),
                   BottomNavigationBarItem(
-                    icon: value.adminCurrentIndex == 1
-                        ? const Icon(EneftyIcons.user_add_bold)
-                        : const Icon(EneftyIcons.user_add_outline),
+                    icon: value.adminCurrentIndex == 2
+                        ? Image.asset(
+                            'assets/doctor_add_selected.png',
+                            height: 25,
+                            width: 30,
+                          )
+                        : Image.asset(
+                            'assets/doctor_add.png',
+                            height: 25,
+                            width: 30,
+                          ),
                     label: poppinsText(
                       text: 'Add',
                       color: const Color(0xFF98A3B3),
@@ -59,9 +93,17 @@ class AdminBottomBar extends StatelessWidget {
                     ).data,
                   ),
                   BottomNavigationBarItem(
-                    icon: value.adminCurrentIndex == 2
-                        ? const Icon(EneftyIcons.profile_bold)
-                        : const Icon(EneftyIcons.profile_outline),
+                    icon: value.adminCurrentIndex == 3
+                        ? Image.asset(
+                            'assets/profile_selected.png',
+                            height: 25,
+                            width: 30,
+                          )
+                        : Image.asset(
+                            'assets/profile.png',
+                            height: 25,
+                            width: 30,
+                          ),
                     label: poppinsText(
                       text: 'Profile',
                       color: const Color(0xFF98A3B3),

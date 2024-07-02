@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:enefty_icons/enefty_icons.dart';
 import 'package:medheal/widgets/text_widgets.dart';
 import 'package:medheal/controller/bottom_bar_provider.dart';
 
@@ -37,10 +36,15 @@ class UserBottomBar extends StatelessWidget {
                 items: [
                   BottomNavigationBarItem(
                     icon: value.userCurrentIndex == 0
-                        ? const Icon(Icons.home)
-                        : const Icon(
-                            Icons.home_outlined,
-                            size: 26,
+                        ? Image.asset(
+                            'assets/home_selected.png',
+                            height: 25,
+                            width: 30,
+                          )
+                        : Image.asset(
+                            'assets/home.png',
+                            height: 25,
+                            width: 30,
                           ),
                     label: poppinsText(
                       text: 'Home',
@@ -51,10 +55,18 @@ class UserBottomBar extends StatelessWidget {
                   ),
                   BottomNavigationBarItem(
                     icon: value.userCurrentIndex == 1
-                        ? const Icon(EneftyIcons.calendar_2_bold)
-                        : const Icon(EneftyIcons.calendar_2_outline),
+                        ? Image.asset(
+                            'assets/appointment_selected.png',
+                            height: 25,
+                            width: 30,
+                          )
+                        : Image.asset(
+                            'assets/appointment.png',
+                            height: 25,
+                            width: 30,
+                          ),
                     label: poppinsText(
-                      text: 'Appointment',
+                      text: 'Appointments',
                       color: const Color(0xFF98A3B3),
                       fontSize: 10,
                       fontWeight: FontWeight.w600,
@@ -62,8 +74,16 @@ class UserBottomBar extends StatelessWidget {
                   ),
                   BottomNavigationBarItem(
                     icon: value.userCurrentIndex == 2
-                        ? const Icon(EneftyIcons.people_bold)
-                        : const Icon(EneftyIcons.people_outline),
+                        ? Image.asset(
+                            'assets/doctors_selected.png',
+                            height: 25,
+                            width: 30,
+                          )
+                        : Image.asset(
+                            'assets/doctors.png',
+                            height: 25,
+                            width: 30,
+                          ),
                     label: poppinsText(
                       text: 'Doctors',
                       color: const Color(0xFF98A3B3),
@@ -73,8 +93,16 @@ class UserBottomBar extends StatelessWidget {
                   ),
                   BottomNavigationBarItem(
                     icon: value.userCurrentIndex == 3
-                        ? const Icon(EneftyIcons.profile_bold)
-                        : const Icon(EneftyIcons.profile_outline),
+                        ? Image.asset(
+                            'assets/profile_selected.png',
+                            height: 25,
+                            width: 30,
+                          )
+                        : Image.asset(
+                            'assets/profile.png',
+                            height: 25,
+                            width: 30,
+                          ),
                     label: poppinsText(
                       text: 'Profile',
                       color: const Color(0xFF98A3B3),

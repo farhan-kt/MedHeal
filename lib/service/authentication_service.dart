@@ -225,4 +225,21 @@ class AuthenticationService {
       rethrow;
     }
   }
+
+  Future<UserModel?> getUserById(String userId) async {
+    try {
+      DocumentSnapshot<Map<String, dynamic>> snapshot =
+          await fireStore.collection(collection).doc(userId).get();
+
+      if (snapshot.exists && snapshot.data() != null) {
+        return UserModel.fromJson(snapshot.data()!);
+      } else {
+        log('User not found with ID: $userId');
+        return null;
+      }
+    } catch (e) {
+      log('Error fetching user by ID: $e');
+      return null;
+    }
+  }
 }

@@ -8,7 +8,7 @@ class UserModel {
   String? phoneNumber;
 
   UserModel(
-      {required this.uId,
+      {this.uId,
       this.userName,
       this.email,
       this.phoneNumber,

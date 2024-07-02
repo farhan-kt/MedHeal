@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:medheal/view/admin/admin_home.dart';
 import 'package:medheal/view/admin/admin_profile.dart';
+import 'package:medheal/view/admin/chatlist_screen.dart';
 import 'package:medheal/view/user/home/user_home.dart';
 import 'package:medheal/view/admin/admin_add_doctor.dart';
 import 'package:medheal/view/user/doctors/all_doctors.dart';
@@ -30,6 +31,7 @@ class BottomProvider extends ChangeNotifier {
 
   List adminScreens = [
     const AdminHomeScreen(),
+    const ChatList(),
     const DoctorAddingScreen(),
     const AdminProfileScreen(),
   ];

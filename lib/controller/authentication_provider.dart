@@ -259,4 +259,24 @@ class AuthenticationProvider extends ChangeNotifier {
       rethrow;
     }
   }
+
+  Future<List<UserModel>> getAllUsers() async {
+    try {
+      List<UserModel> users = await authenticationService.getAllUser();
+      return users;
+    } catch (e) {
+      log('Error fetching all users in AuthenticationProvider: $e');
+      throw Exception('Failed to fetch users: $e');
+    }
+  }
+
+  Future<UserModel?> getUserById(String userId) async {
+    try {
+      UserModel? user = await authenticationService.getUserById(userId);
+      return user;
+    } catch (e) {
+      log('Error fetching user by ID in AuthenticationProvider: $e');
+      return null;
+    }
+  }
 }

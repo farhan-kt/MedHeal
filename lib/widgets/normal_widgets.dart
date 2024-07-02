@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:enefty_icons/enefty_icons.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:medheal/view/user/profile/about_us.dart';
-import 'package:medheal/view/user/profile/chat.dart';
+import 'package:medheal/view/user/profile/chat_user.dart';
 import 'package:medheal/view/user/profile/customer_service.dart';
 import 'package:medheal/widgets/text_widgets.dart';
 import 'package:medheal/view/user/home/doctor_detail_screen.dart';

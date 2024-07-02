@@ -21,9 +21,7 @@ class AdminProfileScreen extends StatelessWidget {
       appBar: AppBar(
         backgroundColor: const Color(0xFFF5F5F5),
         title: poppinsHeadText(
-          text: 'My Profile',
-          fontSize: 20,
-        ),
+            text: 'MedHeal', color: const Color(0xFF1995AD), fontSize: 20),
       ),
       body: Padding(
         padding: const EdgeInsets.all(10),
@@ -33,22 +31,14 @@ class AdminProfileScreen extends StatelessWidget {
             CircleAvatar(
               radius: circleAvatarRadius,
               backgroundColor: const Color(0xFFA1D6E2),
-              backgroundImage: const AssetImage('assets/Medheal logo.jpg0'),
+              backgroundImage: const AssetImage('assets/Medheal logo.jpg'),
             ),
-            SizedBox(height: size.height * .001),
-            poppinsHeadText(
-                text: 'MedHeal', color: const Color(0xFF1995AD), fontSize: 20),
-            poppinsHeadText(
-                textAlign: TextAlign.center,
-                text: 'Kochi',
-                color: const Color(0xFF888888),
-                fontSize: 14),
             SizedBox(height: size.height * .03),
             profileScreenContainer(
               context,
               containerHeight: size.height * .25,
               containerWidth: size.width * .95,
-              isAdmin: false,
+              isAdmin: true,
               onTap: () {
                 confirmationDialog(context, size,
                     dialogWidth: size.width * .4,

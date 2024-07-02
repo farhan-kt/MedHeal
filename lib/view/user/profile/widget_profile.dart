@@ -95,7 +95,9 @@ Widget chatBubble(Size size, {isSend, message, time}) {
       child: Container(
         padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 10),
         decoration: BoxDecoration(
-            color: isSend ? const Color(0xFF1995AD) : const Color(0xFFEEEEEE),
+            color: isSend
+                ? Color.fromARGB(255, 220, 217, 217)
+                : const Color(0xFF1995AD),
             borderRadius: BorderRadius.only(
               topLeft: const Radius.circular(20),
               topRight:
@@ -114,14 +116,14 @@ Widget chatBubble(Size size, {isSend, message, time}) {
                 text: message,
                 fontSize: 15,
                 fontWeight: FontWeight.w500,
-                color: isSend ? Colors.white : Colors.black,
+                color: isSend ? Colors.black : Colors.white,
                 textAlign: TextAlign.justify),
             const SizedBox(
               height: 3,
             ),
             poppinsText(
               text: time,
-              color: isSend ? Colors.white : Colors.black,
+              color: isSend ? Colors.black : Colors.white,
             )
           ],
         ),
